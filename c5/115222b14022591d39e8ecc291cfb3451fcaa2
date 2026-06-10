@@ -1,0 +1,42 @@
+epics/self-serve-events/event-closed/vite.config.ts
+  s_22c716171fb800::t_bc00cf7a67d54e 6-7
+epics/self-serve-events/epic.json
+  s_22c716171fb800::t_fbe6b544055171 1-11
+scripts/lib/render.mjs
+  s_22c716171fb800::t_303fecbeca4ec2 1-265
+.gitignore
+  s_22c716171fb800::t_a24f2f060dd71d 1-34
+scripts/build-index.mjs
+  s_22c716171fb800::t_d84bf1ca6fc31f 1-29
+README.md
+  s_22c716171fb800::t_aee96f924bc0c9 1-88
+epics/self-serve-events/coming-soon/project.json
+  s_22c716171fb800::t_e81464d40e2967 1-10
+epics/self-serve-events/coming-soon/vite.config.ts
+  s_22c716171fb800::t_36be92089cbda3 6-7
+scripts/build-epics.mjs
+  s_22c716171fb800::t_a25c7b39d2fb10 1-29
+scripts/lib/discover.mjs
+  s_22c716171fb800::t_fb965f696efeda 1-162
+epics/self-serve-events/event-closed/project.json
+  s_22c716171fb800::t_39aa93e07de814 1-10
+.github/workflows/pages.yml
+  s_22c716171fb800::t_dcd737b70f06be 75
+  s_22c716171fb800::t_ac6dafca70ed3c 1-74,76-130
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c5115222b14022591d39e8ecc291cfb3451fcaa2",
+  "prompts": {},
+  "sessions": {
+    "s_22c716171fb800": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ses_14e009f9bffej6UYidufDUg7p7",
+        "model": "unknown"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
