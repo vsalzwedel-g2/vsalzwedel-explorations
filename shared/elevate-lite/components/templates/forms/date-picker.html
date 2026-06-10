@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Picker Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    .form-group { margin-bottom: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Date Picker Styles — Following DESIGN.md Form Specs */
+    .elv-date-picker {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Input Field */
+    .elv-date-picker__input {
+      width: 100%;
+      height: 40px;
+      padding: 0 36px 0 12px;
+      background: #f2f2f3; /* N10 */
+      border: 1px solid #dfdfe2; /* border-light */
+      border-radius: 8px; /* radius-sm */
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: #201f23; /* text-default */
+      transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .elv-date-picker__input::placeholder {
+      color: #6f6d78; /* text-nonessential */
+    }
+
+    .elv-date-picker__input:focus {
+      outline: none;
+      border: 2px solid #5746b2; /* P100 */
+      padding: 0 35px 0 11px;
+    }
+
+    .elv-date-picker__input--error {
+      border: 2px solid #eb2000; /* R120 */
+      padding: 0 35px 0 11px;
+    }
+
+    .elv-date-picker__input:disabled {
+      background: #fafafa; /* N5 */
+      color: #b0afb6; /* N40 */
+      cursor: not-allowed;
+    }
+
+    /* Calendar Icon */
+    .elv-date-picker__icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #6f6d78;
+      font-size: 20px;
+    }
+
+    .elv-date-picker__input:focus ~ .elv-date-picker__icon,
+    .elv-date-picker__input:not(:placeholder-shown) ~ .elv-date-picker__icon {
+      color: #5746b2;
+    }
+
+    .elv-date-picker__input:disabled ~ .elv-date-picker__icon {
+      color: #b0afb6;
+    }
+
+    /* Calendar Dropdown */
+    .elv-date-picker__calendar {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 320px;
+      background: #ffffff;
+      border-radius: 12px; /* radius-md */
+      box-shadow: 0 4px 16px 0 rgba(32, 31, 35, 0.10);
+      padding: 16px;
+      z-index: 100;
+      display: none;
+    }
+
+    .elv-date-picker__calendar--open {
+      display: block;
+    }
+
+    /* Calendar Header */
+    .elv-date-picker__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+
+    .elv-date-picker__month-year {
+      font-size: 14px;
+      font-weight: 600;
+      color: #201f23;
+      flex: 1;
+      text-align: center;
+    }
+
+    .elv-date-picker__nav-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #201f23;
+      transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .elv-date-picker__nav-btn:hover {
+      background: #f2f2f3;
+    }
+
+    .elv-date-picker__nav-btn:disabled {
+      color: #b0afb6;
+      cursor: not-allowed;
+    }
+
+    /* Weekday Headers */
+    .elv-date-picker__weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .elv-date-picker__weekday {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6f6d78;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    /* Calendar Days Grid */
+    .elv-date-picker__days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .elv-date-picker__day {
+      aspect-ratio: 1;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #201f23;
+      cursor: pointer;
+      transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .elv-date-picker__day:hover:not(:disabled):not(.elv-date-picker__day--selected) {
+      background: #f2f2f3;
+    }
+
+    .elv-date-picker__day--other-month {
+      color: #b0afb6;
+    }
+
+    .elv-date-picker__day--today {
+      font-weight: 600;
+      color: #5746b2;
+      border: 1px solid #5746b2;
+    }
+
+    .elv-date-picker__day--selected {
+      background: #5746b2;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .elv-date-picker__day--in-range {
+      background: #ebe9f6; /* P20 */
+      color: #201f23;
+    }
+
+    .elv-date-picker__day--range-start,
+    .elv-date-picker__day--range-end {
+      background: #5746b2;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .elv-date-picker__day:disabled {
+      color: #dfdfe2;
+      cursor: not-allowed;
+    }
+
+    .elv-date-picker__day:focus-visible {
+      outline: 2px solid #5746b2;
+      outline-offset: -2px;
+    }
+
+    /* Label */
+    .elv-input-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #201f23;
+      margin-bottom: 4px;
+    }
+
+    .elv-required {
+      color: #eb2000;
+    }
+
+    .elv-input-optional {
+      font-weight: 400;
+      color: #6f6d78;
+    }
+
+    /* Helper text */
+    .elv-helper-text {
+      font-size: 12px;
+      color: #6f6d78;
+      margin-top: 4px;
+    }
+
+    .elv-error-text {
+      font-size: 12px;
+      color: #eb2000;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Range picker specific */
+    .elv-date-picker--range {
+      max-width: 420px;
+    }
+
+    .elv-date-picker__range-inputs {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .elv-date-picker__range-separator {
+      color: #6f6d78;
+      font-size: 14px;
+    }
+
+    /* Large size variant */
+    .elv-date-picker--large .elv-date-picker__input {
+      height: 48px;
+    }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h1>Date Picker Component</h1>
+    <p style="color: var(--text-subtle); margin: 0;">
+      Interactive calendar dropdown for date selection. Built following DESIGN.md form specifications.
+    </p>
+  </div>
+
+  <!-- DESIGN.md Reference -->
+  <div class="section">
+    <h2>DESIGN.md Specifications</h2>
+    <p>Following the form input patterns from <code>DESIGN.md</code>:</p>
+    <ul style="color: var(--text-subtle); font-size: 14px; line-height: 1.6;">
+      <li>Background: <code>#f2f2f3</code> (N10)</li>
+      <li>Border: <code>1px solid #dfdfe2</code> (border-light)</li>
+      <li>Border radius: <code>8px</code> (radius-sm)</li>
+      <li>Height: <code>40px</code> (default), <code>48px</code> (large)</li>
+      <li>Font: <code>16px / 400</code> for input text</li>
+      <li>Focus state: <code>2px border in #5746b2</code> (P100)</li>
+      <li>Error state: <code>2px border in #eb2000</code> (R120)</li>
+      <li>Disabled: background <code>#fafafa</code> (N5), text <code>#b0afb6</code> (N40)</li>
+      <li>Calendar dropdown: <code>box-shadow: 0 4px 16px 0 rgba(32, 31, 35, 0.10)</code></li>
+    </ul>
+  </div>
+
+  <!-- Default Date Picker -->
+  <div class="section">
+    <h2>Default Date Picker</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">
+          Start date <span class="elv-required">*</span>
+        </label>
+        <div class="elv-date-picker" id="date-picker-1">
+          <input
+            type="text"
+            class="elv-date-picker__input"
+            placeholder="MM/DD/YYYY"
+            readonly
+            aria-label="Start date"
+          >
+          <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+          <div class="elv-date-picker__calendar">
+            <div class="elv-date-picker__header">
+              <button class="elv-date-picker__nav-btn" aria-label="Previous month">
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <div class="elv-date-picker__month-year">April 2026</div>
+              <button class="elv-date-picker__nav-btn" aria-label="Next month">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+            <div class="elv-date-picker__weekdays">
+              <div class="elv-date-picker__weekday">Su</div>
+              <div class="elv-date-picker__weekday">Mo</div>
+              <div class="elv-date-picker__weekday">Tu</div>
+              <div class="elv-date-picker__weekday">We</div>
+              <div class="elv-date-picker__weekday">Th</div>
+              <div class="elv-date-picker__weekday">Fr</div>
+              <div class="elv-date-picker__weekday">Sa</div>
+            </div>
+            <div class="elv-date-picker__days" role="grid">
+              <!-- Days will be generated by JavaScript -->
+            </div>
+          </div>
+        </div>
+        <div class="elv-helper-text">Select a start date for your project</div>
+      </div>
+    </div>
+
+    <pre><code>&lt;div class="elv-date-picker"&gt;
+  &lt;input
+    type="text"
+    class="elv-date-picker__input"
+    placeholder="MM/DD/YYYY"
+    readonly
+    aria-label="Start date"
+  &gt;
+  &lt;span class="material-symbols-outlined elv-date-picker__icon"&gt;calendar_today&lt;/span&gt;
+  &lt;div class="elv-date-picker__calendar"&gt;
+    &lt;!-- Calendar UI --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Focus State -->
+  <div class="section">
+    <h2>Focus State</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">Event date</label>
+        <div class="elv-date-picker">
+          <input
+            type="text"
+            class="elv-date-picker__input"
+            placeholder="MM/DD/YYYY"
+            value="04/17/2026"
+            readonly
+          >
+          <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+        </div>
+        <div class="elv-helper-text">2px purple border on focus</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="section">
+    <h2>Error State</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">
+          Deadline <span class="elv-required">*</span>
+        </label>
+        <div class="elv-date-picker">
+          <input
+            type="text"
+            class="elv-date-picker__input elv-date-picker__input--error"
+            placeholder="MM/DD/YYYY"
+            readonly
+            aria-invalid="true"
+            aria-describedby="error-1"
+          >
+          <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+        </div>
+        <div class="elv-error-text" id="error-1">
+          <span class="material-symbols-outlined" style="font-size: 16px;">error</span>
+          Deadline is required
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disabled State -->
+  <div class="section">
+    <h2>Disabled State</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">Contract date</label>
+        <div class="elv-date-picker">
+          <input
+            type="text"
+            class="elv-date-picker__input"
+            placeholder="MM/DD/YYYY"
+            value="01/15/2026"
+            readonly
+            disabled
+          >
+          <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+        </div>
+        <div class="elv-helper-text">Date cannot be changed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Large Size -->
+  <div class="section">
+    <h2>Large Size</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">Launch date</label>
+        <div class="elv-date-picker elv-date-picker--large">
+          <input
+            type="text"
+            class="elv-date-picker__input"
+            placeholder="MM/DD/YYYY"
+            readonly
+          >
+          <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+        </div>
+        <div class="elv-helper-text">48px height for mobile-friendly touch targets</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Date Range Picker -->
+  <div class="section">
+    <h2>Date Range Picker</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">Report period</label>
+        <div class="elv-date-picker elv-date-picker--range" id="range-picker-1">
+          <div class="elv-date-picker__range-inputs">
+            <div class="elv-date-picker" style="flex: 1;">
+              <input
+                type="text"
+                class="elv-date-picker__input"
+                placeholder="Start date"
+                readonly
+                aria-label="Range start date"
+              >
+              <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+            </div>
+            <span class="elv-date-picker__range-separator">to</span>
+            <div class="elv-date-picker" style="flex: 1;">
+              <input
+                type="text"
+                class="elv-date-picker__input"
+                placeholder="End date"
+                readonly
+                aria-label="Range end date"
+              >
+              <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+            </div>
+          </div>
+          <div class="elv-date-picker__calendar">
+            <div class="elv-date-picker__header">
+              <button class="elv-date-picker__nav-btn">
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <div class="elv-date-picker__month-year">April 2026</div>
+              <button class="elv-date-picker__nav-btn">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+            <div class="elv-date-picker__weekdays">
+              <div class="elv-date-picker__weekday">Su</div>
+              <div class="elv-date-picker__weekday">Mo</div>
+              <div class="elv-date-picker__weekday">Tu</div>
+              <div class="elv-date-picker__weekday">We</div>
+              <div class="elv-date-picker__weekday">Th</div>
+              <div class="elv-date-picker__weekday">Fr</div>
+              <div class="elv-date-picker__weekday">Sa</div>
+            </div>
+            <div class="elv-date-picker__days">
+              <!-- Days will be generated by JavaScript -->
+            </div>
+          </div>
+        </div>
+        <div class="elv-helper-text">Select a date range for the report</div>
+      </div>
+    </div>
+
+    <pre><code>&lt;div class="elv-date-picker elv-date-picker--range"&gt;
+  &lt;div class="elv-date-picker__range-inputs"&gt;
+    &lt;div class="elv-date-picker"&gt;
+      &lt;input class="elv-date-picker__input" placeholder="Start date" readonly&gt;
+      &lt;span class="material-symbols-outlined elv-date-picker__icon"&gt;calendar_today&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="elv-date-picker__range-separator"&gt;to&lt;/span&gt;
+    &lt;div class="elv-date-picker"&gt;
+      &lt;input class="elv-date-picker__input" placeholder="End date" readonly&gt;
+      &lt;span class="material-symbols-outlined elv-date-picker__icon"&gt;calendar_today&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Calendar States Demo -->
+  <div class="section">
+    <h2>Calendar States</h2>
+    <p style="color: var(--text-subtle); margin-bottom: 1rem;">Click the input to see interactive calendar:</p>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">Demo calendar</label>
+        <div class="elv-date-picker" id="demo-picker">
+          <input
+            type="text"
+            class="elv-date-picker__input"
+            placeholder="MM/DD/YYYY"
+            readonly
+          >
+          <span class="material-symbols-outlined elv-date-picker__icon">calendar_today</span>
+          <div class="elv-date-picker__calendar">
+            <div class="elv-date-picker__header">
+              <button class="elv-date-picker__nav-btn" data-action="prev-month">
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <div class="elv-date-picker__month-year"></div>
+              <button class="elv-date-picker__nav-btn" data-action="next-month">
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
+            </div>
+            <div class="elv-date-picker__weekdays">
+              <div class="elv-date-picker__weekday">Su</div>
+              <div class="elv-date-picker__weekday">Mo</div>
+              <div class="elv-date-picker__weekday">Tu</div>
+              <div class="elv-date-picker__weekday">We</div>
+              <div class="elv-date-picker__weekday">Th</div>
+              <div class="elv-date-picker__weekday">Fr</div>
+              <div class="elv-date-picker__weekday">Sa</div>
+            </div>
+            <div class="elv-date-picker__days"></div>
+          </div>
+        </div>
+        <div class="elv-helper-text">
+          States: today (purple border), selected (purple bg), hover (gray bg), disabled (light gray text)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Navigation -->
+  <div class="section">
+    <h2>Keyboard Navigation</h2>
+    <ul style="color: var(--text-subtle); font-size: 14px; line-height: 1.8;">
+      <li><strong>Arrow keys:</strong> Navigate between dates</li>
+      <li><strong>Enter:</strong> Select focused date</li>
+      <li><strong>Escape:</strong> Close calendar</li>
+      <li><strong>Tab:</strong> Move between navigation buttons</li>
+      <li><strong>Space:</strong> Activate buttons</li>
+    </ul>
+  </div>
+
+  <!-- Implementation Notes -->
+  <div class="section">
+    <h2>Implementation Notes</h2>
+    <ul style="color: var(--text-subtle); font-size: 14px; line-height: 1.8;">
+      <li>Calendar dropdown uses floating element pattern with 4px gap from input</li>
+      <li>Days grid is 7 columns (Sunday to Saturday)</li>
+      <li>Today indicator uses purple border</li>
+      <li>Selected date uses purple background</li>
+      <li>Range selection highlights intermediate dates with P20 background</li>
+      <li>Other month dates shown in light gray (N40)</li>
+      <li>Disabled dates shown in very light gray (border-light)</li>
+      <li>Click outside to close calendar (not implemented in this static demo)</li>
+      <li>Input is readonly to prevent manual entry, ensuring valid dates only</li>
+    </ul>
+  </div>
+
+  <script>
+    // Simple date picker implementation for demo purposes
+    class DatePicker {
+      constructor(element) {
+        this.element = element;
+        this.input = element.querySelector('.elv-date-picker__input');
+        this.calendar = element.querySelector('.elv-date-picker__calendar');
+        this.monthYear = element.querySelector('.elv-date-picker__month-year');
+        this.daysGrid = element.querySelector('.elv-date-picker__days');
+        this.prevBtn = element.querySelector('[data-action="prev-month"]');
+        this.nextBtn = element.querySelector('[data-action="next-month"]');
+
+        this.currentDate = new Date();
+        this.selectedDate = null;
+
+        this.init();
+      }
+
+      init() {
+        this.renderCalendar();
+
+        // Toggle calendar on input click
+        this.input.addEventListener('click', () => {
+          this.toggleCalendar();
+        });
+
+        // Navigation buttons
+        if (this.prevBtn) {
+          this.prevBtn.addEventListener('click', () => {
+            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+            this.renderCalendar();
+          });
+        }
+
+        if (this.nextBtn) {
+          this.nextBtn.addEventListener('click', () => {
+            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+            this.renderCalendar();
+          });
+        }
+
+        // Close on click outside
+        document.addEventListener('click', (e) => {
+          if (!this.element.contains(e.target)) {
+            this.closeCalendar();
+          }
+        });
+
+        // Keyboard support
+        this.calendar.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            this.closeCalendar();
+            this.input.focus();
+          }
+        });
+      }
+
+      renderCalendar() {
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+
+        // Update month/year display
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+        this.monthYear.textContent = `${monthNames[month]} ${year}`;
+
+        // Get first day of month and number of days
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+        // Clear existing days
+        this.daysGrid.innerHTML = '';
+
+        // Add previous month's trailing days
+        for (let i = firstDay - 1; i >= 0; i--) {
+          const day = daysInPrevMonth - i;
+          const btn = this.createDayButton(day, true);
+          this.daysGrid.appendChild(btn);
+        }
+
+        // Add current month's days
+        const today = new Date();
+        for (let day = 1; day <= daysInMonth; day++) {
+          const date = new Date(year, month, day);
+          const isToday = date.toDateString() === today.toDateString();
+          const isSelected = this.selectedDate && date.toDateString() === this.selectedDate.toDateString();
+
+          const btn = this.createDayButton(day, false, isToday, isSelected, date);
+          this.daysGrid.appendChild(btn);
+        }
+
+        // Add next month's leading days
+        const totalCells = this.daysGrid.children.length;
+        const remainingCells = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+        for (let day = 1; day <= remainingCells; day++) {
+          const btn = this.createDayButton(day, true);
+          this.daysGrid.appendChild(btn);
+        }
+      }
+
+      createDayButton(day, isOtherMonth, isToday = false, isSelected = false, date = null) {
+        const btn = document.createElement('button');
+        btn.className = 'elv-date-picker__day';
+        btn.textContent = day;
+        btn.type = 'button';
+
+        if (isOtherMonth) {
+          btn.classList.add('elv-date-picker__day--other-month');
+        }
+        if (isToday) {
+          btn.classList.add('elv-date-picker__day--today');
+        }
+        if (isSelected) {
+          btn.classList.add('elv-date-picker__day--selected');
+        }
+
+        if (date) {
+          btn.addEventListener('click', () => {
+            this.selectDate(date);
+          });
+        }
+
+        return btn;
+      }
+
+      selectDate(date) {
+        this.selectedDate = date;
+        const formatted = this.formatDate(date);
+        this.input.value = formatted;
+        this.renderCalendar();
+        this.closeCalendar();
+      }
+
+      formatDate(date) {
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+      }
+
+      toggleCalendar() {
+        this.calendar.classList.toggle('elv-date-picker__calendar--open');
+      }
+
+      closeCalendar() {
+        this.calendar.classList.remove('elv-date-picker__calendar--open');
+      }
+    }
+
+    // Initialize demo picker
+    const demoPicker = document.getElementById('demo-picker');
+    if (demoPicker) {
+      new DatePicker(demoPicker);
+    }
+  </script>
+</body>
+</html>

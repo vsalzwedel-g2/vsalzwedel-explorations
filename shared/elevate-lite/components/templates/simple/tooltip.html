@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tooltip Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 3rem; margin: 1rem 0; }
+    .example-row { display: flex; justify-content: center; align-items: center; min-height: 120px; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Tooltip Styles — based on tooltip/component.rb + native browser tooltip styling */
+    .elv-tooltip-trigger {
+      border-radius: 3rem; /* 48px - pill-lg */
+      padding: 1px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .elv-tooltip-trigger:focus {
+      outline: 3px solid var(--palette-purple-40);
+      outline-offset: 0;
+    }
+
+    .elv-tooltip {
+      position: absolute;
+      z-index: 9999;
+      background: var(--text-default);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 500;
+      max-width: 240px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: normal;
+    }
+
+    .elv-tooltip.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Tooltip Arrow */
+    .elv-tooltip::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+    }
+
+    .elv-tooltip[data-position="top"]::after {
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: var(--text-default);
+      border-bottom: 0;
+    }
+
+    .elv-tooltip[data-position="bottom"]::after {
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: var(--text-default);
+      border-top: 0;
+    }
+
+    .elv-tooltip[data-position="left"]::after {
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left-color: var(--text-default);
+      border-right: 0;
+    }
+
+    .elv-tooltip[data-position="right"]::after {
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-right-color: var(--text-default);
+      border-left: 0;
+    }
+
+    /* Icon styling in trigger */
+    .elv-tooltip-icon {
+      width: 16px;
+      height: 16px;
+      fill: var(--text-subtle);
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Tooltip</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/tooltip/standard" class="elv-text-link">Elevate Lookbook</a> |
+    Component: tooltip/component.rb
+  </p>
+
+  <!-- Position Variants -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Position Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      4 positioning options: top, bottom, left, right. Hover or focus to see tooltips.
+    </p>
+    <div class="examples">
+      <div class="example-row">
+        <button
+          class="elv-tooltip-trigger"
+          type="button"
+          aria-describedby="tooltip-top"
+          data-tooltip-trigger>
+          <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+            <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="elv-tooltip" role="tooltip" id="tooltip-top" data-position="top">
+            This tooltip appears above the trigger
+          </div>
+        </button>
+      </div>
+
+      <div class="example-row">
+        <button
+          class="elv-tooltip-trigger"
+          type="button"
+          aria-describedby="tooltip-bottom"
+          data-tooltip-trigger>
+          <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+            <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="elv-tooltip" role="tooltip" id="tooltip-bottom" data-position="bottom">
+            This tooltip appears below the trigger
+          </div>
+        </button>
+      </div>
+
+      <div class="example-row">
+        <button
+          class="elv-tooltip-trigger"
+          type="button"
+          aria-describedby="tooltip-left"
+          data-tooltip-trigger>
+          <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+            <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="elv-tooltip" role="tooltip" id="tooltip-left" data-position="left">
+            This tooltip appears to the left
+          </div>
+        </button>
+      </div>
+
+      <div class="example-row">
+        <button
+          class="elv-tooltip-trigger"
+          type="button"
+          aria-describedby="tooltip-right"
+          data-tooltip-trigger>
+          <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+            <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="elv-tooltip" role="tooltip" id="tooltip-right" data-position="right">
+            This tooltip appears to the right
+          </div>
+        </button>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Tooltip positioned above --&gt;
+&lt;button class="elv-tooltip-trigger" type="button"
+  aria-describedby="tooltip-1" data-tooltip-trigger&gt;
+  &lt;svg class="elv-tooltip-icon" viewBox="0 0 16 16"&gt;...&lt;/svg&gt;
+  &lt;div class="elv-tooltip" role="tooltip" id="tooltip-1" data-position="top"&gt;
+    Helpful information here
+  &lt;/div&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- With Title -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Title</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Tooltip with title prefix (Title: text format)
+    </p>
+    <div class="example-row">
+      <button
+        class="elv-tooltip-trigger"
+        type="button"
+        aria-describedby="tooltip-titled"
+        data-tooltip-trigger>
+        <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+          <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="elv-tooltip" role="tooltip" id="tooltip-titled" data-position="top">
+          <strong>Pro Tip:</strong> Keep tooltip text brief and scannable
+        </div>
+      </button>
+    </div>
+    <pre><code>&lt;div class="elv-tooltip" role="tooltip" id="tooltip-1" data-position="top"&gt;
+  &lt;strong&gt;Title:&lt;/strong&gt; Descriptive text goes here
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Custom Icons -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Custom Icons</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Replace default info icon with custom icons
+    </p>
+    <div class="example-row" style="gap: 2rem;">
+      <button
+        class="elv-tooltip-trigger"
+        type="button"
+        aria-describedby="tooltip-flag"
+        data-tooltip-trigger>
+        <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M3 2v12M3 2h8l-1 4 1 4H3" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="elv-tooltip" role="tooltip" id="tooltip-flag" data-position="top">
+          Flag this item for review
+        </div>
+      </button>
+
+      <button
+        class="elv-tooltip-trigger"
+        type="button"
+        aria-describedby="tooltip-trash"
+        data-tooltip-trigger>
+        <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M2 4h12M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1M6 7v4M10 7v4M3 4l1 9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-9" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="elv-tooltip" role="tooltip" id="tooltip-trash" data-position="top">
+          <strong>Confirm:</strong> Delete this item?
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- In Context -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common usage patterns
+    </p>
+
+    <!-- Form Field with Helper -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4 elv-mb-4" style="max-width: 500px;">
+      <label class="elv-block elv-text-sm elv-font-semibold elv-text-default elv-mb-1">
+        API Key
+        <button
+          class="elv-tooltip-trigger elv-ml-1"
+          type="button"
+          aria-describedby="tooltip-api-key"
+          data-tooltip-trigger
+          style="vertical-align: middle;">
+          <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+            <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <div class="elv-tooltip" role="tooltip" id="tooltip-api-key" data-position="right">
+            Find your API key in Account Settings → Integrations
+          </div>
+        </button>
+      </label>
+      <input type="text" class="elv-w-full elv-px-3 elv-py-2 elv-border elv-border-light elv-rounded-md elv-text-sm" placeholder="sk_live_...">
+    </div>
+
+    <!-- Data Table Header -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-overflow-hidden" style="max-width: 600px;">
+      <table class="elv-w-full">
+        <thead class="elv-bg-neutral-5">
+          <tr>
+            <th class="elv-px-4 elv-py-3 elv-text-left elv-text-xs elv-font-semibold elv-text-subtle">
+              Product Name
+            </th>
+            <th class="elv-px-4 elv-py-3 elv-text-left elv-text-xs elv-font-semibold elv-text-subtle">
+              Trust Score
+              <button
+                class="elv-tooltip-trigger elv-ml-1"
+                type="button"
+                aria-describedby="tooltip-trust-score"
+                data-tooltip-trigger
+                style="vertical-align: middle;">
+                <svg class="elv-tooltip-icon" viewBox="0 0 16 16" fill="currentColor" style="width: 14px; height: 14px;">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                  <path d="M8 11V8M8 5.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <div class="elv-tooltip" role="tooltip" id="tooltip-trust-score" data-position="top">
+                  <strong>Trust Score:</strong> Calculated from review authenticity, recency, and volume
+                </div>
+              </button>
+            </th>
+            <th class="elv-px-4 elv-py-3 elv-text-left elv-text-xs elv-font-semibold elv-text-subtle">
+              Reviews
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="elv-border-t elv-border-light">
+            <td class="elv-px-4 elv-py-3 elv-text-sm elv-text-default">Salesforce</td>
+            <td class="elv-px-4 elv-py-3 elv-text-sm elv-text-default">9.2</td>
+            <td class="elv-px-4 elv-py-3 elv-text-sm elv-text-default">18,524</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Content:</strong> Keep tooltip text brief (1-2 sentences max). For longer content, use a modal or inline help.</li>
+      <li class="elv-mb-2"><strong>Positioning:</strong> Default to top. Use bottom/left/right when space is constrained or to avoid obscuring content.</li>
+      <li class="elv-mb-2"><strong>Trigger:</strong> Use info icon for supplemental information. Use flag/trash icons for action confirmations.</li>
+      <li class="elv-mb-2"><strong>Timing:</strong> 300ms show delay prevents flickering on cursor movement. No delay on focus (keyboard nav).</li>
+      <li class="elv-mb-2"><strong>Dismissal:</strong> Automatically hides on mouse leave, blur, or Escape key press.</li>
+      <li class="elv-mb-2"><strong>Mobile:</strong> Avoid tooltips on touch devices. Use inline text or tap-to-expand patterns instead.</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>ARIA:</strong> Always include <code>aria-describedby</code> linking trigger to tooltip ID</li>
+      <li class="elv-mb-2"><strong>Role:</strong> Use <code>role="tooltip"</code> on the tooltip element</li>
+      <li class="elv-mb-2"><strong>Keyboard:</strong> Must be focusable (button/link). Shows on focus, hides on blur or Escape key.</li>
+      <li class="elv-mb-2"><strong>Screen Readers:</strong> Tooltip text announced when trigger receives focus</li>
+      <li class="elv-mb-2"><strong>Visible Focus:</strong> Trigger button has clear focus outline (3px purple ring)</li>
+      <li class="elv-mb-2"><strong>Required Info:</strong> Never put critical information ONLY in tooltips. Tooltips are supplemental.</li>
+    </ul>
+    <pre><code>&lt;button
+  class="elv-tooltip-trigger"
+  type="button"
+  aria-describedby="tooltip-id"
+  data-tooltip-trigger&gt;
+  &lt;svg class="elv-tooltip-icon"&gt;...&lt;/svg&gt;
+  &lt;div class="elv-tooltip" role="tooltip" id="tooltip-id" data-position="top"&gt;
+    Helpful supplemental information
+  &lt;/div&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Background</strong></td>
+        <td style="padding: 8px;">#201f23 (text-default)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Text Color</strong></td>
+        <td style="padding: 8px;">White (#ffffff)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Padding</strong></td>
+        <td style="padding: 8px;">8px 12px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">6px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Typography</strong></td>
+        <td style="padding: 8px;">14px / 500 weight / 20px line-height</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Max Width</strong></td>
+        <td style="padding: 8px;">240px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Arrow Size</strong></td>
+        <td style="padding: 8px;">6px (12px total with borders)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Shadow</strong></td>
+        <td style="padding: 8px;">0 4px 12px rgba(0, 0, 0, 0.15)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Z-Index</strong></td>
+        <td style="padding: 8px;">9999</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Show Delay</strong></td>
+        <td style="padding: 8px;">300ms (hover only, no delay on focus)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Transition</strong></td>
+        <td style="padding: 8px;">150ms ease (opacity)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Trigger Focus</strong></td>
+        <td style="padding: 8px;">3px solid purple-40, 0px offset</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<script>
+// Tooltip Controller — Simple vanilla JS implementation
+class TooltipController {
+  constructor() {
+    this.showDelay = 300; // ms delay before showing on hover
+    this.showTimeout = null;
+    this.init();
+  }
+
+  init() {
+    // Find all tooltip triggers
+    const triggers = document.querySelectorAll('[data-tooltip-trigger]');
+
+    triggers.forEach(trigger => {
+      const tooltip = trigger.querySelector('.elv-tooltip');
+      if (!tooltip) return;
+
+      // Mouse events
+      trigger.addEventListener('mouseenter', () => {
+        this.showTimeout = setTimeout(() => {
+          this.show(trigger, tooltip);
+        }, this.showDelay);
+      });
+
+      trigger.addEventListener('mouseleave', () => {
+        clearTimeout(this.showTimeout);
+        this.hide(tooltip);
+      });
+
+      // Keyboard events (no delay on focus)
+      trigger.addEventListener('focus', () => {
+        this.show(trigger, tooltip);
+      });
+
+      trigger.addEventListener('blur', () => {
+        this.hide(tooltip);
+      });
+
+      // Escape key
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          this.hide(tooltip);
+          trigger.blur();
+        }
+      });
+    });
+  }
+
+  show(trigger, tooltip) {
+    const position = tooltip.getAttribute('data-position') || 'top';
+    this.position(trigger, tooltip, position);
+    tooltip.classList.add('is-visible');
+  }
+
+  hide(tooltip) {
+    tooltip.classList.remove('is-visible');
+  }
+
+  position(trigger, tooltip, placement) {
+    const triggerRect = trigger.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const spacing = 8; // spacing between trigger and tooltip
+
+    let top, left;
+
+    switch (placement) {
+      case 'top':
+        top = triggerRect.top - tooltipRect.height - spacing;
+        left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+        break;
+      case 'bottom':
+        top = triggerRect.bottom + spacing;
+        left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+        break;
+      case 'left':
+        top = triggerRect.top + (triggerRect.height / 2) - (tooltipRect.height / 2);
+        left = triggerRect.left - tooltipRect.width - spacing;
+        break;
+      case 'right':
+        top = triggerRect.top + (triggerRect.height / 2) - (tooltipRect.height / 2);
+        left = triggerRect.right + spacing;
+        break;
+      default:
+        top = triggerRect.top - tooltipRect.height - spacing;
+        left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+    }
+
+    // Keep tooltip within viewport bounds
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    if (left < 8) left = 8;
+    if (left + tooltipRect.width > viewportWidth - 8) {
+      left = viewportWidth - tooltipRect.width - 8;
+    }
+    if (top < 8) top = 8;
+    if (top + tooltipRect.height > viewportHeight - 8) {
+      top = viewportHeight - tooltipRect.height - 8;
+    }
+
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  new TooltipController();
+});
+</script>
+
+</body>
+</html>

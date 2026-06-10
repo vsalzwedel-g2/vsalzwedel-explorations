@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Input</title>
+  <link rel="stylesheet" href="../../tokens/elevate.css">
+  <link rel="stylesheet" href="../elevate.css">
+  <link rel="stylesheet" href="../../icons/icons.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; flex-direction: column; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Search Input</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Based on Elevate <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/form/search_input" class="elv-text-link">form/search_input</a> component
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Search input with left-positioned icon. Uses Elevate <code>elv-input</code> base class with height override (36px) to align with other controls.
+    </p>
+    <div class="examples">
+      <!-- Default Search Input -->
+      <div class="elv-relative" style="max-width: 400px;">
+        <svg class="elv-icon elv-icon-sm elv-absolute elv-left-3 elv-fill-neutral-80" style="top: 50%; transform: translateY(-50%);" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.9375 17L10.9583 12.0208C10.5417 12.3264 10.0848 12.566 9.58767 12.7396C9.09056 12.9132 8.56158 13 8.00073 13C6.61135 13 5.43056 12.5139 4.45833 11.5417C3.48611 10.5694 3 9.38889 3 8C3 6.61111 3.48611 5.43056 4.45833 4.45833C5.43056 3.48611 6.61111 3 8 3C9.38889 3 10.5694 3.48611 11.5417 4.45833C12.5139 5.43056 13 6.61135 13 8.00073C13 8.56158 12.9132 9.09056 12.7396 9.58767C12.566 10.0848 12.3264 10.5417 12.0208 10.9583L17 15.9375L15.9375 17ZM8 11.5C8.97222 11.5 9.79861 11.1597 10.4792 10.4792C11.1597 9.79861 11.5 8.97222 11.5 8C11.5 7.02778 11.1597 6.20139 10.4792 5.52083C9.79861 4.84028 8.97222 4.5 8 4.5C7.02778 4.5 6.20139 4.84028 5.52083 5.52083C4.84028 6.20139 4.5 7.02778 4.5 8C4.5 8.97222 4.84028 9.79861 5.52083 10.4792C6.20139 11.1597 7.02778 11.5 8 11.5Z"/>
+        </svg>
+        <input
+          type="search"
+          placeholder="Search epics and research..."
+          aria-label="Search epics and research"
+          class="elv-input elv-w-full elv-h-9 elv-pl-10 elv-rounded-full elv-text-sm"
+        />
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-relative"&gt;
+  &lt;svg class="elv-icon elv-icon-sm elv-absolute elv-left-3 elv-fill-neutral-80"
+       style="top: 50%; transform: translateY(-50%);"
+       viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;
+    &lt;path d="M15.9375 17L10.9583 12.0208C10.5417 12.3264..."/&gt;
+  &lt;/svg&gt;
+  &lt;input
+    type="search"
+    placeholder="Search..."
+    aria-label="Search"
+    class="elv-input elv-w-full elv-h-9 elv-pl-10 elv-rounded-full elv-text-sm"
+  /&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Full Width</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      With flex-1 for responsive layouts.
+    </p>
+    <div class="examples">
+      <!-- Full Width Search Input -->
+      <div class="elv-flex-1 elv-min-w-60 elv-relative">
+        <svg class="elv-icon elv-icon-sm elv-absolute elv-left-3 elv-fill-neutral-80" style="top: 50%; transform: translateY(-50%);" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.9375 17L10.9583 12.0208C10.5417 12.3264 10.0848 12.566 9.58767 12.7396C9.09056 12.9132 8.56158 13 8.00073 13C6.61135 13 5.43056 12.5139 4.45833 11.5417C3.48611 10.5694 3 9.38889 3 8C3 6.61111 3.48611 5.43056 4.45833 4.45833C5.43056 3.48611 6.61111 3 8 3C9.38889 3 10.5694 3.48611 11.5417 4.45833C12.5139 5.43056 13 6.61135 13 8.00073C13 8.56158 12.9132 9.09056 12.7396 9.58767C12.566 10.0848 12.3264 10.5417 12.0208 10.9583L17 15.9375L15.9375 17ZM8 11.5C8.97222 11.5 9.79861 11.1597 10.4792 10.4792C11.1597 9.79861 11.5 8.97222 11.5 8C11.5 7.02778 11.1597 6.20139 10.4792 5.52083C9.79861 4.84028 8.97222 4.5 8 4.5C7.02778 4.5 6.20139 4.84028 5.52083 5.52083C4.84028 6.20139 4.5 7.02778 4.5 8C4.5 8.97222 4.84028 9.79861 5.52083 10.4792C6.20139 11.1597 7.02778 11.5 8 11.5Z"/>
+        </svg>
+        <input
+          type="search"
+          placeholder="Search epics and research..."
+          aria-label="Search epics and research"
+          class="elv-input elv-w-full elv-h-9 elv-pl-10 elv-rounded-full elv-text-sm"
+        />
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-flex-1 elv-min-w-60 elv-relative"&gt;
+  &lt;svg class="elv-icon elv-icon-sm elv-absolute elv-left-3 elv-fill-neutral-80"
+       style="top: 50%; transform: translateY(-50%);"
+       viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;
+    &lt;path d="M15.9375 17L10.9583 12.0208C10.5417 12.3264..."/&gt;
+  &lt;/svg&gt;
+  &lt;input
+    type="search"
+    placeholder="Search..."
+    aria-label="Search"
+    class="elv-input elv-w-full elv-h-9 elv-pl-10 elv-rounded-full elv-text-sm"
+  /&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Specifications</h2>
+    <ul class="elv-text-xs elv-text-default" style="line-height: 1.8;">
+      <li><strong>Input type:</strong> <code>type="search"</code> for semantic HTML</li>
+      <li><strong>Base class:</strong> <code>elv-input</code> (provides border, background, transitions from Elevate)</li>
+      <li><strong>Height:</strong> <code>elv-h-9</code> (36px / 2.25rem) to match chips and dropdown</li>
+      <li><strong>Border radius:</strong> <code>elv-rounded-full</code> (fully rounded ends, matches Elevate md search field)</li>
+      <li><strong>Icon size:</strong> <code>elv-icon-sm</code> (20×20px)</li>
+      <li><strong>Icon position:</strong> <code>elv-left-3</code> (12px from left), vertically centered</li>
+      <li><strong>Input padding:</strong> <code>elv-pl-10</code> (40px) to clear icon</li>
+      <li><strong>Text size:</strong> <code>elv-text-sm</code> (14px)</li>
+      <li><strong>Icon color:</strong> <code>elv-fill-neutral-80</code> (#78716C)</li>
+      <li><strong>Accessibility:</strong> Always include <code>aria-label</code> attribute</li>
+      <li><strong>Focus state:</strong> Light lavender outline (3px solid #c3bde5) with 1px offset - automatic from <code>elv-input</code></li>
+      <li><strong>Note:</strong> Elevate's standard search input uses <code>elv-input--md</code> (40px), but we override with <code>elv-h-9</code> (36px) for visual alignment with other controls</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

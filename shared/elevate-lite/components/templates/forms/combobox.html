@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combobox Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+    .form-group { margin-bottom: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Combobox Base Styles */
+    .elv-combobox {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Container holding input area and controls */
+    .elv-combobox__container {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+      background: var(--bg-neutral-5); /* N5 #fafafa */
+      border: 0.5px solid var(--border-medium); /* N40 #b0afb6 */
+      border-radius: 8px;
+      transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1), outline 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Input area with chips */
+    .elv-combobox__input-area {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+      gap: 4px;
+      padding: 4px 0 4px 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Chips container */
+    .elv-combobox__chips {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* Individual chip */
+    .elv-combobox__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+      padding: 0 6px 0 8px;
+      background: #ebe9f6; /* P10 */
+      color: #5746b2; /* P100 */
+      border-radius: 2px;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .elv-combobox__chip-remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: #5746b2;
+      cursor: pointer;
+      padding: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      transition: background 150ms ease;
+    }
+
+    .elv-combobox__chip-remove:hover {
+      background: rgba(87, 70, 178, 0.15);
+    }
+
+    .elv-combobox__chip-remove .material-symbols-outlined {
+      font-size: 16px;
+    }
+
+    /* Search input */
+    .elv-combobox__search {
+      flex: 1;
+      min-width: 100px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: var(--text-default);
+      outline: none;
+      padding: 0 4px;
+    }
+
+    .elv-combobox__search::placeholder {
+      color: var(--text-neutral-70); /* text-nonessential #6f6d78 */
+    }
+
+    /* Controls (clear + toggle buttons) */
+    .elv-combobox__controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding-right: 8px;
+    }
+
+    .elv-combobox__clear-btn,
+    .elv-combobox__toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: var(--text-neutral-70);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 150ms ease;
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Ensure hidden attribute works (overrides display: inline-flex) */
+    .elv-combobox__clear-btn[hidden] {
+      display: none;
+    }
+
+    .elv-combobox__clear-btn:hover,
+    .elv-combobox__toggle:hover {
+      background: var(--bg-neutral-20);
+      color: var(--text-default);
+    }
+
+    .elv-combobox__clear-btn .material-symbols-outlined,
+    .elv-combobox__toggle .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    /* Dropdown */
+    .elv-combobox__dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .elv-combobox__options {
+      list-style: none;
+      margin: 0;
+      padding: 4px 0;
+    }
+
+    .elv-combobox__option {
+      padding: 8px 12px;
+      font-size: 16px;
+      color: var(--text-default);
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+
+    .elv-combobox__option:hover {
+      background: var(--bg-neutral-5);
+    }
+
+    .elv-combobox__option[aria-selected="true"] {
+      background: #ebe9f6; /* P10 */
+      color: #5746b2; /* P100 */
+    }
+
+    .elv-combobox__option--focused {
+      background: var(--bg-neutral-10);
+    }
+
+    .elv-combobox__no-results {
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-neutral-70);
+    }
+
+    /* Hover state */
+    .elv-combobox__container:hover:not(:has(.elv-combobox__search:disabled)) {
+      background: var(--bg-neutral-10); /* N10 */
+    }
+
+    /* Focus state — CRITICAL for accessibility */
+    .elv-combobox__container:focus-within {
+      outline: 3px solid var(--palette-purple-40); /* P40 #c3bde5 */
+      outline-offset: 1px;
+    }
+
+    /* Error state */
+    .elv-combobox--error .elv-combobox__container {
+      border: 2px solid #eb2000; /* R120 */
+    }
+
+    /* Disabled state */
+    .elv-combobox--disabled .elv-combobox__container {
+      background: var(--bg-neutral-1); /* N1 */
+      cursor: not-allowed;
+    }
+
+    .elv-combobox--disabled .elv-combobox__search {
+      color: var(--border-medium); /* N40 */
+      cursor: not-allowed;
+    }
+
+    .elv-combobox--disabled .elv-combobox__chip {
+      opacity: 0.6;
+    }
+
+    /* Size variants */
+    .elv-combobox--sm .elv-combobox__container {
+      min-height: 32px;
+    }
+
+    .elv-combobox--sm .elv-combobox__chip {
+      height: 20px;
+      font-size: 12px;
+      padding: 0 4px 0 6px;
+    }
+
+    .elv-combobox--sm .elv-combobox__search {
+      height: 24px;
+      font-size: 14px;
+    }
+
+    .elv-combobox--lg .elv-combobox__container {
+      min-height: 48px;
+    }
+
+    .elv-combobox--lg .elv-combobox__chip {
+      height: 28px;
+      font-size: 16px;
+      padding: 0 8px 0 10px;
+    }
+
+    .elv-combobox--lg .elv-combobox__search {
+      height: 40px;
+      font-size: 18px;
+    }
+
+    /* Label */
+    .elv-input-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      margin-bottom: 4px;
+    }
+
+    /* Required indicator */
+    .elv-required {
+      color: #eb2000;
+    }
+
+    /* Optional indicator */
+    .elv-input-optional {
+      font-weight: 400;
+      color: var(--text-neutral-70);
+    }
+
+    /* Helper text */
+    .elv-input-helper {
+      font-size: 12px;
+      color: var(--text-neutral-70);
+      margin-top: 4px;
+    }
+
+    /* Error message */
+    .elv-input-error {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b21800; /* R140 */
+      margin-top: 4px;
+    }
+
+    /* Material Symbols styling */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Combobox (Multi-Select)</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/form/combobox/default" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md</a>
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default (Empty)</h2>
+    <div class="examples">
+      <div class="elv-combobox" data-combobox="demo-1">
+        <label class="elv-input-label" for="combobox-1">
+          Select Tags <span class="elv-required">*</span>
+        </label>
+
+        <div class="elv-combobox__container">
+          <div class="elv-combobox__input-area">
+            <div class="elv-combobox__chips" role="list"></div>
+            <input
+              type="text"
+              class="elv-combobox__search"
+              id="combobox-1"
+              placeholder="Search or select..."
+              autocomplete="off"
+              role="combobox"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-controls="combobox-1-listbox"
+              aria-autocomplete="list"
+            />
+          </div>
+
+          <div class="elv-combobox__controls">
+            <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" hidden>
+              <span class="material-symbols-outlined">cancel</span>
+            </button>
+            <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown">
+              <span class="material-symbols-outlined">expand_more</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="elv-combobox__dropdown" id="combobox-1-listbox" role="listbox" hidden>
+          <ul class="elv-combobox__options" role="presentation"></ul>
+          <div class="elv-combobox__no-results" hidden>No results found</div>
+        </div>
+
+        <select name="tags[]" multiple hidden aria-hidden="true">
+          <option value="1">Ruby</option>
+          <option value="2">JavaScript</option>
+          <option value="3">Python</option>
+          <option value="4">TypeScript</option>
+          <option value="5">Go</option>
+          <option value="6">Rust</option>
+          <option value="7">Java</option>
+          <option value="8">C++</option>
+        </select>
+
+        <p class="elv-input-helper">Select multiple programming languages</p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-combobox" data-combobox&gt;
+  &lt;label class="elv-input-label" for="combobox-1"&gt;
+    Select Tags &lt;span class="elv-required"&gt;*&lt;/span&gt;
+  &lt;/label&gt;
+
+  &lt;div class="elv-combobox__container"&gt;
+    &lt;div class="elv-combobox__input-area"&gt;
+      &lt;div class="elv-combobox__chips" role="list"&gt;&lt;/div&gt;
+      &lt;input
+        type="text"
+        class="elv-combobox__search"
+        id="combobox-1"
+        placeholder="Search or select..."
+        autocomplete="off"
+        role="combobox"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        aria-controls="combobox-1-listbox"
+        aria-autocomplete="list"
+      /&gt;
+    &lt;/div&gt;
+
+    &lt;div class="elv-combobox__controls"&gt;
+      &lt;button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" hidden&gt;
+        &lt;span class="material-symbols-outlined"&gt;cancel&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown"&gt;
+        &lt;span class="material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class="elv-combobox__dropdown" id="combobox-1-listbox" role="listbox" hidden&gt;
+    &lt;ul class="elv-combobox__options" role="presentation"&gt;&lt;/ul&gt;
+    &lt;div class="elv-combobox__no-results" hidden&gt;No results found&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;select name="tags[]" multiple hidden aria-hidden="true"&gt;
+    &lt;option value="1"&gt;Ruby&lt;/option&gt;
+    &lt;option value="2"&gt;JavaScript&lt;/option&gt;
+    &lt;!-- more options --&gt;
+  &lt;/select&gt;
+
+  &lt;p class="elv-input-helper"&gt;Select multiple tags&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Pre-selected Values</h2>
+    <div class="examples">
+      <div class="elv-combobox" data-combobox="demo-2">
+        <label class="elv-input-label" for="combobox-2">
+          Selected Technologies
+        </label>
+
+        <div class="elv-combobox__container">
+          <div class="elv-combobox__input-area">
+            <div class="elv-combobox__chips" role="list">
+              <div class="elv-combobox__chip" role="listitem">
+                <span>Ruby</span>
+                <button type="button" class="elv-combobox__chip-remove" aria-label="Remove Ruby">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
+              </div>
+              <div class="elv-combobox__chip" role="listitem">
+                <span>JavaScript</span>
+                <button type="button" class="elv-combobox__chip-remove" aria-label="Remove JavaScript">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
+              </div>
+              <div class="elv-combobox__chip" role="listitem">
+                <span>TypeScript</span>
+                <button type="button" class="elv-combobox__chip-remove" aria-label="Remove TypeScript">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
+              </div>
+            </div>
+            <input
+              type="text"
+              class="elv-combobox__search"
+              id="combobox-2"
+              placeholder="Add more..."
+              autocomplete="off"
+              role="combobox"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-controls="combobox-2-listbox"
+              aria-autocomplete="list"
+            />
+          </div>
+
+          <div class="elv-combobox__controls">
+            <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all">
+              <span class="material-symbols-outlined">cancel</span>
+            </button>
+            <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown">
+              <span class="material-symbols-outlined">expand_more</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="elv-combobox__dropdown" id="combobox-2-listbox" role="listbox" hidden>
+          <ul class="elv-combobox__options" role="presentation"></ul>
+        </div>
+
+        <select name="tech[]" multiple hidden aria-hidden="true">
+          <option value="1" selected>Ruby</option>
+          <option value="2" selected>JavaScript</option>
+          <option value="4" selected>TypeScript</option>
+          <option value="3">Python</option>
+          <option value="5">Go</option>
+        </select>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Chips are populated by JavaScript based on selected options --&gt;
+&lt;div class="elv-combobox__chips" role="list"&gt;
+  &lt;div class="elv-combobox__chip" role="listitem"&gt;
+    &lt;span&gt;Ruby&lt;/span&gt;
+    &lt;button type="button" class="elv-combobox__chip-remove" aria-label="Remove Ruby"&gt;
+      &lt;span class="material-symbols-outlined"&gt;close&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;!-- more chips --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="combobox-sm">Small (32px height)</label>
+        <div class="elv-combobox elv-combobox--sm" data-combobox="demo-3">
+          <div class="elv-combobox__container">
+            <div class="elv-combobox__input-area">
+              <div class="elv-combobox__chips" role="list">
+                <div class="elv-combobox__chip" role="listitem">
+                  <span>Tag 1</span>
+                  <button type="button" class="elv-combobox__chip-remove" aria-label="Remove Tag 1">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="elv-combobox__search"
+                id="combobox-sm"
+                placeholder="Search..."
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+              />
+            </div>
+            <div class="elv-combobox__controls">
+              <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" hidden>
+                <span class="material-symbols-outlined">cancel</span>
+              </button>
+              <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown">
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+            </div>
+          </div>
+
+          <select name="tags-sm[]" multiple hidden aria-hidden="true">
+            <option value="1">Ruby</option>
+            <option value="2">Rails</option>
+            <option value="3">JavaScript</option>
+            <option value="4">Python</option>
+            <option value="5">Go</option>
+            <option value="6">Rust</option>
+            <option value="7">TypeScript</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="combobox-md">Medium (40px height - default)</label>
+        <div class="elv-combobox" data-combobox="demo-4">
+          <div class="elv-combobox__container">
+            <div class="elv-combobox__input-area">
+              <div class="elv-combobox__chips" role="list">
+                <div class="elv-combobox__chip" role="listitem">
+                  <span>Tag 1</span>
+                  <button type="button" class="elv-combobox__chip-remove" aria-label="Remove Tag 1">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="elv-combobox__search"
+                id="combobox-md"
+                placeholder="Search..."
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+              />
+            </div>
+            <div class="elv-combobox__controls">
+              <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" hidden>
+                <span class="material-symbols-outlined">cancel</span>
+              </button>
+              <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown">
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+            </div>
+          </div>
+
+          <select name="tags-md[]" multiple hidden aria-hidden="true">
+            <option value="1">Ruby</option>
+            <option value="2">Rails</option>
+            <option value="3">JavaScript</option>
+            <option value="4">Python</option>
+            <option value="5">Go</option>
+            <option value="6">Rust</option>
+            <option value="7">TypeScript</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="combobox-lg">Large (48px height)</label>
+        <div class="elv-combobox elv-combobox--lg" data-combobox="demo-5">
+          <div class="elv-combobox__container">
+            <div class="elv-combobox__input-area">
+              <div class="elv-combobox__chips" role="list">
+                <div class="elv-combobox__chip" role="listitem">
+                  <span>Tag 1</span>
+                  <button type="button" class="elv-combobox__chip-remove" aria-label="Remove Tag 1">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="elv-combobox__search"
+                id="combobox-lg"
+                placeholder="Search..."
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+              />
+            </div>
+            <div class="elv-combobox__controls">
+              <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" hidden>
+                <span class="material-symbols-outlined">cancel</span>
+              </button>
+              <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown">
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+            </div>
+          </div>
+
+          <select name="tags-lg[]" multiple hidden aria-hidden="true">
+            <option value="1">Ruby</option>
+            <option value="2">Rails</option>
+            <option value="3">JavaScript</option>
+            <option value="4">Python</option>
+            <option value="5">Go</option>
+            <option value="6">Rust</option>
+            <option value="7">TypeScript</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Small --&gt;
+&lt;div class="elv-combobox elv-combobox--sm"&gt;...&lt;/div&gt;
+
+&lt;!-- Medium (default) --&gt;
+&lt;div class="elv-combobox"&gt;...&lt;/div&gt;
+
+&lt;!-- Large --&gt;
+&lt;div class="elv-combobox elv-combobox--lg"&gt;...&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Error State</h2>
+    <div class="examples">
+      <div class="elv-combobox elv-combobox--error" data-combobox="demo-6">
+        <label class="elv-input-label" for="combobox-error">
+          Required Tags <span class="elv-required">*</span>
+        </label>
+
+        <div class="elv-combobox__container">
+          <div class="elv-combobox__input-area">
+            <div class="elv-combobox__chips" role="list"></div>
+            <input
+              type="text"
+              class="elv-combobox__search"
+              id="combobox-error"
+              placeholder="Search or select..."
+              autocomplete="off"
+              role="combobox"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-invalid="true"
+              aria-describedby="error-message-1"
+            />
+          </div>
+
+          <div class="elv-combobox__controls">
+            <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" hidden>
+              <span class="material-symbols-outlined">cancel</span>
+            </button>
+            <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown">
+              <span class="material-symbols-outlined">expand_more</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="elv-combobox__dropdown" role="listbox" hidden>
+          <ul class="elv-combobox__options" role="presentation"></ul>
+        </div>
+
+        <select name="tags[]" multiple hidden aria-hidden="true">
+          <option value="1">Ruby</option>
+          <option value="2">JavaScript</option>
+        </select>
+
+        <p id="error-message-1" class="elv-input-error" role="alert">Please select at least one tag</p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-combobox elv-combobox--error"&gt;
+  &lt;label class="elv-input-label"&gt;
+    Required Tags &lt;span class="elv-required"&gt;*&lt;/span&gt;
+  &lt;/label&gt;
+
+  &lt;div class="elv-combobox__container"&gt;
+    &lt;!-- container content --&gt;
+    &lt;input
+      class="elv-combobox__search"
+      aria-invalid="true"
+      aria-describedby="error-message-1"
+    /&gt;
+  &lt;/div&gt;
+
+  &lt;p id="error-message-1" class="elv-input-error" role="alert"&gt;
+    Please select at least one tag
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Disabled State</h2>
+    <div class="examples">
+      <div class="elv-combobox elv-combobox--disabled" data-combobox="demo-7">
+        <label class="elv-input-label" for="combobox-disabled">
+          Disabled Combobox
+        </label>
+
+        <div class="elv-combobox__container">
+          <div class="elv-combobox__input-area">
+            <div class="elv-combobox__chips" role="list">
+              <div class="elv-combobox__chip" role="listitem">
+                <span>Ruby</span>
+                <button type="button" class="elv-combobox__chip-remove" aria-label="Remove Ruby" disabled>
+                  <span class="material-symbols-outlined">close</span>
+                </button>
+              </div>
+            </div>
+            <input
+              type="text"
+              class="elv-combobox__search"
+              id="combobox-disabled"
+              placeholder="Disabled..."
+              autocomplete="off"
+              role="combobox"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              disabled
+            />
+          </div>
+
+          <div class="elv-combobox__controls">
+            <button type="button" class="elv-combobox__clear-btn" aria-label="Clear all" disabled>
+              <span class="material-symbols-outlined">cancel</span>
+            </button>
+            <button type="button" class="elv-combobox__toggle" aria-label="Toggle dropdown" disabled>
+              <span class="material-symbols-outlined">expand_more</span>
+            </button>
+          </div>
+        </div>
+
+        <select name="tags[]" multiple hidden aria-hidden="true" disabled>
+          <option value="1" selected>Ruby</option>
+        </select>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-combobox elv-combobox--disabled"&gt;
+  &lt;div class="elv-combobox__container"&gt;
+    &lt;input class="elv-combobox__search" disabled /&gt;
+    &lt;!-- all buttons should be disabled --&gt;
+  &lt;/div&gt;
+  &lt;select multiple hidden disabled&gt;...&lt;/select&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>ARIA Combobox Pattern:</strong> Uses <code>role="combobox"</code> with <code>aria-expanded</code>, <code>aria-haspopup="listbox"</code>, and <code>aria-controls</code></li>
+      <li class="elv-mb-2"><strong>Labels:</strong> Always pair combobox with visible labels using <code>for</code> and <code>id</code> attributes</li>
+      <li class="elv-mb-2"><strong>Chips:</strong> Use <code>role="list"</code> on container and <code>role="listitem"</code> on each chip for screen readers</li>
+      <li class="elv-mb-2"><strong>Remove Buttons:</strong> Each chip remove button needs descriptive <code>aria-label</code> (e.g., "Remove Ruby")</li>
+      <li class="elv-mb-2"><strong>Error States:</strong> Use <code>aria-invalid="true"</code> and <code>aria-describedby</code> to link error messages</li>
+      <li class="elv-mb-2"><strong>Focus State:</strong> 3px purple outline (#c3bde5) with 1px offset on container — CRITICAL for accessibility</li>
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>Tab to focus combobox</li>
+          <li>Type to filter options</li>
+          <li>Arrow Down/Up to navigate options</li>
+          <li>Enter/Space to select option</li>
+          <li>Escape to close dropdown</li>
+          <li>Backspace to remove last chip</li>
+        </ul>
+      </li>
+      <li class="elv-mb-2"><strong>Hidden Select:</strong> Native <code>&lt;select multiple&gt;</code> with <code>hidden</code> and <code>aria-hidden="true"</code> for form submission</li>
+      <li class="elv-mb-2"><strong>Live Regions:</strong> Consider adding <code>aria-live</code> for dynamic updates when chips are added/removed</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Element</strong></td>
+        <td style="padding: 8px;"><strong>Property</strong></td>
+        <td style="padding: 8px;"><strong>Value</strong></td>
+        <td style="padding: 8px;"><strong>Token</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Container</td>
+        <td style="padding: 8px;">Min-height (md)</td>
+        <td style="padding: 8px;">40px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Container</td>
+        <td style="padding: 8px;">Background</td>
+        <td style="padding: 8px;">#fafafa</td>
+        <td style="padding: 8px;">N5</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Container</td>
+        <td style="padding: 8px;">Border</td>
+        <td style="padding: 8px;">0.5px solid #b0afb6</td>
+        <td style="padding: 8px;">border-medium N40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Container</td>
+        <td style="padding: 8px;">Border Radius</td>
+        <td style="padding: 8px;">8px</td>
+        <td style="padding: 8px;">radius-sm</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Container</td>
+        <td style="padding: 8px;">Focus outline</td>
+        <td style="padding: 8px;">3px solid #c3bde5, offset 1px</td>
+        <td style="padding: 8px;">P40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Chip</td>
+        <td style="padding: 8px;">Height</td>
+        <td style="padding: 8px;">24px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Chip</td>
+        <td style="padding: 8px;">Background</td>
+        <td style="padding: 8px;">#ebe9f6</td>
+        <td style="padding: 8px;">P10</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Chip</td>
+        <td style="padding: 8px;">Color</td>
+        <td style="padding: 8px;">#5746b2</td>
+        <td style="padding: 8px;">P100</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Chip</td>
+        <td style="padding: 8px;">Border Radius</td>
+        <td style="padding: 8px;">2px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Chip</td>
+        <td style="padding: 8px;">Padding</td>
+        <td style="padding: 8px;">0 6px 0 8px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Search Input</td>
+        <td style="padding: 8px;">Font Size</td>
+        <td style="padding: 8px;">16px</td>
+        <td style="padding: 8px;">Body</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Search Input</td>
+        <td style="padding: 8px;">Placeholder Color</td>
+        <td style="padding: 8px;">#6f6d78</td>
+        <td style="padding: 8px;">text-nonessential</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Dropdown</td>
+        <td style="padding: 8px;">Box Shadow</td>
+        <td style="padding: 8px;">0 4px 12px rgba(0,0,0,0.1)</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Dropdown</td>
+        <td style="padding: 8px;">Max Height</td>
+        <td style="padding: 8px;">300px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Option (hover)</td>
+        <td style="padding: 8px;">Background</td>
+        <td style="padding: 8px;">#fafafa</td>
+        <td style="padding: 8px;">N5</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Option (selected)</td>
+        <td style="padding: 8px;">Background</td>
+        <td style="padding: 8px;">#ebe9f6</td>
+        <td style="padding: 8px;">P10</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error State</td>
+        <td style="padding: 8px;">Border</td>
+        <td style="padding: 8px;">2px solid #eb2000</td>
+        <td style="padding: 8px;">R120</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Size (sm)</td>
+        <td style="padding: 8px;">Min-height</td>
+        <td style="padding: 8px;">32px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Size (lg)</td>
+        <td style="padding: 8px;">Min-height</td>
+        <td style="padding: 8px;">48px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Multi-Select Only:</strong> This combobox is designed for multi-select use cases with chips</li>
+      <li class="elv-mb-2"><strong>Searchable:</strong> Users can type to filter options — always provide meaningful search functionality</li>
+      <li class="elv-mb-2"><strong>Clear All:</strong> Show clear button when chips are present for quick reset</li>
+      <li class="elv-mb-2"><strong>Chip Management:</strong> Users can remove individual chips via × button or backspace key</li>
+      <li class="elv-mb-2"><strong>Dropdown Toggle:</strong> Clicking toggle or focusing input should open dropdown</li>
+      <li class="elv-mb-2"><strong>Form Submission:</strong> Use hidden <code>&lt;select multiple&gt;</code> for native form submission support</li>
+      <li class="elv-mb-2"><strong>Placeholder:</strong> Change placeholder text when chips are present (e.g., "Search..." → "Add more...")</li>
+      <li class="elv-mb-2"><strong>No Results:</strong> Show "No results found" message when search returns empty</li>
+      <li class="elv-mb-2"><strong>Size Selection:</strong> Use <code>--sm</code> for compact layouts, <code>--lg</code> for better touch targets on mobile</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Implementation Notes</h2>
+    <p class="elv-text-sm elv-text-default elv-mb-2">
+      This component requires JavaScript for full functionality. Agent B will add interactive behavior in the next step.
+    </p>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Data Attribute:</strong> Use <code>data-combobox</code> to initialize component instances</li>
+      <li class="elv-mb-2"><strong>Hidden Select:</strong> Populate with available options — JavaScript syncs selected state</li>
+      <li class="elv-mb-2"><strong>Chips:</strong> Dynamically generated based on selected options in hidden select</li>
+      <li class="elv-mb-2"><strong>Dropdown Options:</strong> Dynamically populated from hidden select options</li>
+      <li class="elv-mb-2"><strong>Search Filter:</strong> JavaScript filters dropdown options based on input value</li>
+      <li class="elv-mb-2"><strong>Keyboard Support:</strong> Full keyboard navigation for accessibility compliance</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  /**
+   * ElevateCombobox - Multi-select combobox component
+   * Provides search, filtering, chip management, and keyboard navigation
+   */
+  class ElevateCombobox {
+    constructor(element) {
+      this.element = element;
+      this.container = element.querySelector('.elv-combobox__container');
+      this.searchInput = element.querySelector('.elv-combobox__search');
+      this.chipsContainer = element.querySelector('.elv-combobox__chips');
+      this.dropdown = element.querySelector('.elv-combobox__dropdown');
+      this.optionsList = element.querySelector('.elv-combobox__options');
+      this.noResultsMsg = element.querySelector('.elv-combobox__no-results');
+      this.clearBtn = element.querySelector('.elv-combobox__clear-btn');
+      this.toggleBtn = element.querySelector('.elv-combobox__toggle');
+      this.select = element.querySelector('select[multiple]');
+
+      // State management
+      this.state = {
+        selectedValues: new Set(),
+        allOptions: [],
+        filteredOptions: [],
+        highlightedIndex: -1,
+        isOpen: false
+      };
+
+      // Check if disabled
+      this.isDisabled = this.searchInput && this.searchInput.disabled;
+
+      if (!this.isDisabled) {
+        this.init();
+      }
+    }
+
+    init() {
+      this.parseOptions();
+      this.bindEvents();
+      this.renderChips();
+      this.renderDropdown();
+      this.updateClearButton();
+    }
+
+    /**
+     * Parse options from hidden select element
+     */
+    parseOptions() {
+      if (!this.select) return;
+
+      const options = Array.from(this.select.options);
+      this.state.allOptions = options.map(opt => ({
+        value: opt.value,
+        label: opt.textContent.trim(),
+        selected: opt.selected
+      }));
+
+      // Initialize selected values from pre-selected options
+      this.state.selectedValues = new Set(
+        this.state.allOptions
+          .filter(opt => opt.selected)
+          .map(opt => opt.value)
+      );
+
+      this.state.filteredOptions = [...this.state.allOptions];
+    }
+
+    /**
+     * Bind all event listeners
+     */
+    bindEvents() {
+      // Search input events
+      if (this.searchInput) {
+        this.searchInput.addEventListener('input', (e) => this.handleSearch(e));
+        this.searchInput.addEventListener('keydown', (e) => this.handleKeyboard(e));
+        this.searchInput.addEventListener('focus', () => this.open());
+      }
+
+      // Toggle button
+      if (this.toggleBtn) {
+        this.toggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.toggle();
+        });
+      }
+
+      // Clear all button
+      if (this.clearBtn) {
+        this.clearBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.clearAll();
+        });
+      }
+
+      // Click outside to close
+      document.addEventListener('click', (e) => {
+        if (!this.element.contains(e.target)) {
+          this.close();
+        }
+      });
+    }
+
+    /**
+     * Handle search input changes
+     */
+    handleSearch(e) {
+      const query = e.target.value.toLowerCase().trim();
+
+      if (query === '') {
+        this.state.filteredOptions = [...this.state.allOptions];
+      } else {
+        this.state.filteredOptions = this.state.allOptions.filter(opt =>
+          opt.label.toLowerCase().includes(query)
+        );
+      }
+
+      this.state.highlightedIndex = -1;
+      this.renderDropdown();
+
+      if (!this.state.isOpen) {
+        this.open();
+      }
+    }
+
+    /**
+     * Handle keyboard navigation
+     */
+    handleKeyboard(e) {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          if (!this.state.isOpen) {
+            this.open();
+          }
+          this.highlightNext();
+          break;
+
+        case 'ArrowUp':
+          e.preventDefault();
+          if (!this.state.isOpen) {
+            this.open();
+          }
+          this.highlightPrevious();
+          break;
+
+        case 'Enter':
+          e.preventDefault();
+          if (this.state.isOpen && this.state.highlightedIndex >= 0) {
+            const option = this.state.filteredOptions[this.state.highlightedIndex];
+            if (option) {
+              this.toggleOption(option.value);
+            }
+          }
+          break;
+
+        case 'Escape':
+          e.preventDefault();
+          this.close();
+          if (this.searchInput) {
+            this.searchInput.value = '';
+            this.state.filteredOptions = [...this.state.allOptions];
+          }
+          break;
+
+        case 'Backspace':
+          // Remove last chip if search input is empty
+          if (this.searchInput && this.searchInput.value === '' && this.state.selectedValues.size > 0) {
+            const lastValue = Array.from(this.state.selectedValues).pop();
+            this.deselectOption(lastValue);
+          }
+          break;
+      }
+    }
+
+    /**
+     * Highlight next option in list
+     */
+    highlightNext() {
+      if (this.state.filteredOptions.length === 0) return;
+
+      this.state.highlightedIndex =
+        (this.state.highlightedIndex + 1) % this.state.filteredOptions.length;
+      this.renderDropdown();
+      this.scrollToHighlighted();
+    }
+
+    /**
+     * Highlight previous option in list
+     */
+    highlightPrevious() {
+      if (this.state.filteredOptions.length === 0) return;
+
+      this.state.highlightedIndex =
+        this.state.highlightedIndex <= 0
+          ? this.state.filteredOptions.length - 1
+          : this.state.highlightedIndex - 1;
+      this.renderDropdown();
+      this.scrollToHighlighted();
+    }
+
+    /**
+     * Scroll highlighted option into view
+     */
+    scrollToHighlighted() {
+      if (!this.optionsList) return;
+
+      const highlightedEl = this.optionsList.querySelector('.elv-combobox__option--focused');
+      if (highlightedEl) {
+        highlightedEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    /**
+     * Select an option (add chip)
+     */
+    selectOption(value) {
+      this.state.selectedValues.add(value);
+      this.updateSelect();
+      this.renderChips();
+      this.renderDropdown();
+      this.updateClearButton();
+      this.updateARIA();
+
+      // Update placeholder
+      if (this.searchInput) {
+        this.searchInput.placeholder = this.state.selectedValues.size > 0
+          ? 'Add more...'
+          : 'Search or select...';
+      }
+    }
+
+    /**
+     * Deselect an option (remove chip)
+     */
+    deselectOption(value) {
+      this.state.selectedValues.delete(value);
+      this.updateSelect();
+      this.renderChips();
+      this.renderDropdown();
+      this.updateClearButton();
+      this.updateARIA();
+
+      // Update placeholder
+      if (this.searchInput) {
+        this.searchInput.placeholder = this.state.selectedValues.size > 0
+          ? 'Add more...'
+          : 'Search or select...';
+      }
+    }
+
+    /**
+     * Toggle option selection
+     */
+    toggleOption(value) {
+      if (this.state.selectedValues.has(value)) {
+        this.deselectOption(value);
+      } else {
+        this.selectOption(value);
+      }
+    }
+
+    /**
+     * Clear all selections
+     */
+    clearAll() {
+      this.state.selectedValues.clear();
+      this.updateSelect();
+      this.renderChips();
+      this.renderDropdown();
+      this.updateClearButton();
+      this.updateARIA();
+
+      if (this.searchInput) {
+        this.searchInput.value = '';
+        this.searchInput.placeholder = 'Search or select...';
+        this.state.filteredOptions = [...this.state.allOptions];
+      }
+
+      this.close();
+    }
+
+    /**
+     * Render chips for selected values
+     */
+    renderChips() {
+      if (!this.chipsContainer) return;
+
+      this.chipsContainer.innerHTML = '';
+
+      this.state.selectedValues.forEach(value => {
+        const option = this.state.allOptions.find(opt => opt.value === value);
+        if (!option) return;
+
+        const chip = document.createElement('div');
+        chip.className = 'elv-combobox__chip';
+        chip.setAttribute('role', 'listitem');
+        chip.setAttribute('data-value', value);
+
+        const text = document.createElement('span');
+        text.className = 'elv-combobox__chip-text';
+        text.textContent = option.label;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'elv-combobox__chip-remove';
+        removeBtn.type = 'button';
+        removeBtn.setAttribute('aria-label', `Remove ${option.label}`);
+        removeBtn.innerHTML = '<span class="material-symbols-outlined">close</span>';
+
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.deselectOption(value);
+        });
+
+        chip.appendChild(text);
+        chip.appendChild(removeBtn);
+        this.chipsContainer.appendChild(chip);
+      });
+    }
+
+    /**
+     * Render dropdown options list
+     */
+    renderDropdown() {
+      if (!this.optionsList) return;
+
+      this.optionsList.innerHTML = '';
+
+      if (this.state.filteredOptions.length === 0) {
+        if (this.noResultsMsg) {
+          this.noResultsMsg.hidden = false;
+        }
+        return;
+      }
+
+      if (this.noResultsMsg) {
+        this.noResultsMsg.hidden = true;
+      }
+
+      this.state.filteredOptions.forEach((option, index) => {
+        const li = document.createElement('li');
+        li.className = 'elv-combobox__option';
+        li.setAttribute('role', 'option');
+        li.setAttribute('data-value', option.value);
+        li.textContent = option.label;
+
+        const isSelected = this.state.selectedValues.has(option.value);
+        li.setAttribute('aria-selected', isSelected.toString());
+
+        if (index === this.state.highlightedIndex) {
+          li.classList.add('elv-combobox__option--focused');
+        }
+
+        li.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.toggleOption(option.value);
+          if (this.searchInput) {
+            this.searchInput.focus();
+          }
+        });
+
+        this.optionsList.appendChild(li);
+      });
+    }
+
+    /**
+     * Update hidden select element
+     */
+    updateSelect() {
+      if (!this.select) return;
+
+      Array.from(this.select.options).forEach(opt => {
+        opt.selected = this.state.selectedValues.has(opt.value);
+      });
+    }
+
+    /**
+     * Update clear button visibility
+     */
+    updateClearButton() {
+      if (!this.clearBtn) return;
+
+      this.clearBtn.hidden = this.state.selectedValues.size === 0;
+    }
+
+    /**
+     * Update ARIA attributes
+     */
+    updateARIA() {
+      if (this.searchInput) {
+        this.searchInput.setAttribute('aria-expanded', this.state.isOpen.toString());
+      }
+    }
+
+    /**
+     * Open dropdown
+     */
+    open() {
+      if (this.isDisabled) return;
+
+      this.state.isOpen = true;
+      if (this.dropdown) {
+        this.dropdown.hidden = false;
+      }
+      this.updateARIA();
+    }
+
+    /**
+     * Close dropdown
+     */
+    close() {
+      this.state.isOpen = false;
+      this.state.highlightedIndex = -1;
+      if (this.dropdown) {
+        this.dropdown.hidden = true;
+      }
+      this.updateARIA();
+    }
+
+    /**
+     * Toggle dropdown open/close
+     */
+    toggle() {
+      if (this.state.isOpen) {
+        this.close();
+      } else {
+        this.open();
+      }
+    }
+  }
+
+  /**
+   * Auto-initialize all comboboxes on page load
+   */
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-combobox]').forEach(element => {
+      new ElevateCombobox(element);
+    });
+  });
+</script>
+
+</body>
+</html>

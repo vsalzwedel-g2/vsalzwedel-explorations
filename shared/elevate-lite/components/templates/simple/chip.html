@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chip Component — Interactive Filter/Selection</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; align-items: center; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+    .note {
+      background: var(--bg-info-20);
+      border: 1px solid var(--border-info);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: var(--text-info);
+      margin: 1rem 0;
+    }
+
+    /* Chip Base Styles */
+    .elv-chip {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--bg-neutral-10);
+      color: var(--text-neutral);
+      border: none;
+      font-family: var(--font-sans);
+    }
+
+    /* Hover State */
+    .elv-chip:hover {
+      background: var(--bg-primary-30);
+      color: var(--text-primary);
+    }
+
+    /* Selected State */
+    .elv-chip[data-selected="true"] {
+      background: var(--bg-primary-20);
+      color: var(--text-primary);
+    }
+
+    /* Dismissible hover when selected */
+    .elv-chip[data-kind="dismissible"][data-selected="true"]:hover {
+      background: var(--bg-primary-30);
+      color: var(--text-primary);
+    }
+
+    /* Size Variants */
+    .elv-chip--xs {
+      height: 1rem;
+      padding: 0.125rem;
+      border-radius: var(--radius-xs);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+
+    .elv-chip--sm {
+      height: 1.5rem;
+      padding: 0.125rem;
+      border-radius: var(--radius-xs);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+    }
+
+    .elv-chip--md {
+      height: 2rem;
+      padding: 0.125rem 0.25rem;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+    }
+
+    /* Icon Styles */
+    .elv-chip__icon {
+      color: var(--text-primary);
+      transition: width 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+
+    .elv-chip__icon--hidden {
+      width: 0 !important;
+      overflow: hidden;
+    }
+
+    .elv-chip__icon--xs { width: 12px; height: 12px; }
+    .elv-chip__icon--sm { width: 16px; height: 16px; }
+
+    /* Trailing icon (close) hover effect */
+    .elv-chip__icon--trailing {
+      border-radius: var(--radius-2xs);
+    }
+    .elv-chip__icon--trailing:hover {
+      background: var(--bg-primary-40);
+      color: var(--text-default);
+    }
+
+    /* Label Styles */
+    .elv-chip__label {
+      padding: 0 0.125rem;
+      color: inherit;
+      white-space: nowrap;
+      font-weight: inherit;
+      font-size: inherit;
+    }
+
+    /* Fade out animation for dismissible */
+    .elv-chip--dismissing {
+      opacity: 0;
+      transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Chip</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Interactive filter and selection component · See <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> for full documentation
+  </p>
+
+  <div class="note">
+    <strong>Component Type:</strong> Interactive selection/filter (not semantic badge). Supports single-select, multiselect, and dismissible variants with hover and selected states.
+  </div>
+
+  <!-- Basic Single Select -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic (Single Select)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-3">Click to toggle selection state. Base is neutral, hover shows purple preview, selected persists purple.</p>
+    <div class="examples">
+      <button class="elv-chip elv-chip--xs" data-kind="single_select" data-selected="false" onclick="toggleChip(this)">
+        <span class="elv-chip__label">Extra Small</span>
+      </button>
+      <button class="elv-chip elv-chip--sm" data-kind="single_select" data-selected="false" onclick="toggleChip(this)">
+        <span class="elv-chip__label">Small</span>
+      </button>
+      <button class="elv-chip elv-chip--md" data-kind="single_select" data-selected="true" onclick="toggleChip(this)">
+        <span class="elv-chip__label">Medium (Selected)</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-chip elv-chip--md" data-kind="single_select" data-selected="false"&gt;
+  &lt;span class="elv-chip__label"&gt;Filter Name&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Multiselect with Check Icon -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Multiselect (with Check Icon)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-3">Shows check icon when selected. Icon width animates from 0 to visible.</p>
+    <div class="examples">
+      <button class="elv-chip elv-chip--xs" data-kind="multiselect" data-selected="false" onclick="toggleMultiselect(this)">
+        <svg class="elv-chip__icon elv-chip__icon--xs elv-chip__icon--hidden" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M8.10417 14.4375L4.0625 10.4167L5.125 9.33333L8.10417 12.3125L14.875 5.5625L15.9375 6.625L8.10417 14.4375Z"/>
+        </svg>
+        <span class="elv-chip__label">Category</span>
+      </button>
+      <button class="elv-chip elv-chip--sm" data-kind="multiselect" data-selected="true" onclick="toggleMultiselect(this)">
+        <svg class="elv-chip__icon elv-chip__icon--xs" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M8.10417 14.4375L4.0625 10.4167L5.125 9.33333L8.10417 12.3125L14.875 5.5625L15.9375 6.625L8.10417 14.4375Z"/>
+        </svg>
+        <span class="elv-chip__label">Tag Name</span>
+      </button>
+      <button class="elv-chip elv-chip--md" data-kind="multiselect" data-selected="false" onclick="toggleMultiselect(this)">
+        <svg class="elv-chip__icon elv-chip__icon--sm elv-chip__icon--hidden" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M8.10417 14.4375L4.0625 10.4167L5.125 9.33333L8.10417 12.3125L14.875 5.5625L15.9375 6.625L8.10417 14.4375Z"/>
+        </svg>
+        <span class="elv-chip__label">Feature Filter</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-chip elv-chip--md" data-kind="multiselect" data-selected="false"&gt;
+  &lt;svg class="elv-chip__icon elv-chip__icon--sm elv-chip__icon--hidden" viewBox="0 0 20 20" fill="currentColor"&gt;
+    &lt;path d="M8.10417 14.4375L4.0625 10.4167L5.125 9.33333L8.10417 12.3125L14.875 5.5625L15.9375 6.625L8.10417 14.4375Z"/&gt;
+  &lt;/svg&gt;
+  &lt;span class="elv-chip__label"&gt;Filter Name&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Dismissible with Close Icon -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Dismissible (with Close Icon)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-3">Shows close icon for removal. Click anywhere to select, click close icon to dismiss. Fades out before removal.</p>
+    <div class="examples">
+      <button class="elv-chip elv-chip--xs" data-kind="dismissible" data-selected="false" onclick="toggleDismissible(event, this)">
+        <span class="elv-chip__label">Tag</span>
+        <svg class="elv-chip__icon elv-chip__icon--xs elv-chip__icon--trailing" viewBox="0 0 20 20" fill="currentColor" onclick="dismissChip(event, this)">
+          <path d="M6.0625 15L5 13.9375L8.9375 10L5 6.0625L6.0625 5L10 8.9375L13.9375 5L15 6.0625L11.0625 10L15 13.9375L13.9375 15L10 11.0625L6.0625 15Z"/>
+        </svg>
+      </button>
+      <button class="elv-chip elv-chip--sm" data-kind="dismissible" data-selected="true" onclick="toggleDismissible(event, this)">
+        <span class="elv-chip__label">Selected Tag</span>
+        <svg class="elv-chip__icon elv-chip__icon--xs elv-chip__icon--trailing" viewBox="0 0 20 20" fill="currentColor" onclick="dismissChip(event, this)">
+          <path d="M6.0625 15L5 13.9375L8.9375 10L5 6.0625L6.0625 5L10 8.9375L13.9375 5L15 6.0625L11.0625 10L15 13.9375L13.9375 15L10 11.0625L6.0625 15Z"/>
+        </svg>
+      </button>
+      <button class="elv-chip elv-chip--md" data-kind="dismissible" data-selected="false" onclick="toggleDismissible(event, this)">
+        <span class="elv-chip__label">Applied Filter</span>
+        <svg class="elv-chip__icon elv-chip__icon--sm elv-chip__icon--trailing" viewBox="0 0 20 20" fill="currentColor" onclick="dismissChip(event, this)">
+          <path d="M6.0625 15L5 13.9375L8.9375 10L5 6.0625L6.0625 5L10 8.9375L13.9375 5L15 6.0625L11.0625 10L15 13.9375L13.9375 15L10 11.0625L6.0625 15Z"/>
+        </svg>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-chip elv-chip--md" data-kind="dismissible" data-selected="false"&gt;
+  &lt;span class="elv-chip__label"&gt;Tag Name&lt;/span&gt;
+  &lt;svg class="elv-chip__icon elv-chip__icon--sm elv-chip__icon--trailing" viewBox="0 0 20 20" fill="currentColor"&gt;
+    &lt;path d="M6.0625 15L5 13.9375L8.9375 10L5 6.0625L6.0625 5L10 8.9375L13.9375 5L15 6.0625L11.0625 10L15 13.9375L13.9375 15L10 11.0625L6.0625 15Z"/&gt;
+  &lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- All Sizes Comparison -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Specifications</h2>
+    <table class="elv-text-sm" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Size</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Height</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Padding</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Border Radius</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Font Size</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Icon Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 0.5rem;"><code>xs</code></td>
+          <td style="padding: 0.5rem;">16px (1rem)</td>
+          <td style="padding: 0.5rem;">2px (0.125rem)</td>
+          <td style="padding: 0.5rem;">4px (--radius-xs)</td>
+          <td style="padding: 0.5rem;">12px (--text-xs)</td>
+          <td style="padding: 0.5rem;">12px</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 0.5rem;"><code>sm</code></td>
+          <td style="padding: 0.5rem;">24px (1.5rem)</td>
+          <td style="padding: 0.5rem;">2px (0.125rem)</td>
+          <td style="padding: 0.5rem;">4px (--radius-xs)</td>
+          <td style="padding: 0.5rem;">14px (--text-sm)</td>
+          <td style="padding: 0.5rem;">12px</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem;"><code>md</code></td>
+          <td style="padding: 0.5rem;">32px (2rem)</td>
+          <td style="padding: 0.5rem;">2px 4px (0.125rem 0.25rem)</td>
+          <td style="padding: 0.5rem;">8px (--radius-sm)</td>
+          <td style="padding: 0.5rem;">14px (--text-sm)</td>
+          <td style="padding: 0.5rem;">16px</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- States Overview -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">State System</h2>
+    <table class="elv-text-sm" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">State</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Background</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Text Color</th>
+          <th style="text-align: left; padding: 0.5rem; font-weight: var(--font-semibold);">Attribute</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 0.5rem;">Default</td>
+          <td style="padding: 0.5rem;">#f2f2f3 (N10)</td>
+          <td style="padding: 0.5rem;">--text-neutral</td>
+          <td style="padding: 0.5rem;"><code>data-selected="false"</code></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 0.5rem;">Hover</td>
+          <td style="padding: 0.5rem;">--bg-primary-30 (P30)</td>
+          <td style="padding: 0.5rem;">--text-primary</td>
+          <td style="padding: 0.5rem;">:hover</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.5rem;">Selected</td>
+          <td style="padding: 0.5rem;">--bg-primary-20 (P20)</td>
+          <td style="padding: 0.5rem;">--text-primary</td>
+          <td style="padding: 0.5rem;"><code>data-selected="true"</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default" style="margin: 0.5rem 0; padding-left: 1.5rem; line-height: 1.6;">
+      <li><strong>Single Select:</strong> Use for exclusive filter options where only one can be active (e.g., view mode toggles)</li>
+      <li><strong>Multiselect:</strong> Use for cumulative filters where multiple can be active (e.g., category tags, feature filters)</li>
+      <li><strong>Dismissible:</strong> Use for applied filters or tags that can be removed (e.g., search refinements, active selections)</li>
+      <li><strong>Icon sizes:</strong> xs/sm chips use 12px icons, md chips use 16px icons</li>
+      <li><strong>Animation:</strong> Icon width transitions smoothly, dismissible chips fade out before removal</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  // Single select: toggle selection state
+  function toggleChip(chip) {
+    const isSelected = chip.getAttribute('data-selected') === 'true';
+    chip.setAttribute('data-selected', isSelected ? 'false' : 'true');
+  }
+
+  // Multiselect: toggle selection and icon visibility
+  function toggleMultiselect(chip) {
+    const isSelected = chip.getAttribute('data-selected') === 'true';
+    chip.setAttribute('data-selected', isSelected ? 'false' : 'true');
+
+    const icon = chip.querySelector('.elv-chip__icon');
+    if (icon) {
+      icon.classList.toggle('elv-chip__icon--hidden');
+    }
+  }
+
+  // Dismissible: toggle selection (but don't dismiss on chip click)
+  function toggleDismissible(event, chip) {
+    // Don't toggle if clicking the close icon
+    if (event.target.closest('.elv-chip__icon--trailing')) {
+      return;
+    }
+
+    const isSelected = chip.getAttribute('data-selected') === 'true';
+    chip.setAttribute('data-selected', isSelected ? 'false' : 'true');
+  }
+
+  // Dismiss chip: fade out and remove
+  function dismissChip(event, icon) {
+    event.stopPropagation(); // Prevent toggleDismissible from firing
+
+    const chip = icon.closest('.elv-chip');
+    chip.classList.add('elv-chip--dismissing');
+
+    chip.addEventListener('transitionend', () => {
+      chip.remove();
+    }, { once: true });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+/**
+ * Elevate Icon Helpers
+ *
+ * Usage:
+ * <svg class="elv-icon elv-icon-md elv-icon-fill-current">
+ *   <use href="./shared/icons/ui-icon-name.svg#icon"></use>
+ * </svg>
+ *
+ * Or inline the SVG with classes:
+ * <svg class="elv-icon elv-icon-md elv-icon-fill-current" ...>...</svg>
+ */
+
+.elv-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Sizes - matching Elevate component sizing */
+.elv-icon-xs {
+  width: 1rem;   /* 16px - elv-w-4 */
+  height: 1rem;  /* 16px - elv-h-4 */
+}
+
+.elv-icon-sm {
+  width: 1.25rem;  /* 20px - elv-w-5 */
+  height: 1.25rem; /* 20px - elv-h-5 */
+}
+
+.elv-icon-md {
+  width: 1.5rem;   /* 24px - elv-w-6 */
+  height: 1.5rem;  /* 24px - elv-h-6 */
+}
+
+.elv-icon-lg {
+  width: 1.75rem;  /* 28px - elv-w-7 */
+  height: 1.75rem; /* 28px - elv-h-7 */
+}
+
+.elv-icon-xl {
+  width: 2rem;     /* 32px - elv-w-8 */
+  height: 2rem;    /* 32px - elv-h-8 */
+}
+
+/* Fill current color - for UI icons that should inherit text color */
+.elv-icon-fill-current path {
+  fill: currentColor;
+}
+
+.elv-icon-fill-current circle {
+  fill: currentColor;
+}
+
+.elv-icon-fill-current rect {
+  fill: currentColor;
+}

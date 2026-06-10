@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epic Card</title>
+  <link rel="stylesheet" href="../../tokens/elevate.css">
+  <link rel="stylesheet" href="../elevate.css">
+  <link rel="stylesheet" href="../../icons/icons.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: grid; gap: 1rem; margin: 1rem 0; }
+    .examples.grid-2 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Epic card hover effect */
+    .epic-card:hover .epic-arrow {
+      color: var(--text-primary);
+      transform: translateX(3px);
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Epic Card</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Clickable card for navigating to epic pages. Includes icon, tag, title, description, timestamp, and arrow indicator.
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Card with all elements: icon badge, tag chip, title, description, timestamp, and hover arrow.
+    </p>
+    <div class="examples grid-2">
+      <!-- Epic Card Example -->
+      <a href="#"
+         class="epic-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium hover:elv--translate-y-0-5 elv-relative"
+         style="text-decoration: none; display: flex; flex-direction: column; gap: 12px;">
+        <div class="elv-flex elv-items-start elv-justify-between elv-gap-3">
+          <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #EEF2FF; color: #4F46E5;">
+            <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 16C3.09722 16 2.74653 15.8507 2.44792 15.5521C2.14931 15.2535 2 14.9028 2 14.5V5.5C2 5.09722 2.14931 4.74653 2.44792 4.44792C2.74653 4.14931 3.09722 4 3.5 4H16.5C16.9167 4 17.2708 4.14931 17.5625 4.44792C17.8542 4.74653 18 5.09722 18 5.5V14.5C18 14.9028 17.8542 15.2535 17.5625 15.5521C17.2708 15.8507 16.9167 16 16.5 16H3.5ZM3.5 10H16.5V7H3.5V10Z"/></svg>
+          </div>
+          <div
+            class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary data-[selected=true]:elv-bg-primary-20 data-[selected=true]:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+            onclick="event.preventDefault(); event.stopPropagation();">
+            <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">G2 Activate</span>
+          </div>
+        </div>
+        <div class="elv-text-base elv-font-bold elv-text-default elv-leading-snug">
+          Bulk Purchase
+        </div>
+        <div class="elv-text-xs elv-text-subtle elv-leading-relaxed elv-flex-1">
+          Credits and subscription purchasing flow. Reducing friction and clarifying value across upgrade paths.
+        </div>
+        <div class="elv-pt-3">
+          <div class="elv-text-xs elv-text-nonessential">Updated Apr 15, 2026</div>
+        </div>
+        <span class="epic-arrow elv-absolute elv-text-sm elv-text-neutral-30 elv-transition-all" style="bottom: 1.5rem; right: 1.5rem;">→</span>
+      </a>
+
+      <!-- Another Card with Different Color -->
+      <a href="#"
+         class="epic-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium hover:elv--translate-y-0-5 elv-relative"
+         style="text-decoration: none; display: flex; flex-direction: column; gap: 12px;">
+        <div class="elv-flex elv-items-start elv-justify-between elv-gap-3">
+          <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #F0FDFA; color: #0F766E;">
+            <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 17C4.0875 17 3.73437 16.8531 3.44062 16.5594C3.14687 16.2656 3 15.9125 3 15.5V3H4.5V15.5H17V17H4.5ZM5.5 14.5V7.5H8.5V14.5H5.5ZM9.5 14.5V4H12.5V14.5H9.5ZM13.5 14.5V10.5H16.5V14.5H13.5Z"/></svg>
+          </div>
+          <div
+            class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary data-[selected=true]:elv-bg-primary-20 data-[selected=true]:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+            onclick="event.preventDefault(); event.stopPropagation();">
+            <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">Agent Marketplace</span>
+          </div>
+        </div>
+        <div class="elv-text-base elv-font-bold elv-text-default elv-leading-snug">
+          Agent Performance
+        </div>
+        <div class="elv-text-xs elv-text-subtle elv-leading-relaxed elv-flex-1">
+          Monitoring and performance visualization for G2 AI agents. Health signals and output quality.
+        </div>
+        <div class="elv-pt-3">
+          <div class="elv-text-xs elv-text-nonessential">Updated Apr 15, 2026</div>
+        </div>
+        <span class="epic-arrow elv-absolute elv-text-sm elv-text-neutral-30 elv-transition-all" style="bottom: 1.5rem; right: 1.5rem;">→</span>
+      </a>
+    </div>
+    <pre><code>&lt;a href="./epic-path/"
+   class="epic-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium hover:elv--translate-y-0-5 elv-relative"
+   style="text-decoration: none; display: flex; flex-direction: column; gap: 12px;"&gt;
+  &lt;div class="elv-flex elv-items-start elv-justify-between elv-gap-3"&gt;
+    &lt;!-- Icon Badge --&gt;
+    &lt;div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center"
+         style="background: #EEF2FF; color: #4F46E5;"&gt;
+      &lt;svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20"&gt;
+        &lt;path d="..."/&gt;
+      &lt;/svg&gt;
+    &lt;/div&gt;
+    &lt;!-- Tag Chip --&gt;
+    &lt;div class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+         onclick="event.preventDefault(); event.stopPropagation();"&gt;
+      &lt;span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap"&gt;Tag&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Title --&gt;
+  &lt;div class="elv-text-base elv-font-bold elv-text-default elv-leading-snug"&gt;
+    Epic Title
+  &lt;/div&gt;
+  &lt;!-- Description --&gt;
+  &lt;div class="elv-text-xs elv-text-subtle elv-leading-relaxed elv-flex-1"&gt;
+    Brief description of the epic and what it explores.
+  &lt;/div&gt;
+  &lt;!-- Timestamp --&gt;
+  &lt;div class="elv-pt-3"&gt;
+    &lt;div class="elv-text-xs elv-text-nonessential"&gt;Updated Apr 15, 2026&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Arrow Indicator --&gt;
+  &lt;span class="epic-arrow elv-absolute elv-text-sm elv-text-neutral-30 elv-transition-all"
+        style="bottom: 1.5rem; right: 1.5rem;"&gt;→&lt;/span&gt;
+&lt;/a&gt;
+
+&lt;!-- Add hover effect CSS --&gt;
+&lt;style&gt;
+.epic-card:hover .epic-arrow {
+  color: var(--text-primary);
+  transform: translateX(3px);
+}
+&lt;/style&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Icon Badge Colors</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Use different background/foreground combinations for visual variety.
+    </p>
+    <div class="examples" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <!-- Indigo -->
+      <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #EEF2FF; color: #4F46E5;">
+        <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z"/></svg>
+      </div>
+
+      <!-- Purple -->
+      <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #F5F3FF; color: #7C3AED;">
+        <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z"/></svg>
+      </div>
+
+      <!-- Teal -->
+      <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #F0FDFA; color: #0F766E;">
+        <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z"/></svg>
+      </div>
+
+      <!-- G2 Purple -->
+      <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #f2f0f9; color: #5746b2;">
+        <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z"/></svg>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Indigo --&gt;
+style="background: #EEF2FF; color: #4F46E5;"
+
+&lt;!-- Purple --&gt;
+style="background: #F5F3FF; color: #7C3AED;"
+
+&lt;!-- Teal --&gt;
+style="background: #F0FDFA; color: #0F766E;"
+
+&lt;!-- G2 Purple --&gt;
+style="background: #f2f0f9; color: #5746b2;"</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Grid Layout</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Responsive grid: 1 column mobile, 2 columns tablet (750px+), 3 columns desktop (1000px+).
+    </p>
+    <pre><code>&lt;div class="elv-grid elv-grid-cols-1 elv-gap-4" id="epicGrid"&gt;
+  &lt;!-- Epic cards here --&gt;
+&lt;/div&gt;
+
+&lt;!-- Add responsive breakpoints --&gt;
+&lt;style&gt;
+@media (min-width: 750px) {
+  #epicGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (min-width: 1000px) {
+  #epicGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+&lt;/style&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Specifications</h2>
+    <ul class="elv-text-xs elv-text-default" style="line-height: 1.8;">
+      <li><strong>Container:</strong> flex column, gap-12 (12px), p-6 (24px padding)</li>
+      <li><strong>Border:</strong> border-light, rounded-md (6px)</li>
+      <li><strong>Hover:</strong> shadow-2, border-medium, -translate-y-0-5</li>
+      <li><strong>Icon badge:</strong> w-9 h-9 (36×36px), rounded-md</li>
+      <li><strong>Tag chip:</strong> h-6 (24px), rounded-xs, single-select pattern</li>
+      <li><strong>Title:</strong> text-base (16px), font-bold, text-default</li>
+      <li><strong>Description:</strong> text-xs (12px), text-subtle, flex-1 to push timestamp down</li>
+      <li><strong>Timestamp:</strong> text-xs (12px), text-nonessential, pt-3 (12px top padding)</li>
+      <li><strong>Arrow:</strong> absolute position, bottom: 1.5rem, right: 1.5rem, text-sm</li>
+      <li><strong>Arrow hover:</strong> color changes to text-primary, translateX(3px)</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

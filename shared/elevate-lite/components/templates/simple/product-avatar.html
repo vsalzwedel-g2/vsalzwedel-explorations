@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Avatar Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Product Avatar Styles — from product_avatar/component.rb */
+    .elv-product-avatar {
+      display: flex;
+      flex-shrink: 0;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--border-light);
+      background: var(--bg-neutral-0);
+      overflow: hidden;
+    }
+
+    /* Size Variants */
+    .elv-product-avatar--xxl {
+      width: 168px;
+      height: 168px;
+      padding: 8px;
+      border-radius: 8px; /* rounded-pill-3xs */
+      box-shadow: var(--shadow-1);
+    }
+
+    .elv-product-avatar--xl {
+      width: 144px;
+      height: 144px;
+      padding: 8px;
+      border-radius: 8px; /* rounded-pill-3xs */
+    }
+
+    .elv-product-avatar--lg {
+      width: 104px;
+      height: 104px;
+      padding: 4px;
+      border-radius: 4px; /* rounded-xs */
+    }
+
+    .elv-product-avatar--md {
+      width: 80px;
+      height: 80px;
+      border-radius: 4px; /* rounded-xs */
+    }
+
+    .elv-product-avatar--sm {
+      width: 64px;
+      height: 64px;
+      border-radius: 4px; /* rounded-xs */
+    }
+
+    .elv-product-avatar--xs {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px; /* rounded-xs */
+    }
+
+    .elv-product-avatar--xxs {
+      width: 24px;
+      height: 24px;
+      border-radius: 2px; /* rounded-2xs */
+    }
+
+    /* Image */
+    .elv-product-avatar__image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    /* Image border radius varies by size */
+    .elv-product-avatar--xxl .elv-product-avatar__image {
+      border-radius: 4px; /* rounded-xs */
+    }
+
+    .elv-product-avatar--xl .elv-product-avatar__image,
+    .elv-product-avatar--lg .elv-product-avatar__image,
+    .elv-product-avatar--md .elv-product-avatar__image,
+    .elv-product-avatar--sm .elv-product-avatar__image {
+      border-radius: 2px; /* rounded-2xs */
+    }
+
+    .elv-product-avatar--xs .elv-product-avatar__image,
+    .elv-product-avatar--xxs .elv-product-avatar__image {
+      border-radius: 0; /* rounded-0 */
+    }
+
+    /* Placeholder */
+    .elv-product-avatar__placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-neutral-5);
+      color: var(--text-nonessential);
+      border-radius: inherit;
+    }
+
+    .elv-product-avatar__placeholder svg {
+      width: 50%;
+      height: 50%;
+      fill: currentColor;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Product Avatar</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/product_avatar/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: product_avatar/component.rb
+  </p>
+
+  <!-- Size Variants with Images -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants (with Logo)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      7 sizes: xxl (168px), xl (144px), lg (104px), md (80px), sm (64px), xs (48px), xxs (24px)
+    </p>
+    <div class="examples">
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--xxl">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">XXL (168px)</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--xl">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">XL (144px)</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--lg">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">LG (104px)</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--md">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">MD (80px)</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--sm">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">SM (64px)</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--xs">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">XS (48px)</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--xxs">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">XXS (24px)</p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-product-avatar elv-product-avatar--md"&gt;
+  &lt;img src="product-logo.png" alt="Product name" class="elv-product-avatar__image"&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Different Product Logos -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Multiple Products</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Square/rounded-square shape contains product logos and brand icons
+    </p>
+    <div class="examples">
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--lg">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">Slack</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--lg">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_477db83099ec9c234b478afa0b2fefce/salesforce-sales-cloud.png" alt="Salesforce" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">Salesforce</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--lg">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_f337f81c68fdcc035bda73eea8bfbc58/hubspot-marketing-hub.png" alt="HubSpot" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">HubSpot</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--lg">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_1490169431/zoom.png" alt="Zoom" class="elv-product-avatar__image">
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">Zoom</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placeholder -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Placeholder (No Logo)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      When product doesn't have a logo uploaded
+    </p>
+    <div class="examples">
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--xxl">
+          <div class="elv-product-avatar__placeholder">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18H4V6H20V18ZM6 10H11V15H6V10ZM12 10H18V11H12V10ZM12 12H18V13H12V12ZM12 14H18V15H12V14Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">XXL</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--lg">
+          <div class="elv-product-avatar__placeholder">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18H4V6H20V18ZM6 10H11V15H6V10ZM12 10H18V11H12V10ZM12 12H18V13H12V12ZM12 14H18V15H12V14Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">LG</p>
+      </div>
+      <div>
+        <div class="elv-product-avatar elv-product-avatar--md">
+          <div class="elv-product-avatar__placeholder">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 18H4V6H20V18ZM6 10H11V15H6V10ZM12 10H18V11H12V10ZM12 12H18V13H12V12ZM12 14H18V15H12V14Z" fill="currentColor"/>
+            </svg>
+          </div>
+        </div>
+        <p class="elv-text-xs elv-text-subtle elv-mt-1">MD</p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-product-avatar elv-product-avatar--md"&gt;
+  &lt;div class="elv-product-avatar__placeholder"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- In Context: Product List -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: Product List</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common usage in product comparison or recommendation lists
+    </p>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4" style="max-width: 600px;">
+      <h3 class="elv-text-sm elv-font-semibold elv-text-default elv-mb-3">Recommended Products</h3>
+      <div class="elv-flex elv-flex-col elv-gap-3">
+        <div class="elv-flex elv-items-center elv-gap-3">
+          <div class="elv-product-avatar elv-product-avatar--md">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+          </div>
+          <div>
+            <p class="elv-text-sm elv-font-semibold elv-text-default">Slack</p>
+            <p class="elv-text-xs elv-text-subtle">Team Communication Software</p>
+          </div>
+        </div>
+        <div class="elv-flex elv-items-center elv-gap-3">
+          <div class="elv-product-avatar elv-product-avatar--md">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_477db83099ec9c234b478afa0b2fefce/salesforce-sales-cloud.png" alt="Salesforce" class="elv-product-avatar__image">
+          </div>
+          <div>
+            <p class="elv-text-sm elv-font-semibold elv-text-default">Salesforce Sales Cloud</p>
+            <p class="elv-text-xs elv-text-subtle">CRM Software</p>
+          </div>
+        </div>
+        <div class="elv-flex elv-items-center elv-gap-3">
+          <div class="elv-product-avatar elv-product-avatar--md">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_f337f81c68fdcc035bda73eea8bfbc58/hubspot-marketing-hub.png" alt="HubSpot" class="elv-product-avatar__image">
+          </div>
+          <div>
+            <p class="elv-text-sm elv-font-semibold elv-text-default">HubSpot Marketing Hub</p>
+            <p class="elv-text-xs elv-text-subtle">Marketing Automation Software</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Context: Product Grid -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: Product Grid</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Grid layout showing multiple product options
+    </p>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4" style="max-width: 600px;">
+      <h3 class="elv-text-sm elv-font-semibold elv-text-default elv-mb-3">Browse Products</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem;">
+        <div class="elv-flex elv-flex-col elv-items-center elv-gap-2">
+          <div class="elv-product-avatar elv-product-avatar--lg">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+          </div>
+          <p class="elv-text-xs elv-font-semibold elv-text-default elv-text-center">Slack</p>
+        </div>
+        <div class="elv-flex elv-flex-col elv-items-center elv-gap-2">
+          <div class="elv-product-avatar elv-product-avatar--lg">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_477db83099ec9c234b478afa0b2fefce/salesforce-sales-cloud.png" alt="Salesforce" class="elv-product-avatar__image">
+          </div>
+          <p class="elv-text-xs elv-font-semibold elv-text-default elv-text-center">Salesforce</p>
+        </div>
+        <div class="elv-flex elv-flex-col elv-items-center elv-gap-2">
+          <div class="elv-product-avatar elv-product-avatar--lg">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_f337f81c68fdcc035bda73eea8bfbc58/hubspot-marketing-hub.png" alt="HubSpot" class="elv-product-avatar__image">
+          </div>
+          <p class="elv-text-xs elv-font-semibold elv-text-default elv-text-center">HubSpot</p>
+        </div>
+        <div class="elv-flex elv-flex-col elv-items-center elv-gap-2">
+          <div class="elv-product-avatar elv-product-avatar--lg">
+            <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_1490169431/zoom.png" alt="Zoom" class="elv-product-avatar__image">
+          </div>
+          <p class="elv-text-xs elv-font-semibold elv-text-default elv-text-center">Zoom</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Context: Product Header -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: Product Header</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Large product avatar in product detail page header
+    </p>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6" style="max-width: 600px;">
+      <div class="elv-flex elv-items-start elv-gap-4">
+        <div class="elv-product-avatar elv-product-avatar--xxl">
+          <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_5616e9f0ef9f67a9a68ebd62c54c1493/slack.png" alt="Slack" class="elv-product-avatar__image">
+        </div>
+        <div>
+          <h3 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-1">Slack</h3>
+          <p class="elv-text-sm elv-text-subtle elv-mb-3">Team Communication Software</p>
+          <div class="elv-flex elv-items-center elv-gap-2">
+            <div class="elv-flex elv-items-center elv-gap-1">
+              <span class="elv-text-sm elv-font-semibold elv-text-default">4.5</span>
+              <span class="elv-text-xs elv-text-subtle">★★★★☆</span>
+            </div>
+            <span class="elv-text-xs elv-text-subtle">•</span>
+            <span class="elv-text-xs elv-text-subtle">12,548 reviews</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Alt Text:</strong> Always provide product name as alt text (e.g., "Slack", "Salesforce")</li>
+      <li class="elv-mb-2"><strong>Semantic HTML:</strong> Use &lt;img&gt; tag for product logos (not decorative background images)</li>
+      <li class="elv-mb-2"><strong>Placeholder Icon:</strong> Should have descriptive meaning (e.g., generic product/software icon)</li>
+      <li class="elv-mb-2"><strong>Focus States:</strong> If product avatar is clickable/interactive, add visible focus ring</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Sizes</strong></td>
+        <td style="padding: 8px;">XXL (168px), XL (144px), LG (104px), MD (80px), SM (64px), XS (48px), XXS (24px)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Shape</strong></td>
+        <td style="padding: 8px;">Square with rounded corners (not circular)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">1px solid var(--border-light)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">XXL/XL: 8px, LG/MD/SM/XS: 4px, XXS: 2px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Padding</strong></td>
+        <td style="padding: 8px;">XXL/XL: 8px, LG: 4px, MD and smaller: 0px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Shadow</strong></td>
+        <td style="padding: 8px;">Only XXL has shadow-1, others have no shadow</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Background</strong></td>
+        <td style="padding: 8px;">var(--bg-neutral-0) white</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Image Fit</strong></td>
+        <td style="padding: 8px;">object-fit: contain (not cover - preserves logo aspect ratio)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Display Types</strong></td>
+        <td style="padding: 8px;">Product logo (image) or placeholder icon</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+
+    <h3 class="elv-text-sm elv-font-semibold elv-text-default elv-mt-4 elv-mb-2">When to Use Product Avatar</h3>
+    <ul class="elv-text-sm elv-text-default elv-mb-4">
+      <li class="elv-mb-2">Product listings, comparison tables, recommendation grids</li>
+      <li class="elv-mb-2">Product detail page headers</li>
+      <li class="elv-mb-2">Search results showing software products</li>
+      <li class="elv-mb-2">Alternative product suggestions</li>
+      <li class="elv-mb-2">Vendor/product identification in reviews or comparisons</li>
+    </ul>
+
+    <h3 class="elv-text-sm elv-font-semibold elv-text-default elv-mt-4 elv-mb-2">Key Differences from User Avatar</h3>
+    <ul class="elv-text-sm elv-text-default elv-mb-4">
+      <li class="elv-mb-2"><strong>Shape:</strong> Square/rounded-square (product) vs. circular (user)</li>
+      <li class="elv-mb-2"><strong>Fit:</strong> contain (product logos preserve aspect ratio) vs. cover (user photos fill circle)</li>
+      <li class="elv-mb-2"><strong>Purpose:</strong> Brand/product identity vs. human identity</li>
+      <li class="elv-mb-2"><strong>Placeholder:</strong> Generic product icon vs. user icon or initials</li>
+    </ul>
+
+    <h3 class="elv-text-sm elv-font-semibold elv-text-default elv-mt-4 elv-mb-2">Size Selection</h3>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>XXL/XL:</strong> Product detail page headers, hero sections</li>
+      <li class="elv-mb-2"><strong>LG:</strong> Product cards, featured listings, grid views</li>
+      <li class="elv-mb-2"><strong>MD:</strong> List items, search results (most common)</li>
+      <li class="elv-mb-2"><strong>SM/XS:</strong> Compact lists, tags, inline mentions</li>
+      <li class="elv-mb-2"><strong>XXS:</strong> Dense tables, minimal UI contexts</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

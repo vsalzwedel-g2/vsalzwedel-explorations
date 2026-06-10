@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Button Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; align-items: center; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Material Symbols — default settings for icon buttons */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    /* Icon Button — button with only icon, no text */
+    .elv-icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Sizes */
+    .elv-icon-button--xs {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+    .elv-icon-button--sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+    }
+    .elv-icon-button--md {
+      width: 40px;
+      height: 40px;
+      padding: 8px 12px;
+      border-radius: 20px;
+    }
+    .elv-icon-button--lg {
+      width: 48px;
+      height: 48px;
+      padding: 12px;
+      border-radius: 24px;
+    }
+
+    /* Icon sizing — all icons are 10px regardless of button size */
+    .elv-icon-button .material-symbols-outlined {
+      width: 10px;
+      height: 10px;
+      font-size: 10px;
+    }
+
+    /* Primary Style */
+    .elv-icon-button--primary {
+      background: var(--text-primary);
+      color: var(--bg-neutral-0);
+      border: none;
+    }
+    .elv-icon-button--primary.elv-icon-button--xs {
+      background: var(--bg-neutral-0);
+      color: var(--text-primary);
+    }
+    .elv-icon-button--primary:not(.elv-icon-button--xs):hover {
+      box-shadow: 0 2px 8px 2px rgba(32, 31, 35, 0.149), 0 0 0 1px var(--text-primary);
+    }
+    .elv-icon-button--primary.elv-icon-button--xs:hover {
+      background: var(--bg-primary-20);
+    }
+    .elv-icon-button--primary:focus {
+      box-shadow: 0 0 0 4px var(--palette-purple-40), 0 0 0 0.5px var(--bg-neutral-0);
+    }
+    .elv-icon-button--primary:active {
+      box-shadow: inset 0 0 4px 1px rgba(32, 31, 35, 0.4);
+    }
+    .elv-icon-button--primary:disabled {
+      background: var(--bg-neutral-10);
+      color: var(--bg-neutral-20);
+      cursor: not-allowed;
+      border: none;
+    }
+    .elv-icon-button--primary.elv-icon-button--xs:disabled {
+      background: var(--bg-neutral-0);
+    }
+
+    /* Secondary Style */
+    .elv-icon-button--secondary {
+      background: var(--bg-neutral-10);
+      border: 1px solid var(--bg-neutral-20);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      color: var(--text-primary);
+    }
+    .elv-icon-button--secondary.elv-icon-button--xs {
+      background: var(--bg-neutral-0);
+      border: none;
+      box-shadow: none;
+      color: var(--text-neutral-70);
+    }
+    .elv-icon-button--secondary:not(.elv-icon-button--xs):hover {
+      background: var(--bg-primary-20);
+    }
+    .elv-icon-button--secondary.elv-icon-button--xs:hover {
+      background: var(--bg-neutral-20);
+      color: var(--text-primary);
+    }
+    .elv-icon-button--secondary:focus {
+      box-shadow: 0 0 0 4px var(--palette-purple-40), 0 0 0 0.5px var(--bg-neutral-0);
+    }
+    .elv-icon-button--secondary:not(.elv-icon-button--xs):active {
+      box-shadow: inset 0 0 4px 1px rgba(32, 31, 35, 0.4);
+    }
+    .elv-icon-button--secondary:disabled {
+      background: var(--bg-neutral-10);
+      border-color: transparent;
+      color: var(--bg-neutral-20);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .elv-icon-button--secondary.elv-icon-button--xs:disabled {
+      background: var(--bg-neutral-0);
+    }
+
+    /* Tertiary Style */
+    .elv-icon-button--tertiary {
+      background: transparent;
+      color: var(--text-primary);
+      border: none;
+    }
+    .elv-icon-button--tertiary:hover {
+      background: var(--bg-primary-20);
+    }
+    .elv-icon-button--tertiary:focus {
+      box-shadow: 0 0 0 4px var(--palette-purple-40), 0 0 0 0.5px var(--bg-neutral-0);
+    }
+    .elv-icon-button--tertiary:active {
+      box-shadow: inset 0 0 4px 1px rgba(32, 31, 35, 0.4);
+    }
+    .elv-icon-button--tertiary:disabled {
+      background: var(--bg-neutral-0);
+      color: var(--bg-neutral-20);
+      cursor: not-allowed;
+    }
+    .elv-icon-button--tertiary:disabled:hover {
+      background: var(--bg-neutral-0);
+      box-shadow: none;
+    }
+
+    /* Primary Brand Style */
+    .elv-icon-button--primary-brand {
+      background: #ff492c;
+      color: var(--bg-neutral-0);
+      border: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .elv-icon-button--primary-brand:hover {
+      box-shadow: 0 0 0 1px #ff492c, 0 2px 8px 2px rgba(32, 31, 35, 0.149);
+    }
+    .elv-icon-button--primary-brand:focus {
+      box-shadow: 0 0 0 4px var(--palette-purple-40), 0 0 0 0.5px var(--bg-neutral-0);
+    }
+    .elv-icon-button--primary-brand:active {
+      border: 1px solid #ff7761;
+      box-shadow: inset 0 0 4px 1px rgba(32, 31, 35, 0.4);
+    }
+    .elv-icon-button--primary-brand:disabled {
+      background: var(--bg-neutral-10);
+      color: var(--bg-neutral-20);
+      cursor: not-allowed;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* Primary Inverted Style */
+    .elv-icon-button--primary-inverted {
+      background: var(--bg-neutral-0);
+      color: var(--text-primary);
+      border: 1px solid #cacace;
+      border-radius: 24px;
+    }
+    .elv-icon-button--primary-inverted:hover {
+      border-color: var(--bg-neutral-0);
+      box-shadow: 0 2px 8px 2px rgba(32, 31, 35, 0.149), 0 0 0 1px var(--text-primary);
+    }
+    .elv-icon-button--primary-inverted:focus {
+      box-shadow: 0 0 0 4px var(--palette-purple-40), 0 0 0 0.5px var(--bg-neutral-0);
+    }
+    .elv-icon-button--primary-inverted:active {
+      box-shadow: inset 0 0 4px 1px rgba(32, 31, 35, 0.4);
+    }
+    .elv-icon-button--primary-inverted:disabled {
+      background: var(--bg-neutral-10);
+      color: var(--bg-neutral-20);
+      cursor: not-allowed;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* Tooltip support — based on tooltip component */
+    .elv-icon-button[aria-describedby] {
+      position: relative;
+    }
+
+    .elv-tooltip {
+      position: absolute;
+      z-index: 9999;
+      background: var(--text-default);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 500;
+      max-width: 240px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+    }
+
+    .elv-tooltip.is-visible {
+      opacity: 1;
+    }
+
+    .elv-tooltip[data-position="top"] {
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .elv-tooltip[data-position="bottom"] {
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Demo backgrounds */
+    .dark-bg {
+      background: var(--text-default);
+      padding: 1rem;
+      border-radius: 8px;
+      display: inline-flex;
+      gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Icon Button</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: <a href="../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md (Buttons)</a>
+  </p>
+
+  <!-- Sizes -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Sizes</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Extra Small (24px), Small (32px), Medium (40px), Large (48px)
+    </p>
+    <div class="examples">
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--xs" type="button" aria-label="Search">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--sm" type="button" aria-label="Search">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Search">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--lg" type="button" aria-label="Search">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-icon-button elv-icon-button--primary elv-icon-button--xs" type="button" aria-label="Search"&gt;
+  &lt;span class="material-symbols-outlined"&gt;search&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;button class="elv-icon-button elv-icon-button--primary elv-icon-button--sm" type="button" aria-label="Search"&gt;
+  &lt;span class="material-symbols-outlined"&gt;search&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Search"&gt;
+  &lt;span class="material-symbols-outlined"&gt;search&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;button class="elv-icon-button elv-icon-button--primary elv-icon-button--lg" type="button" aria-label="Search"&gt;
+  &lt;span class="material-symbols-outlined"&gt;search&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Primary Style -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Primary Style</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Purple background (#5746b2), white icon. Use for main actions.
+    </p>
+    <div class="examples">
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Add">
+        <span class="material-symbols-outlined">add</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Search">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Edit">
+        <span class="material-symbols-outlined">edit</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Share">
+        <span class="material-symbols-outlined">share</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Favorite" disabled>
+        <span class="material-symbols-outlined">favorite</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-icon-button elv-icon-button--primary elv-icon-button--md" type="button" aria-label="Add"&gt;
+  &lt;span class="material-symbols-outlined"&gt;add&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Secondary Style -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Secondary Style</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Transparent with border. Use for secondary actions.
+    </p>
+    <div class="examples">
+      <button class="elv-icon-button elv-icon-button--secondary elv-icon-button--md" type="button" aria-label="Filter">
+        <span class="material-symbols-outlined">filter_list</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--secondary elv-icon-button--md" type="button" aria-label="Sort">
+        <span class="material-symbols-outlined">sort</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--secondary elv-icon-button--md" type="button" aria-label="Download">
+        <span class="material-symbols-outlined">download</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--secondary elv-icon-button--md" type="button" aria-label="Print" disabled>
+        <span class="material-symbols-outlined">print</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-icon-button elv-icon-button--secondary elv-icon-button--md" type="button" aria-label="Filter"&gt;
+  &lt;span class="material-symbols-outlined"&gt;filter_list&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Tertiary Style -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Tertiary Style</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Transparent, purple icon. Use for tertiary actions.
+    </p>
+    <div class="examples">
+      <button class="elv-icon-button elv-icon-button--tertiary elv-icon-button--md" type="button" aria-label="More options">
+        <span class="material-symbols-outlined">more_vert</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--tertiary elv-icon-button--md" type="button" aria-label="Settings">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--tertiary elv-icon-button--md" type="button" aria-label="Info">
+        <span class="material-symbols-outlined">info</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--tertiary elv-icon-button--md" type="button" aria-label="Help" disabled>
+        <span class="material-symbols-outlined">help</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-icon-button elv-icon-button--tertiary elv-icon-button--md" type="button" aria-label="More options"&gt;
+  &lt;span class="material-symbols-outlined"&gt;more_vert&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Primary Brand Style -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Primary Brand Style</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Rorange background (#ff492c), white icon. Use for brand-specific actions.
+    </p>
+    <div class="examples">
+      <button class="elv-icon-button elv-icon-button--primary-brand elv-icon-button--md" type="button" aria-label="G2 Home">
+        <span class="material-symbols-outlined">home</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary-brand elv-icon-button--md" type="button" aria-label="Featured">
+        <span class="material-symbols-outlined">star</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary-brand elv-icon-button--md" type="button" aria-label="Share on G2" disabled>
+        <span class="material-symbols-outlined">share</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-icon-button elv-icon-button--primary-brand elv-icon-button--md" type="button" aria-label="G2 Home"&gt;
+  &lt;span class="material-symbols-outlined"&gt;home&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Primary Inverted Style -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Primary Inverted Style</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      White background with border, purple icon. Use on dark backgrounds.
+    </p>
+    <div class="dark-bg">
+      <button class="elv-icon-button elv-icon-button--primary-inverted elv-icon-button--md" type="button" aria-label="Search">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary-inverted elv-icon-button--md" type="button" aria-label="Filter">
+        <span class="material-symbols-outlined">filter_list</span>
+      </button>
+      <button class="elv-icon-button elv-icon-button--primary-inverted elv-icon-button--md" type="button" aria-label="Settings" disabled>
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-icon-button elv-icon-button--primary-inverted elv-icon-button--md" type="button" aria-label="Search"&gt;
+  &lt;span class="material-symbols-outlined"&gt;search&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- With Tooltips -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Tooltips</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Icon buttons should always have tooltips for clarity. Hover to see tooltips.
+    </p>
+    <div class="examples">
+      <button
+        class="elv-icon-button elv-icon-button--primary elv-icon-button--md"
+        type="button"
+        aria-label="Add to favorites"
+        aria-describedby="tooltip-fav"
+        data-tooltip-trigger>
+        <span class="material-symbols-outlined">favorite</span>
+        <div class="elv-tooltip" role="tooltip" id="tooltip-fav" data-position="top">
+          Add to favorites
+        </div>
+      </button>
+
+      <button
+        class="elv-icon-button elv-icon-button--secondary elv-icon-button--md"
+        type="button"
+        aria-label="Download report"
+        aria-describedby="tooltip-dl"
+        data-tooltip-trigger>
+        <span class="material-symbols-outlined">download</span>
+        <div class="elv-tooltip" role="tooltip" id="tooltip-dl" data-position="top">
+          Download report
+        </div>
+      </button>
+
+      <button
+        class="elv-icon-button elv-icon-button--tertiary elv-icon-button--md"
+        type="button"
+        aria-label="Share link"
+        aria-describedby="tooltip-share"
+        data-tooltip-trigger>
+        <span class="material-symbols-outlined">share</span>
+        <div class="elv-tooltip" role="tooltip" id="tooltip-share" data-position="top">
+          Share link
+        </div>
+      </button>
+    </div>
+    <pre><code>&lt;button
+  class="elv-icon-button elv-icon-button--primary elv-icon-button--md"
+  type="button"
+  aria-label="Add to favorites"
+  aria-describedby="tooltip-fav"
+  data-tooltip-trigger&gt;
+  &lt;span class="material-symbols-outlined"&gt;favorite&lt;/span&gt;
+  &lt;div class="elv-tooltip" role="tooltip" id="tooltip-fav" data-position="top"&gt;
+    Add to favorites
+  &lt;/div&gt;
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Usage Notes -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Notes</h2>
+    <ul class="elv-text-sm elv-text-default" style="line-height: 1.6;">
+      <li><strong>Always include aria-label</strong> — icon buttons need accessible text for screen readers</li>
+      <li><strong>Add tooltips</strong> — use aria-describedby to connect tooltip for clarity</li>
+      <li><strong>Use Material Symbols</strong> — load from Google Fonts or use custom icons</li>
+      <li><strong>Focus states</strong> — 3px purple outline on keyboard focus for accessibility</li>
+      <li><strong>Disabled state</strong> — reduced opacity, no hover, cursor: not-allowed</li>
+      <li><strong>Minimum touch target</strong> — medium (40px) meets 48px mobile target with hit area</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  // Tooltip functionality
+  document.querySelectorAll('[data-tooltip-trigger]').forEach(trigger => {
+    const tooltip = trigger.querySelector('.elv-tooltip');
+    let timeout;
+
+    function show() {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        tooltip.classList.add('is-visible');
+      }, 500); // 500ms delay
+    }
+
+    function hide() {
+      clearTimeout(timeout);
+      tooltip.classList.remove('is-visible');
+    }
+
+    trigger.addEventListener('mouseenter', show);
+    trigger.addEventListener('mouseleave', hide);
+    trigger.addEventListener('focus', show);
+    trigger.addEventListener('blur', hide);
+  });
+</script>
+
+</body>
+</html>

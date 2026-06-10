@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Badge Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Status Badge Styles — from DESIGN.md & ViewComponent */
+    .elv-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-height: 24px;
+      padding: 2px 4px;
+      border: 1px solid;
+      border-radius: 8px; /* radius-sm */
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 16px;
+      width: fit-content;
+    }
+
+    /* Neutral (Default) */
+    .elv-status-badge--neutral {
+      background: var(--bg-neutral-10); /* N10 */
+      border-color: var(--bg-neutral-20); /* border-light */
+      color: var(--text-default); /* text-default */
+    }
+
+    /* Info */
+    .elv-status-badge--info {
+      background: #dbecff; /* B20 */
+      border-color: #5296ff; /* border-info */
+      color: #002b5c; /* B160 */
+    }
+
+    /* Success */
+    .elv-status-badge--success {
+      background: #d0f6f1; /* G20 */
+      border-color: #13c8af; /* border-success */
+      color: #0f5249; /* G160 */
+    }
+
+    /* Warning */
+    .elv-status-badge--warning {
+      background: #fff9e5; /* Y20 */
+      border-color: #ffcf29; /* border-warning */
+      color: #665000; /* Y160 */
+    }
+
+    /* Critical */
+    .elv-status-badge--critical {
+      background: #ffd7d1; /* R40 */
+      border-color: #eb2000; /* border-critical */
+      color: #b21800; /* R140 */
+    }
+
+    /* New (Primary/Purple) */
+    .elv-status-badge--new {
+      background: var(--bg-primary-20); /* P20 */
+      border-color: var(--text-primary); /* border-primary */
+      color: #342a6a; /* P140 */
+    }
+
+    /* Brand (Rorange) */
+    .elv-status-badge--brand {
+      background: #fff6f5; /* R20 */
+      border-color: var(--bg-brand); /* Rorange */
+      color: var(--bg-brand); /* text-brand */
+    }
+
+    /* Dot Indicator Variants */
+    .elv-status-badge__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .elv-status-badge__dot--active {
+      background: #13c8af; /* G120 */
+    }
+
+    .elv-status-badge__dot--inactive {
+      background: #eb2000; /* R120 */
+    }
+
+    .elv-status-badge__dot--pending {
+      background: #5296ff; /* B100 */
+    }
+
+    .elv-status-badge__dot--unassigned {
+      background: #ffcf29; /* Y100 */
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Status Badge</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/status_badge/default" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md line 461-477</a>
+  </p>
+
+  <!-- Primary States -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Primary States</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Main semantic states with distinct color treatments
+    </p>
+    <div class="examples">
+      <span class="elv-status-badge elv-status-badge--neutral">Neutral</span>
+      <span class="elv-status-badge elv-status-badge--info">Info</span>
+      <span class="elv-status-badge elv-status-badge--success">Success</span>
+      <span class="elv-status-badge elv-status-badge--warning">Warning</span>
+      <span class="elv-status-badge elv-status-badge--critical">Critical</span>
+      <span class="elv-status-badge elv-status-badge--new">New</span>
+      <span class="elv-status-badge elv-status-badge--brand">Recommended</span>
+    </div>
+    <pre><code>&lt;span class="elv-status-badge elv-status-badge--neutral"&gt;Neutral&lt;/span&gt;
+&lt;span class="elv-status-badge elv-status-badge--info"&gt;Info&lt;/span&gt;
+&lt;span class="elv-status-badge elv-status-badge--success"&gt;Success&lt;/span&gt;
+&lt;span class="elv-status-badge elv-status-badge--warning"&gt;Warning&lt;/span&gt;
+&lt;span class="elv-status-badge elv-status-badge--critical"&gt;Critical&lt;/span&gt;
+&lt;span class="elv-status-badge elv-status-badge--new"&gt;New&lt;/span&gt;
+&lt;span class="elv-status-badge elv-status-badge--brand"&gt;Recommended&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- Dot Indicator States -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Dot Indicator States</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Status indicators with color-coded dots for active/inactive states
+    </p>
+    <div class="examples">
+      <span class="elv-status-badge elv-status-badge--neutral">
+        <span class="elv-status-badge__dot elv-status-badge__dot--active"></span>
+        Active
+      </span>
+      <span class="elv-status-badge elv-status-badge--neutral">
+        <span class="elv-status-badge__dot elv-status-badge__dot--inactive"></span>
+        Inactive
+      </span>
+      <span class="elv-status-badge elv-status-badge--neutral">
+        <span class="elv-status-badge__dot elv-status-badge__dot--pending"></span>
+        Pending
+      </span>
+      <span class="elv-status-badge elv-status-badge--neutral">
+        <span class="elv-status-badge__dot elv-status-badge__dot--unassigned"></span>
+        Unassigned
+      </span>
+    </div>
+    <pre><code>&lt;span class="elv-status-badge elv-status-badge--neutral"&gt;
+  &lt;span class="elv-status-badge__dot elv-status-badge__dot--active"&gt;&lt;/span&gt;
+  Active
+&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- Usage Examples -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Examples</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common real-world applications
+    </p>
+    <div class="examples">
+      <span class="elv-status-badge elv-status-badge--success">Published</span>
+      <span class="elv-status-badge elv-status-badge--warning">Draft</span>
+      <span class="elv-status-badge elv-status-badge--critical">Archived</span>
+      <span class="elv-status-badge elv-status-badge--new">Beta</span>
+      <span class="elv-status-badge elv-status-badge--info">In Review</span>
+      <span class="elv-status-badge elv-status-badge--brand">Featured</span>
+    </div>
+  </div>
+
+  <!-- In Context -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Examples of badges in typical UI contexts
+    </p>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4 elv-mb-4">
+      <div class="elv-flex elv-items-center elv-justify-between">
+        <div class="elv-flex elv-items-center elv-gap-3">
+          <h3 class="elv-text-base elv-font-semibold elv-text-default">Project Alpha</h3>
+          <span class="elv-status-badge elv-status-badge--success">
+            <span class="elv-status-badge__dot elv-status-badge__dot--active"></span>
+            Active
+          </span>
+        </div>
+        <span class="elv-text-xs elv-text-nonessential">Updated 2 hours ago</span>
+      </div>
+    </div>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4 elv-mb-4">
+      <div class="elv-flex elv-items-center elv-justify-between">
+        <div class="elv-flex elv-items-center elv-gap-3">
+          <h3 class="elv-text-base elv-font-semibold elv-text-default">Integration Service</h3>
+          <span class="elv-status-badge elv-status-badge--neutral">
+            <span class="elv-status-badge__dot elv-status-badge__dot--pending"></span>
+            Pending
+          </span>
+        </div>
+        <span class="elv-text-xs elv-text-nonessential">Waiting for approval</span>
+      </div>
+    </div>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4">
+      <div class="elv-flex elv-items-center elv-justify-between">
+        <div class="elv-flex elv-items-center elv-gap-3">
+          <h3 class="elv-text-base elv-font-semibold elv-text-default">API v2.0</h3>
+          <span class="elv-status-badge elv-status-badge--brand">New</span>
+        </div>
+        <span class="elv-text-xs elv-text-nonessential">Released today</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Semantic Meaning:</strong> Always pair color with text—never rely on color alone</li>
+      <li class="elv-mb-2"><strong>ARIA Labels:</strong> Use <code>aria-label</code> or <code>role="status"</code> for dynamic badges</li>
+      <li class="elv-mb-2"><strong>Contrast:</strong> All color combinations meet WCAG AA standards</li>
+      <li class="elv-mb-2"><strong>Non-interactive:</strong> Badges are display-only, not clickable</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">8px (radius-sm)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">1px solid (color varies by state)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Padding</strong></td>
+        <td style="padding: 8px;">2px 4px (vertical / horizontal)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Font</strong></td>
+        <td style="padding: 8px;">Label Sm (14px / 500)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Height</strong></td>
+        <td style="padding: 8px;">max-height: 24px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>States</strong></td>
+        <td style="padding: 8px;">12 total (7 semantic + 4 dot variants + recommended)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Display</strong></td>
+        <td style="padding: 8px;">inline-flex, items-center, width: fit-content</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

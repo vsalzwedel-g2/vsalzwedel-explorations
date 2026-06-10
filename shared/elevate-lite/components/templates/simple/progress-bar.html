@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Bar Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Progress Bar Styles — from progress_bar/component.rb */
+    .elv-progress-bar {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .elv-progress-bar__track {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 9999px;
+      background: var(--bg-neutral-10); /* N10 */
+    }
+
+    .elv-progress-bar__track--sm {
+      height: 8px;
+    }
+
+    .elv-progress-bar__track--lg {
+      height: 12px;
+    }
+
+    .elv-progress-bar__fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .elv-progress-bar__fill--brand {
+      background: var(--bg-brand); /* bg-brand */
+    }
+
+    .elv-progress-bar__fill--primary {
+      background: var(--text-primary); /* bg-primary */
+    }
+
+    .elv-progress-bar__label {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-default); /* text-default */
+    }
+
+    .elv-progress-bar__label--lg {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Progress Bar</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/progress_bar/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: progress_bar/component.rb
+  </p>
+
+  <!-- Size Variants -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      2 sizes: sm (8px height) and lg (12px height)
+    </p>
+    <div class="examples">
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">Small (8px)</p>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">Large (12px)</p>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__track elv-progress-bar__track--lg">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Small progress bar --&gt;
+&lt;div class="elv-progress-bar"&gt;
+  &lt;div class="elv-progress-bar__track elv-progress-bar__track--sm"&gt;
+    &lt;div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Large progress bar --&gt;
+&lt;div class="elv-progress-bar"&gt;
+  &lt;div class="elv-progress-bar__track elv-progress-bar__track--lg"&gt;
+    &lt;div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Color Variants -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Color Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      2 color treatments: brand (rorange) and primary (purple)
+    </p>
+    <div class="examples">
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">Brand (Rorange)</p>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 75%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">Primary (Purple)</p>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--primary" style="width: 75%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Brand color --&gt;
+&lt;div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 75%"&gt;&lt;/div&gt;
+
+&lt;!-- Primary color --&gt;
+&lt;div class="elv-progress-bar__fill elv-progress-bar__fill--primary" style="width: 75%"&gt;&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- With Label -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Label</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Optional label text above progress bar
+    </p>
+    <div class="examples">
+      <div>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__label">65% complete</div>
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__label elv-progress-bar__label--lg">Profile completion: 80%</div>
+          <div class="elv-progress-bar__track elv-progress-bar__track--lg">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--primary" style="width: 80%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-progress-bar"&gt;
+  &lt;div class="elv-progress-bar__label"&gt;65% complete&lt;/div&gt;
+  &lt;div class="elv-progress-bar__track elv-progress-bar__track--sm"&gt;
+    &lt;div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Progress States -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Progress States</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common progress percentages
+    </p>
+    <div class="examples">
+      <div>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__label">Starting (0%)</div>
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__label">In Progress (33%)</div>
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 33%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__label">Almost Done (90%)</div>
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 90%"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="elv-progress-bar">
+          <div class="elv-progress-bar__label">Complete (100%)</div>
+          <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+            <div class="elv-progress-bar__fill elv-progress-bar__fill--primary" style="width: 100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Context -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common usage patterns
+    </p>
+
+    <!-- Profile Completion Card -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4 elv-mb-4" style="max-width: 500px;">
+      <div class="elv-flex elv-justify-between elv-items-center elv-mb-3">
+        <h3 class="elv-text-base elv-font-semibold elv-text-default">Profile Completion</h3>
+        <span class="elv-text-sm elv-font-semibold elv-text-subtle">3 of 5</span>
+      </div>
+      <div class="elv-progress-bar">
+        <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+          <div class="elv-progress-bar__fill elv-progress-bar__fill--primary" style="width: 60%"></div>
+        </div>
+      </div>
+      <p class="elv-text-xs elv-text-subtle elv-mt-2">Complete 2 more steps to unlock full access</p>
+    </div>
+
+    <!-- Upload Progress -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4" style="max-width: 500px;">
+      <div class="elv-flex elv-items-center elv-gap-3 elv-mb-3">
+        <div class="elv-text-2xl">📄</div>
+        <div class="elv-flex-1">
+          <p class="elv-text-sm elv-font-semibold elv-text-default">quarterly-report.pdf</p>
+          <p class="elv-text-xs elv-text-subtle">2.4 MB of 3.2 MB</p>
+        </div>
+      </div>
+      <div class="elv-progress-bar">
+        <div class="elv-progress-bar__track elv-progress-bar__track--sm">
+          <div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 75%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Size Selection:</strong> Use sm for inline/compact contexts, lg for prominent progress displays</li>
+      <li class="elv-mb-2"><strong>Color Choice:</strong> Brand (rorange) for primary actions, primary (purple) for completion states</li>
+      <li class="elv-mb-2"><strong>Labels:</strong> Always include descriptive label text for accessibility and context</li>
+      <li class="elv-mb-2"><strong>Animation:</strong> Progress changes smoothly via CSS transition (300ms ease)</li>
+      <li class="elv-mb-2"><strong>Width:</strong> Set fill width dynamically via inline style (JavaScript/server-side)</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>ARIA:</strong> Add <code>role="progressbar"</code>, <code>aria-valuenow</code>, <code>aria-valuemin="0"</code>, <code>aria-valuemax="100"</code></li>
+      <li class="elv-mb-2"><strong>Live Region:</strong> Add <code>aria-live="polite"</code> for dynamic updates announced to screen readers</li>
+      <li class="elv-mb-2"><strong>Label:</strong> Use <code>aria-label</code> or visible label text to describe what's progressing</li>
+      <li class="elv-mb-2"><strong>Determinate:</strong> Only use when progress percentage is known (file uploads, multi-step forms)</li>
+    </ul>
+    <pre><code>&lt;div class="elv-progress-bar" role="progressbar"
+     aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"
+     aria-label="Profile completion"&gt;
+  &lt;div class="elv-progress-bar__label"&gt;65% complete&lt;/div&gt;
+  &lt;div class="elv-progress-bar__track elv-progress-bar__track--sm"&gt;
+    &lt;div class="elv-progress-bar__fill elv-progress-bar__fill--brand" style="width: 65%"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Sizes</strong></td>
+        <td style="padding: 8px;">SM (8px), LG (12px)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Track Background</strong></td>
+        <td style="padding: 8px;">#f2f2f3 (N10)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Brand Fill</strong></td>
+        <td style="padding: 8px;">#ff492c (bg-brand / Rorange)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Primary Fill</strong></td>
+        <td style="padding: 8px;">#5746b2 (bg-primary / Purple)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">9999px (fully rounded / pill)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Transition</strong></td>
+        <td style="padding: 8px;">300ms ease on width changes</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Label Font</strong></td>
+        <td style="padding: 8px;">SM: 14px/600, LG: 16px/600</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

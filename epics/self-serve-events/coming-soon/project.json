@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../schema/project.schema.json",
+  "title": "Coming Soon",
+  "date": "2026-06-03",
+  "description": "Countdown landing page for Dreamforce 2026 (Asana partnership). Hero, timer, and CTA.",
+  "icon": "clock",
+  "iconBg": "#DBEAFE",
+  "iconFg": "#1E40AF",
+  "build": "vite"
+}

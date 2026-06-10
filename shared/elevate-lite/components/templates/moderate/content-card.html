@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Card Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: var(--bg-neutral-0);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Material Symbols */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+
+    /* Content Card Styles */
+    .elv-content-card {
+      background: var(--bg-neutral-0);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+    }
+    .elv-content-card--bordered {
+      border: 1px solid var(--border-light);
+    }
+    .elv-content-card--elevated {
+      box-shadow: 0 4px 16px 0 rgba(32, 31, 35, 0.10);
+    }
+    @media (min-width: 768px) {
+      .elv-content-card--elevated {
+        box-shadow: 0 4px 16px 0 rgba(32, 31, 35, 0.10);
+      }
+    }
+    .elv-content-card--lg {
+      border-radius: var(--radius-lg);
+    }
+    .elv-content-card__header {
+      padding: 24px 24px 8px 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .elv-content-card__header-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .elv-content-card__title {
+      font-size: 21px;
+      line-height: 28px;
+      font-weight: 700;
+      color: var(--text-default);
+      margin: 0;
+    }
+    .elv-content-card__subtitle {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      color: var(--text-subtle);
+      margin: 4px 0 0 0;
+    }
+    .elv-content-card__actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .elv-content-card__action-button {
+      background: transparent;
+      border: none;
+      color: var(--text-subtle);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: var(--radius-xs);
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .elv-content-card__action-button:hover {
+      background: var(--bg-neutral-10);
+      color: var(--text-default);
+    }
+    .elv-content-card__body {
+      padding: 12px 24px 24px 24px;
+      flex: 1;
+    }
+    @media (min-width: 768px) {
+      .elv-content-card__body {
+        padding: 16px 24px 24px 24px;
+      }
+    }
+    .elv-content-card__body--no-footer {
+      padding: 12px 24px 24px 24px;
+    }
+    @media (min-width: 768px) {
+      .elv-content-card__body--no-footer {
+        padding: 16px 24px 24px 24px;
+      }
+    }
+    .elv-content-card__body > *:first-child {
+      margin-top: 0;
+    }
+    .elv-content-card__body > *:last-child {
+      margin-bottom: 0;
+    }
+    .elv-content-card__footer {
+      padding: 8px 24px 24px 24px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .elv-content-card__footer--center {
+      justify-content: center;
+    }
+    .elv-content-card__footer--end {
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Content Card</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Structured card layout pattern with header, body, and optional footer. For card specs, see
+    <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a>
+    and <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md</a>.
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Card</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">Title + content. Border defines edge (no shadow).</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--bordered">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Card Title</h3>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">
+            Card description with supporting text that explains what this card is about. Body content can contain any components.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-content-card elv-content-card--bordered"&gt;
+  &lt;div class="elv-content-card__header"&gt;
+    &lt;div class="elv-content-card__header-content"&gt;
+      &lt;h3 class="elv-content-card__title"&gt;Card Title&lt;/h3&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-content-card__body"&gt;
+    &lt;p class="elv-text-sm elv-text-default"&gt;Content...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Subtitle</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">Title + subtitle for additional context.</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--bordered">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Account Settings</h3>
+            <p class="elv-content-card__subtitle">Manage your profile and preferences</p>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">
+            Update your account information, notification settings, and privacy preferences.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-content-card__header"&gt;
+  &lt;div class="elv-content-card__header-content"&gt;
+    &lt;h3 class="elv-content-card__title"&gt;Account Settings&lt;/h3&gt;
+    &lt;p class="elv-content-card__subtitle"&gt;Manage your profile&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Header Actions</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">Title + action buttons (close, edit, etc.).</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--bordered">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Notifications</h3>
+          </div>
+          <div class="elv-content-card__actions">
+            <button class="elv-content-card__action-button" aria-label="Settings">
+              <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+            </button>
+            <button class="elv-content-card__action-button" aria-label="Close">
+              <span class="material-symbols-outlined" style="font-size: 20px;">close</span>
+            </button>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">
+            You have 3 unread notifications. Check your activity feed for updates.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-content-card__header"&gt;
+  &lt;div class="elv-content-card__header-content"&gt;
+    &lt;h3 class="elv-content-card__title"&gt;Notifications&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-content-card__actions"&gt;
+    &lt;button class="elv-content-card__action-button"&gt;...&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Footer</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">Content + action buttons at bottom.</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--bordered">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Confirm Action</h3>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">
+            Are you sure you want to proceed? This action cannot be undone.
+          </p>
+        </div>
+        <div class="elv-content-card__footer">
+          <button class="btn btn--tertiary btn--md">Cancel</button>
+          <button class="btn btn--primary btn--md">Confirm</button>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-content-card elv-content-card--bordered"&gt;
+  &lt;div class="elv-content-card__header"&gt;...&lt;/div&gt;
+  &lt;div class="elv-content-card__body"&gt;...&lt;/div&gt;
+  &lt;div class="elv-content-card__footer"&gt;
+    &lt;button class="btn btn--tertiary btn--md"&gt;Cancel&lt;/button&gt;
+    &lt;button class="btn btn--primary btn--md"&gt;Confirm&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Elevated (Shadow)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">Floating card with subtle shadow (10% opacity).</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--elevated">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Floating Card</h3>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">
+            Use elevated cards for modals, popovers, or elements that need visual lift. No border when elevated.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-content-card elv-content-card--elevated"&gt;
+  &lt;!-- No border when using --elevated --&gt;
+  &lt;div class="elv-content-card__header"&gt;...&lt;/div&gt;
+  &lt;div class="elv-content-card__body"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Large Radius</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">16px border radius for prominent cards.</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--bordered elv-content-card--lg">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Large Card</h3>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">
+            Use larger radius (16px) for hero cards or prominent content.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-content-card elv-content-card--bordered elv-content-card--lg"&gt;
+  &lt;div class="elv-content-card__header"&gt;...&lt;/div&gt;
+  &lt;div class="elv-content-card__body"&gt;...&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Footer Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">Footer with different alignments.</p>
+    <div class="examples">
+      <div class="elv-content-card elv-content-card--bordered">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Right-aligned Footer</h3>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">Actions right-aligned.</p>
+        </div>
+        <div class="elv-content-card__footer elv-content-card__footer--end">
+          <button class="btn btn--secondary btn--sm">Learn more</button>
+          <button class="btn btn--primary btn--sm">Get started</button>
+        </div>
+      </div>
+
+      <div class="elv-content-card elv-content-card--bordered">
+        <div class="elv-content-card__header">
+          <div class="elv-content-card__header-content">
+            <h3 class="elv-content-card__title">Center-aligned Footer</h3>
+          </div>
+        </div>
+        <div class="elv-content-card__body">
+          <p class="elv-text-sm elv-text-default">Single action centered.</p>
+        </div>
+        <div class="elv-content-card__footer elv-content-card__footer--center">
+          <button class="btn btn--primary btn--md">Continue</button>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Right-aligned --&gt;
+&lt;div class="elv-content-card__footer elv-content-card__footer--end"&gt;
+  &lt;button class="btn btn--primary btn--sm"&gt;Get started&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Center-aligned --&gt;
+&lt;div class="elv-content-card__footer elv-content-card__footer--center"&gt;
+  &lt;button class="btn btn--primary btn--md"&gt;Continue&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Notes</h2>
+    <ul class="elv-text-sm elv-text-default" style="line-height: 1.6; padding-left: 1.5rem;">
+      <li>Static cards use border only, no shadow (DESIGN.md rule)</li>
+      <li>Floating cards (modals, popovers) use shadow, no border</li>
+      <li>Header padding: 24px horizontal, 24px top, 8px bottom</li>
+      <li>Body padding: 24px horizontal, 12px top (md: 16px), 24px bottom</li>
+      <li>Footer padding: 8px top, 24px horizontal and bottom (asymmetric)</li>
+      <li>Shadow: Responsive - only shown at md+ breakpoint for elevated variant</li>
+      <li>Card title uses Heading Sm (21px / 700)</li>
+      <li>Subtitle uses Label Sm (14px / 400)</li>
+      <li>Default radius: 12px (radius-md), large: 16px (radius-lg)</li>
+      <li>Max shadow opacity: 10-12% for floating elements</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Input Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+    .form-group { margin-bottom: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Select Input Styles — Based on DESIGN.md form specs (lines 444-458) */
+    .elv-select {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .elv-select__field {
+      width: 100%;
+      height: 40px;
+      padding: 0 36px 0 12px; /* Right padding for dropdown icon */
+      background: var(--bg-neutral-10); /* N10 */
+      border: 1px solid var(--bg-neutral-20); /* border-light */
+      border-radius: 8px; /* radius-sm */
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      color: var(--text-default); /* text-default */
+      transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      appearance: none; /* Remove default browser styling */
+      cursor: pointer;
+    }
+
+    /* Custom dropdown icon */
+    .elv-select__icon {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none; /* Allow clicks to pass through to select */
+      color: var(--text-neutral-70); /* text-nonessential */
+      font-size: 20px;
+    }
+
+    /* Placeholder styling (first option when disabled selected) */
+    .elv-select__field option:disabled {
+      color: var(--text-neutral-70); /* text-nonessential */
+    }
+
+    /* Hover state */
+    .elv-select__field:hover:not(:disabled) {
+      background: var(--bg-neutral-10); /* N10 - maintain background */
+    }
+
+    /* Focus state — CRITICAL for accessibility */
+    .elv-select__field:focus {
+      outline: 3px solid var(--palette-purple-40); /* P40 */
+      outline-offset: -3px;
+      border: 1px solid var(--bg-neutral-20); /* Keep border consistent */
+    }
+
+    /* Error state */
+    .elv-select__field--error {
+      border: 2px solid #eb2000; /* R120 */
+      padding: 0 35px 0 11px;
+    }
+
+    /* Disabled state */
+    .elv-select__field:disabled {
+      background: var(--bg-neutral-5); /* N5 */
+      color: var(--border-medium); /* N40 */
+      cursor: not-allowed;
+    }
+
+    .elv-select__field:disabled + .elv-select__icon {
+      color: var(--border-medium); /* N40 */
+    }
+
+    /* Label */
+    .elv-input-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      margin-bottom: 4px;
+    }
+
+    /* Required indicator */
+    .elv-required {
+      color: #eb2000;
+    }
+
+    /* Optional indicator */
+    .elv-input-optional {
+      font-weight: 400;
+      color: var(--text-neutral-70);
+    }
+
+    /* Helper text */
+    .elv-input-helper {
+      font-size: 12px;
+      color: var(--text-neutral-70);
+      margin-top: 4px;
+    }
+
+    /* Error message */
+    .elv-input-error {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b21800; /* R140 */
+      margin-top: 4px;
+    }
+
+    /* Large variant */
+    .elv-select--lg .elv-select__field {
+      height: 48px;
+    }
+
+    /* Material Symbols styling */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Select Input</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/form/select/default" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md line 444-458</a>
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default (40px height)</h2>
+    <div class="examples">
+      <div class="elv-select">
+        <select
+          class="elv-select__field"
+          aria-label="Select option"
+        >
+          <option value="" disabled selected>Select an option...</option>
+          <option value="1">Option 1</option>
+          <option value="2">Option 2</option>
+          <option value="3">Option 3</option>
+          <option value="4">Option 4</option>
+        </select>
+        <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-select"&gt;
+  &lt;select class="elv-select__field" aria-label="Select option"&gt;
+    &lt;option value="" disabled selected&gt;Select an option...&lt;/option&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+    &lt;option value="2"&gt;Option 2&lt;/option&gt;
+    &lt;option value="3"&gt;Option 3&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Select States</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label">Default with Placeholder</label>
+        <div class="elv-select">
+          <select
+            class="elv-select__field"
+            aria-label="Default select"
+          >
+            <option value="" disabled selected>Choose a category...</option>
+            <option value="crm">CRM Software</option>
+            <option value="marketing">Marketing Automation</option>
+            <option value="sales">Sales Enablement</option>
+            <option value="analytics">Analytics</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label">Focus State (click to see)</label>
+        <div class="elv-select">
+          <select
+            class="elv-select__field"
+            aria-label="Focus select"
+          >
+            <option value="" disabled selected>Click to see purple border</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+        <p class="elv-input-helper">Focus state: 3px outline (#c3bde5 / P40)</p>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="error-select">Error State</label>
+        <div class="elv-select">
+          <select
+            id="error-select"
+            class="elv-select__field elv-select__field--error"
+            aria-invalid="true"
+            aria-describedby="error-message"
+          >
+            <option value="" disabled selected>Please select...</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+        <p id="error-message" class="elv-input-error" role="alert">This field is required</p>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label">Disabled State</label>
+        <div class="elv-select">
+          <select
+            class="elv-select__field"
+            disabled
+            aria-label="Disabled select"
+          >
+            <option value="" disabled selected>Disabled select...</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="with-label">With Label</label>
+        <div class="elv-select">
+          <select
+            id="with-label"
+            class="elv-select__field"
+          >
+            <option value="" disabled selected>Choose your country...</option>
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+            <option value="uk">United Kingdom</option>
+            <option value="au">Australia</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="with-helper">With Helper Text</label>
+        <div class="elv-select">
+          <select
+            id="with-helper"
+            class="elv-select__field"
+          >
+            <option value="" disabled selected>Select company size...</option>
+            <option value="1-10">1-10 employees</option>
+            <option value="11-50">11-50 employees</option>
+            <option value="51-200">51-200 employees</option>
+            <option value="201-500">201-500 employees</option>
+            <option value="501+">501+ employees</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+        <p class="elv-input-helper">This helps us recommend the right software</p>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="required-select">
+          Required Field <span class="elv-required">*</span>
+        </label>
+        <div class="elv-select">
+          <select
+            id="required-select"
+            class="elv-select__field"
+            required
+            aria-required="true"
+          >
+            <option value="" disabled selected>This field is required</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-input-label" for="optional-select">
+          Optional Field <span class="elv-input-optional">(optional)</span>
+        </label>
+        <div class="elv-select">
+          <select
+            id="optional-select"
+            class="elv-select__field"
+          >
+            <option value="" disabled selected>This field is optional</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Error State --&gt;
+&lt;div class="elv-select"&gt;
+  &lt;select
+    class="elv-select__field elv-select__field--error"
+    aria-invalid="true"
+    aria-describedby="error-id"
+  &gt;
+    &lt;option value="" disabled selected&gt;Please select...&lt;/option&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;
+&lt;p id="error-id" class="elv-input-error" role="alert"&gt;Error message&lt;/p&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;div class="elv-select"&gt;
+  &lt;select class="elv-select__field" disabled&gt;
+    &lt;option value="" disabled selected&gt;Disabled...&lt;/option&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- With Label --&gt;
+&lt;label class="elv-input-label" for="select-id"&gt;Label&lt;/label&gt;
+&lt;div class="elv-select"&gt;
+  &lt;select id="select-id" class="elv-select__field"&gt;
+    &lt;option value="" disabled selected&gt;Choose...&lt;/option&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- With Helper Text --&gt;
+&lt;div class="elv-select"&gt;
+  &lt;select class="elv-select__field"&gt;...&lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;
+&lt;p class="elv-input-helper"&gt;Helper text&lt;/p&gt;
+
+&lt;!-- Required --&gt;
+&lt;label class="elv-input-label"&gt;
+  Label &lt;span class="elv-required"&gt;*&lt;/span&gt;
+&lt;/label&gt;
+&lt;div class="elv-select"&gt;
+  &lt;select class="elv-select__field" required aria-required="true"&gt;...&lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Large Variant (48px height)</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="large-select">Large Select Input</label>
+        <div class="elv-select elv-select--lg">
+          <select
+            id="large-select"
+            class="elv-select__field"
+          >
+            <option value="" disabled selected>Larger select for better touch targets...</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+        <p class="elv-input-helper">48px height for improved accessibility</p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-select elv-select--lg"&gt;
+  &lt;select class="elv-select__field"&gt;
+    &lt;option value="" disabled selected&gt;Choose...&lt;/option&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Grouped Options</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="grouped-select">Software Categories</label>
+        <div class="elv-select">
+          <select
+            id="grouped-select"
+            class="elv-select__field"
+          >
+            <option value="" disabled selected>Browse by category...</option>
+            <optgroup label="Sales & Marketing">
+              <option value="crm">CRM Software</option>
+              <option value="marketing-automation">Marketing Automation</option>
+              <option value="sales-enablement">Sales Enablement</option>
+            </optgroup>
+            <optgroup label="IT & Development">
+              <option value="project-management">Project Management</option>
+              <option value="dev-tools">Development Tools</option>
+              <option value="security">Security Software</option>
+            </optgroup>
+            <optgroup label="Analytics & BI">
+              <option value="analytics">Analytics</option>
+              <option value="bi">Business Intelligence</option>
+              <option value="data-viz">Data Visualization</option>
+            </optgroup>
+          </select>
+          <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-select"&gt;
+  &lt;select class="elv-select__field"&gt;
+    &lt;option value="" disabled selected&gt;Browse by category...&lt;/option&gt;
+    &lt;optgroup label="Sales &amp; Marketing"&gt;
+      &lt;option value="crm"&gt;CRM Software&lt;/option&gt;
+      &lt;option value="marketing"&gt;Marketing Automation&lt;/option&gt;
+    &lt;/optgroup&gt;
+    &lt;optgroup label="IT &amp; Development"&gt;
+      &lt;option value="project"&gt;Project Management&lt;/option&gt;
+    &lt;/optgroup&gt;
+  &lt;/select&gt;
+  &lt;span class="elv-select__icon material-symbols-outlined"&gt;expand_more&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Complete Form Example</h2>
+    <div class="examples">
+      <form style="max-width: 400px;">
+        <div class="form-group">
+          <label class="elv-input-label" for="category">
+            Software Category <span class="elv-required">*</span>
+          </label>
+          <div class="elv-select">
+            <select
+              id="category"
+              class="elv-select__field"
+              required
+              aria-required="true"
+            >
+              <option value="" disabled selected>Choose a category...</option>
+              <option value="crm">CRM Software</option>
+              <option value="marketing">Marketing Automation</option>
+              <option value="sales">Sales Enablement</option>
+              <option value="analytics">Analytics</option>
+            </select>
+            <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="elv-input-label" for="company-size">
+            Company Size <span class="elv-required">*</span>
+          </label>
+          <div class="elv-select">
+            <select
+              id="company-size"
+              class="elv-select__field"
+              required
+              aria-required="true"
+            >
+              <option value="" disabled selected>Select company size...</option>
+              <option value="1-10">1-10 employees</option>
+              <option value="11-50">11-50 employees</option>
+              <option value="51-200">51-200 employees</option>
+              <option value="201-500">201-500 employees</option>
+              <option value="501+">501+ employees</option>
+            </select>
+            <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+          </div>
+          <p class="elv-input-helper">This helps us recommend the right software</p>
+        </div>
+
+        <div class="form-group">
+          <label class="elv-input-label" for="country">
+            Country <span class="elv-required">*</span>
+          </label>
+          <div class="elv-select">
+            <select
+              id="country"
+              class="elv-select__field"
+              required
+              aria-required="true"
+            >
+              <option value="" disabled selected>Choose your country...</option>
+              <option value="us">United States</option>
+              <option value="ca">Canada</option>
+              <option value="uk">United Kingdom</option>
+              <option value="au">Australia</option>
+              <option value="de">Germany</option>
+              <option value="fr">France</option>
+            </select>
+            <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="elv-input-label" for="industry">
+            Industry <span class="elv-input-optional">(optional)</span>
+          </label>
+          <div class="elv-select">
+            <select
+              id="industry"
+              class="elv-select__field"
+            >
+              <option value="" disabled selected>Select your industry...</option>
+              <option value="tech">Technology</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Finance</option>
+              <option value="retail">Retail</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="other">Other</option>
+            </select>
+            <span class="elv-select__icon material-symbols-outlined">expand_more</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Labels:</strong> Always pair selects with labels using <code>for</code> and <code>id</code> attributes</li>
+      <li class="elv-mb-2"><strong>ARIA Labels:</strong> Include <code>aria-label</code> when label is not visible</li>
+      <li class="elv-mb-2"><strong>Error States:</strong> Use <code>aria-invalid="true"</code> and <code>aria-describedby</code> for error messages</li>
+      <li class="elv-mb-2"><strong>Required Fields:</strong> Use <code>required</code> attribute and <code>aria-required="true"</code></li>
+      <li class="elv-mb-2"><strong>Focus State:</strong> 3px solid outline (#c3bde5 / P40) — CRITICAL for accessibility</li>
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong>
+        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>Tab to focus select</li>
+          <li>Space or Enter to open dropdown</li>
+          <li>Arrow Up/Down to navigate options</li>
+          <li>Enter to select</li>
+          <li>Escape to close without selecting</li>
+        </ul>
+      </li>
+      <li class="elv-mb-2"><strong>Placeholder Option:</strong> Use <code>disabled selected</code> for placeholder text</li>
+      <li class="elv-mb-2"><strong>Helper Text:</strong> Use <code>aria-describedby</code> to link helper text to select</li>
+      <li class="elv-mb-2"><strong>Touch Targets:</strong> Minimum 40px height, use 48px for better mobile accessibility</li>
+      <li class="elv-mb-2"><strong>Native Functionality:</strong> Uses native <code>&lt;select&gt;</code> for maximum compatibility and accessibility</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Property</strong></td>
+        <td style="padding: 8px;"><strong>Value</strong></td>
+        <td style="padding: 8px;"><strong>Token</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Background</td>
+        <td style="padding: 8px;">#f2f2f3</td>
+        <td style="padding: 8px;">N10</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border</td>
+        <td style="padding: 8px;">1px solid #dfdfe2</td>
+        <td style="padding: 8px;">border-light</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border Radius</td>
+        <td style="padding: 8px;">8px</td>
+        <td style="padding: 8px;">radius-sm</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Height (default)</td>
+        <td style="padding: 8px;">40px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Height (large)</td>
+        <td style="padding: 8px;">48px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Padding</td>
+        <td style="padding: 8px;">0 36px 0 12px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Font Size</td>
+        <td style="padding: 8px;">16px</td>
+        <td style="padding: 8px;">Body</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Font Weight</td>
+        <td style="padding: 8px;">400</td>
+        <td style="padding: 8px;">Regular</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Line Height</td>
+        <td style="padding: 8px;">24px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Text Color</td>
+        <td style="padding: 8px;">#201f23</td>
+        <td style="padding: 8px;">text-default</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Placeholder Color</td>
+        <td style="padding: 8px;">#6f6d78</td>
+        <td style="padding: 8px;">text-nonessential</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Focus State</td>
+        <td style="padding: 8px;">3px solid outline #c3bde5</td>
+        <td style="padding: 8px;">P40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Hover State</td>
+        <td style="padding: 8px;">background: #f2f2f3</td>
+        <td style="padding: 8px;">N10</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error State</td>
+        <td style="padding: 8px;">2px solid #eb2000</td>
+        <td style="padding: 8px;">R120</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Disabled Background</td>
+        <td style="padding: 8px;">#fafafa</td>
+        <td style="padding: 8px;">N5</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Disabled Text</td>
+        <td style="padding: 8px;">#b0afb6</td>
+        <td style="padding: 8px;">N40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Font Size</td>
+        <td style="padding: 8px;">14px</td>
+        <td style="padding: 8px;">Label Sm</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Font Weight</td>
+        <td style="padding: 8px;">600</td>
+        <td style="padding: 8px;">Semibold</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Helper Text Size</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Helper Text Color</td>
+        <td style="padding: 8px;">#6f6d78</td>
+        <td style="padding: 8px;">text-nonessential</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Message Size</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Message Weight</td>
+        <td style="padding: 8px;">600</td>
+        <td style="padding: 8px;">Semibold</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Message Color</td>
+        <td style="padding: 8px;">#b21800</td>
+        <td style="padding: 8px;">R140</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Dropdown Icon</td>
+        <td style="padding: 8px;">Material Symbol expand_more</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Spacing Guidelines</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Element</strong></td>
+        <td style="padding: 8px;"><strong>Spacing</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label to select</td>
+        <td style="padding: 8px;">4px (space-1)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Select to helper text</td>
+        <td style="padding: 8px;">4px (space-1)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Select to error message</td>
+        <td style="padding: 8px;">4px (space-1)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Between form fields</td>
+        <td style="padding: 8px;">16px (space-4)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Implementation Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Native Select:</strong> Uses native HTML <code>&lt;select&gt;</code> for maximum compatibility, accessibility, and mobile OS integration</li>
+      <li class="elv-mb-2"><strong>No JavaScript Required:</strong> Fully functional without JavaScript — keyboard and mouse interactions work natively</li>
+      <li class="elv-mb-2"><strong>Custom Styling:</strong> Browser default styling removed with <code>appearance: none</code> for consistent cross-browser appearance</li>
+      <li class="elv-mb-2"><strong>Dropdown Icon:</strong> Custom icon positioned absolutely to prevent click-blocking — uses <code>pointer-events: none</code></li>
+      <li class="elv-mb-2"><strong>Placeholder Pattern:</strong> First option with <code>disabled selected</code> attributes creates placeholder text effect</li>
+      <li class="elv-mb-2"><strong>Grouped Options:</strong> Use <code>&lt;optgroup&gt;</code> for categorizing related options</li>
+      <li class="elv-mb-2"><strong>Mobile Behavior:</strong> Native select on mobile devices shows OS-native picker for optimal UX</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

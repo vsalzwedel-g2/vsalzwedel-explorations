@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breadcrumbs Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Breadcrumbs Styles — from breadcrumbs/component.rb */
+    .elv-breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .elv-breadcrumb-item {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .elv-breadcrumb-link {
+      color: var(--text-neutral-70); /* neutral-70 / N70 */
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 16px;
+      transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .elv-breadcrumb-link:hover {
+      color: var(--text-default); /* text-default */
+    }
+
+    .elv-breadcrumb-link:focus-visible {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    .elv-breadcrumb-link--current {
+      color: var(--text-default); /* neutral-100 / text-default - darkest/most prominent */
+      pointer-events: none;
+    }
+
+    .elv-breadcrumb-separator {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      fill: var(--text-neutral-70); /* N70 */
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Breadcrumbs</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/breadcrumbs/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: breadcrumbs/component.rb
+  </p>
+
+  <!-- Basic Breadcrumbs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Breadcrumbs</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Navigation path showing current location in hierarchy
+    </p>
+    <div class="examples">
+      <nav aria-label="Breadcrumb">
+        <ol class="elv-breadcrumbs" role="list">
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Home</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Categories</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">CRM Software</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <pre><code>&lt;nav aria-label="Breadcrumb"&gt;
+  &lt;ol class="elv-breadcrumbs" role="list"&gt;
+    &lt;li class="elv-breadcrumb-item"&gt;
+      &lt;a href="/" class="elv-breadcrumb-link"&gt;Home&lt;/a&gt;
+      &lt;svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none"&gt;
+        &lt;path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/&gt;
+      &lt;/svg&gt;
+    &lt;/li&gt;
+    &lt;li class="elv-breadcrumb-item"&gt;
+      &lt;a href="/categories" class="elv-breadcrumb-link"&gt;Categories&lt;/a&gt;
+      &lt;svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none"&gt;
+        &lt;path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/&gt;
+      &lt;/svg&gt;
+    &lt;/li&gt;
+    &lt;li class="elv-breadcrumb-item"&gt;
+      &lt;span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page"&gt;
+        CRM Software
+      &lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <!-- Two Levels -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Two Levels</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Shorter navigation path
+    </p>
+    <div class="examples">
+      <nav aria-label="Breadcrumb">
+        <ol class="elv-breadcrumbs" role="list">
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Products</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">Salesforce</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Four Levels -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Four Levels</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Deeper navigation hierarchy
+    </p>
+    <div class="examples">
+      <nav aria-label="Breadcrumb">
+        <ol class="elv-breadcrumbs" role="list">
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Home</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Categories</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">CRM Software</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">Reviews</span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- With SEO Schema -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With SEO Schema Markup</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Structured data for search engines (schema.org/BreadcrumbList)
+    </p>
+    <div class="examples">
+      <nav aria-label="Breadcrumb">
+        <ol class="elv-breadcrumbs" role="list" itemscope itemtype="https://schema.org/BreadcrumbList">
+          <li class="elv-breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a href="#" class="elv-breadcrumb-link" itemprop="item" itemtype="https://schema.org/Thing">
+              <span itemprop="name">Home</span>
+            </a>
+            <meta itemprop="position" content="1" />
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a href="#" class="elv-breadcrumb-link" itemprop="item" itemtype="https://schema.org/Thing">
+              <span itemprop="name">Categories</span>
+            </a>
+            <meta itemprop="position" content="2" />
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page" itemprop="item" itemtype="https://schema.org/Thing">
+              <span itemprop="name">CRM Software</span>
+            </span>
+            <meta itemprop="position" content="3" />
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <pre><code>&lt;ol class="elv-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList"&gt;
+  &lt;li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"&gt;
+    &lt;a href="/" itemprop="item"&gt;
+      &lt;span itemprop="name"&gt;Home&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;meta itemprop="position" content="1" /&gt;
+  &lt;/li&gt;
+  ...
+&lt;/ol&gt;</code></pre>
+  </div>
+
+  <!-- In Context -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Breadcrumbs in page header
+    </p>
+
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6" style="max-width: 800px;">
+      <nav aria-label="Breadcrumb" class="elv-mb-4">
+        <ol class="elv-breadcrumbs" role="list">
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Home</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <a href="#" class="elv-breadcrumb-link">Categories</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">CRM Software</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-3xl elv-font-bold elv-text-default elv-mb-2">CRM Software</h1>
+      <p class="elv-text-base elv-text-subtle">
+        Compare the best CRM software. Read reviews, pricing, and features to find the right solution for your business.
+      </p>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Current Page:</strong> Always show as non-clickable span with aria-current="page"</li>
+      <li class="elv-mb-2"><strong>Parent Links:</strong> All ancestors should be clickable links</li>
+      <li class="elv-mb-2"><strong>Separators:</strong> Use chevron-right icon between items (no separator after current page)</li>
+      <li class="elv-mb-2"><strong>SEO:</strong> Include schema.org markup for search engine indexing</li>
+      <li class="elv-mb-2"><strong>Placement:</strong> Typically placed at top of page, above main heading</li>
+      <li class="elv-mb-2"><strong>Length:</strong> Keep to 2-5 levels deep; consider truncation for very long paths</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Semantic HTML:</strong> Use <code>&lt;nav&gt;</code> with <code>aria-label="Breadcrumb"</code></li>
+      <li class="elv-mb-2"><strong>List Structure:</strong> Use <code>&lt;ol&gt;</code> with <code>role="list"</code> to preserve semantics</li>
+      <li class="elv-mb-2"><strong>Current Page:</strong> Mark with <code>aria-current="page"</code> and disable pointer events</li>
+      <li class="elv-mb-2"><strong>Focus States:</strong> All links have visible focus indicators</li>
+      <li class="elv-mb-2"><strong>Link Text:</strong> Use meaningful labels (not "Back" or "Previous")</li>
+      <li class="elv-mb-2"><strong>Landmarks:</strong> Breadcrumbs are a navigation landmark for screen readers</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Font Size</strong></td>
+        <td style="padding: 8px;">12px (Label XS)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Link Color</strong></td>
+        <td style="padding: 8px;">#6f6d78 (neutral-70 / N70)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Link Hover</strong></td>
+        <td style="padding: 8px;">#201f23 (text-default)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Current Page</strong></td>
+        <td style="padding: 8px;">#201f23 (neutral-100 / text-default), no pointer events</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Separator Icon</strong></td>
+        <td style="padding: 8px;">chevron-right (20x20px), fill: #6f6d78 (N70)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Gap</strong></td>
+        <td style="padding: 8px;">2px between items and separators</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Focus Outline</strong></td>
+        <td style="padding: 8px;">2px solid #5746b2 (P100) with 2px offset</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

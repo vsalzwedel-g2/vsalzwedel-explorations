@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Link Styles — from link/component.rb & tokens */
+    .elv-link {
+      color: #0073f5; /* text-link / blue-100 */
+      text-decoration: none;
+      transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .elv-link:hover {
+      color: #005bc2; /* text-link-hover / blue-120 */
+    }
+
+    .elv-link:visited {
+      color: #2e90ff; /* text-link-visited / blue-80 */
+    }
+
+    .elv-link:focus-visible {
+      outline: 2px solid var(--text-primary); /* P100 - primary purple */
+      outline-offset: 2px;
+      border-radius: 8px; /* 8px for sm/md, override for xs below */
+    }
+
+    /* Size-specific focus border-radius */
+    .elv-link--xs:focus-visible {
+      border-radius: 12px;
+    }
+
+    /* Underline variant */
+    .elv-link--underline {
+      text-decoration: underline;
+    }
+
+    /* Subtle variant (gray) */
+    .elv-link--subtle {
+      color: var(--text-neutral-70); /* neutral-70 / N70 */
+    }
+
+    .elv-link--subtle:hover {
+      color: var(--text-default); /* text-default */
+    }
+
+    .elv-link--subtle:visited {
+      color: var(--text-neutral-70);
+    }
+
+    /* Size variants */
+    .elv-link--md {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .elv-link--sm {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .elv-link--xs {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    /* Link as button */
+    .elv-link-button {
+      border: none;
+      background: none;
+      padding: 0;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* Disabled state */
+    .elv-link:disabled,
+    .elv-link--disabled {
+      color: var(--border-medium); /* N40 */
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Link</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/link/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: link/component.rb
+  </p>
+
+  <!-- Standard Links -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Standard Links</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Default blue links with hover and visited states
+    </p>
+    <div class="examples">
+      <div>
+        <a href="#" class="elv-link elv-link--md">Standard link (medium)</a>
+      </div>
+      <div>
+        <a href="#" class="elv-link elv-link--sm">Smaller link (small)</a>
+      </div>
+      <div>
+        <a href="#" class="elv-link elv-link--xs">Tiny link (extra small)</a>
+      </div>
+    </div>
+    <pre><code>&lt;a href="/path" class="elv-link elv-link--md"&gt;Link text&lt;/a&gt;</code></pre>
+  </div>
+
+  <!-- Underline Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Underline</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Add underline for emphasis or to meet accessibility requirements
+    </p>
+    <div class="examples">
+      <div>
+        <a href="#" class="elv-link elv-link--md elv-link--underline">Standard underlined link</a>
+      </div>
+      <div>
+        <a href="#" class="elv-link elv-link--sm elv-link--underline">Small underlined link</a>
+      </div>
+    </div>
+    <pre><code>&lt;a href="/path" class="elv-link elv-link--md elv-link--underline"&gt;Link text&lt;/a&gt;</code></pre>
+  </div>
+
+  <!-- Subtle Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Subtle Links</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Gray links for secondary navigation or less prominent actions
+    </p>
+    <div class="examples">
+      <div>
+        <a href="#" class="elv-link elv-link--md elv-link--subtle">Subtle link</a>
+      </div>
+      <div>
+        <a href="#" class="elv-link elv-link--sm elv-link--subtle">Small subtle link</a>
+      </div>
+      <div>
+        <a href="#" class="elv-link elv-link--md elv-link--subtle elv-link--underline">Subtle with underline</a>
+      </div>
+    </div>
+    <pre><code>&lt;a href="/path" class="elv-link elv-link--md elv-link--subtle"&gt;Subtle link&lt;/a&gt;</code></pre>
+  </div>
+
+  <!-- States -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Interactive States</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Hover, focus, and visited states
+    </p>
+    <div class="examples">
+      <div>
+        <a href="#hover-demo" class="elv-link elv-link--md">Hover over me</a>
+        <span class="elv-text-xs elv-text-subtle elv-ml-2">(hover to see darker blue)</span>
+      </div>
+      <div>
+        <a href="#focus-demo" class="elv-link elv-link--md">Tab to focus me</a>
+        <span class="elv-text-xs elv-text-subtle elv-ml-2">(purple outline)</span>
+      </div>
+      <div>
+        <a href="#" class="elv-link elv-link--md" onclick="this.classList.add('visited'); return false;">Click to mark visited</a>
+        <span class="elv-text-xs elv-text-subtle elv-ml-2">(lighter blue after visit)</span>
+      </div>
+    </div>
+    <pre><code>/* States are automatic via CSS pseudo-classes */
+.elv-link:hover { color: #005bc2; }
+.elv-link:visited { color: #2e90ff; }
+.elv-link:focus-visible { outline: 2px solid #5746b2; }</code></pre>
+  </div>
+
+  <!-- Link as Button -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Link as Button</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      For actions that don't navigate (use button semantics with link styling)
+    </p>
+    <div class="examples">
+      <button class="elv-link elv-link--md elv-link-button" onclick="alert('Action triggered!')">
+        Click to trigger action
+      </button>
+    </div>
+    <pre><code>&lt;button class="elv-link elv-link--md elv-link-button"&gt;
+  Action text
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- In Context -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common usage patterns
+    </p>
+
+    <!-- In Paragraph -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4 elv-mb-4" style="max-width: 600px;">
+      <p class="elv-text-base elv-text-default">
+        G2 is the world's largest and most trusted software marketplace. Read
+        <a href="#" class="elv-link elv-link--md">verified reviews</a> from real users
+        to make confident purchasing decisions. Learn more about our
+        <a href="#" class="elv-link elv-link--md elv-link--underline">scoring methodology</a>.
+      </p>
+    </div>
+
+    <!-- Navigation List -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4 elv-mb-4" style="max-width: 400px;">
+      <h3 class="elv-text-sm elv-font-semibold elv-text-default elv-mb-3">Quick Links</h3>
+      <ul class="elv-flex elv-flex-col elv-gap-2" style="list-style: none; padding: 0;">
+        <li><a href="#" class="elv-link elv-link--sm">Browse Categories</a></li>
+        <li><a href="#" class="elv-link elv-link--sm">Write a Review</a></li>
+        <li><a href="#" class="elv-link elv-link--sm">Compare Products</a></li>
+        <li><a href="#" class="elv-link elv-link--sm">Trust & Security</a></li>
+      </ul>
+    </div>
+
+    <!-- Footer Style -->
+    <div class="elv-bg-neutral-10 elv-rounded-md elv-p-4" style="max-width: 600px;">
+      <div class="elv-flex elv-flex-wrap elv-gap-4">
+        <a href="#" class="elv-link elv-link--xs elv-link--subtle">Privacy Policy</a>
+        <span class="elv-text-xs elv-text-subtle">•</span>
+        <a href="#" class="elv-link elv-link--xs elv-link--subtle">Terms of Service</a>
+        <span class="elv-text-xs elv-text-subtle">•</span>
+        <a href="#" class="elv-link elv-link--xs elv-link--subtle">Help Center</a>
+        <span class="elv-text-xs elv-text-subtle">•</span>
+        <a href="#" class="elv-link elv-link--xs elv-link--subtle">Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Standard vs Subtle:</strong> Use standard (blue) for primary navigation, subtle (gray) for footer or secondary links</li>
+      <li class="elv-mb-2"><strong>Underlines:</strong> Add underlines in dense text to improve scannability and accessibility</li>
+      <li class="elv-mb-2"><strong>Size Selection:</strong> Match link size to surrounding text (md = body, sm = small text, xs = captions/footers)</li>
+      <li class="elv-mb-2"><strong>Semantics:</strong> Use <code>&lt;a&gt;</code> for navigation, <code>&lt;button class="elv-link-button"&gt;</code> for actions</li>
+      <li class="elv-mb-2"><strong>External Links:</strong> Add <code>rel="noopener noreferrer"</code> for security when using <code>target="_blank"</code></li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Focus Indicators:</strong> 2px purple outline appears on keyboard focus (never remove it!)</li>
+      <li class="elv-mb-2"><strong>Color Independence:</strong> Consider adding underlines when color alone conveys link status</li>
+      <li class="elv-mb-2"><strong>Descriptive Text:</strong> Link text should make sense out of context (avoid "click here" or "learn more")</li>
+      <li class="elv-mb-2"><strong>External Links:</strong> Consider indicating external links with an icon or text "(opens in new tab)"</li>
+      <li class="elv-mb-2"><strong>Skip Links:</strong> For accessibility, add skip-to-content links at the top of pages</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Standard Color</strong></td>
+        <td style="padding: 8px;">#0073f5 (blue-100 / text-link)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Hover Color</strong></td>
+        <td style="padding: 8px;">#005bc2 (blue-120 / text-link-hover)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Visited Color</strong></td>
+        <td style="padding: 8px;">#2e90ff (blue-80 / text-link-visited)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Subtle Color</strong></td>
+        <td style="padding: 8px;">#6f6d78 (neutral-70 / N70)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Focus Outline</strong></td>
+        <td style="padding: 8px;">2px solid #5746b2 (P100) with 2px offset, border-radius 8px (sm/md) or 12px (xs)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Sizes</strong></td>
+        <td style="padding: 8px;">MD (16px), SM (14px), XS (12px)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Variants</strong></td>
+        <td style="padding: 8px;">Standard (blue), Subtle (gray), with/without underline</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

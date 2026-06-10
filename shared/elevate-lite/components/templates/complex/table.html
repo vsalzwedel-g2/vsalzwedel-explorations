@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Material Symbols */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+
+    /* Table Styles — based on DESIGN.md specs */
+    .elv-table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #dfdfe2;
+      border-radius: var(--radius-md);
+    }
+
+    .elv-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+    }
+
+    .elv-table thead {
+      background: #fafafa;
+    }
+
+    .elv-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      color: #4c4b53;
+      border-bottom: 1px solid #dfdfe2;
+      white-space: nowrap;
+    }
+
+    .elv-table th:first-child {
+      padding-left: 24px;
+    }
+
+    .elv-table th:last-child {
+      padding-right: 24px;
+    }
+
+    .elv-table tbody tr {
+      min-height: 48px;
+      border-bottom: 1px solid #dfdfe2;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .elv-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .elv-table tbody tr:nth-child(even) {
+      background: #fcfcfd;
+    }
+
+    .elv-table tbody tr:hover {
+      background: #f2f2f3;
+    }
+
+    .elv-table td {
+      padding: 12px 16px;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 400;
+      color: var(--text-default);
+    }
+
+    .elv-table td:first-child {
+      padding-left: 24px;
+    }
+
+    .elv-table td:last-child {
+      padding-right: 24px;
+    }
+
+    /* Sortable table headers */
+    .elv-table--sortable th[data-sortable] {
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      padding-right: 32px;
+    }
+
+    .elv-table--sortable th[data-sortable]:hover {
+      background: #f2f2f3;
+    }
+
+    .elv-table--sortable th[data-sortable]::after {
+      content: '↕';
+      position: absolute;
+      right: 12px;
+      opacity: 0.3;
+      font-size: 14px;
+    }
+
+    .elv-table--sortable th[data-sortable][data-sort="asc"]::after {
+      content: '↑';
+      opacity: 1;
+      color: #5746b2;
+    }
+
+    .elv-table--sortable th[data-sortable][data-sort="desc"]::after {
+      content: '↓';
+      opacity: 1;
+      color: #5746b2;
+    }
+
+    /* Compact variant */
+    .elv-table--compact th,
+    .elv-table--compact td {
+      padding: 8px 12px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .elv-table--compact th:first-child,
+    .elv-table--compact td:first-child {
+      padding-left: 16px;
+    }
+
+    .elv-table--compact th:last-child,
+    .elv-table--compact td:last-child {
+      padding-right: 16px;
+    }
+
+    .elv-table--compact tbody tr {
+      min-height: 40px;
+    }
+
+    /* Product Avatar in Tables */
+    .elv-product-avatar {
+      display: flex;
+      flex-shrink: 0;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--border-light);
+      background: var(--bg-neutral-0);
+      overflow: hidden;
+    }
+
+    .elv-product-avatar--xs {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+    }
+
+    .elv-product-avatar__image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .elv-product-avatar__placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 25%;
+    }
+
+    .elv-product-avatar__placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0.3;
+    }
+
+    /* Product Details Component (Horizontal Layout) */
+    .elv-product-details {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 12px;
+    }
+
+    .elv-product-details--xs {
+      gap: 4px;
+    }
+
+    .elv-product-details__content {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .elv-product-details__title {
+      font-weight: 600;
+      color: var(--text-default);
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .elv-product-details--xs .elv-product-details__title {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .elv-product-details__seller {
+      color: var(--text-subtle);
+      margin: 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .elv-product-details__seller-link {
+      color: var(--text-link);
+      text-decoration: none;
+    }
+
+    .elv-product-details__seller-link:hover {
+      text-decoration: underline;
+    }
+
+    .elv-product-details__rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .elv-product-details__stars {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .elv-product-details__stars svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .elv-product-details__rating-text {
+      padding-left: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      color: var(--text-subtle);
+      font-weight: 600;  /* Correct - semibold */
+      font-size: 12px;  /* Correct */
+      line-height: 16px;  /* Correct */
+    }
+
+    .elv-product-details__rating-count {
+      color: var(--text-subtle);
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Table Component</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: DESIGN.md § Data Tables
+  </p>
+
+  <!-- Basic Table -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Table</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Static data table with proper styling, alternating rows, and hover states
+    </p>
+    <div class="examples">
+      <div class="elv-table-container">
+        <table class="elv-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Rating</th>
+              <th>Reviews</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HubSpot CRM</td>
+              <td>CRM Software</td>
+              <td>4.5</td>
+              <td>12,345</td>
+              <td>Free</td>
+            </tr>
+            <tr>
+              <td>Salesforce</td>
+              <td>CRM Software</td>
+              <td>4.3</td>
+              <td>18,567</td>
+              <td>$25/user/mo</td>
+            </tr>
+            <tr>
+              <td>Slack</td>
+              <td>Team Chat</td>
+              <td>4.6</td>
+              <td>23,891</td>
+              <td>$8/user/mo</td>
+            </tr>
+            <tr>
+              <td>Zoom</td>
+              <td>Video Conferencing</td>
+              <td>4.5</td>
+              <td>15,234</td>
+              <td>$15/user/mo</td>
+            </tr>
+            <tr>
+              <td>Asana</td>
+              <td>Project Management</td>
+              <td>4.4</td>
+              <td>11,890</td>
+              <td>$11/user/mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sortable Table -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Sortable Table</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Click column headers to sort ascending/descending. Supports text, number, and mixed data types.
+    </p>
+    <div class="examples">
+      <div class="elv-table-container">
+        <table class="elv-table elv-table--sortable" id="sortable-table">
+          <thead>
+            <tr>
+              <th data-sortable data-type="text">Product</th>
+              <th data-sortable data-type="text">Category</th>
+              <th data-sortable data-type="number">Rating</th>
+              <th data-sortable data-type="number">Reviews</th>
+              <th data-sortable data-type="text">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HubSpot CRM</td>
+              <td>CRM Software</td>
+              <td data-value="4.5">4.5</td>
+              <td data-value="12345">12,345</td>
+              <td data-value="0">Free</td>
+            </tr>
+            <tr>
+              <td>Salesforce</td>
+              <td>CRM Software</td>
+              <td data-value="4.3">4.3</td>
+              <td data-value="18567">18,567</td>
+              <td data-value="25">$25/user/mo</td>
+            </tr>
+            <tr>
+              <td>Slack</td>
+              <td>Team Chat</td>
+              <td data-value="4.6">4.6</td>
+              <td data-value="23891">23,891</td>
+              <td data-value="8">$8/user/mo</td>
+            </tr>
+            <tr>
+              <td>Zoom</td>
+              <td>Video Conferencing</td>
+              <td data-value="4.5">4.5</td>
+              <td data-value="15234">15,234</td>
+              <td data-value="15">$15/user/mo</td>
+            </tr>
+            <tr>
+              <td>Asana</td>
+              <td>Project Management</td>
+              <td data-value="4.4">4.4</td>
+              <td data-value="11890">11,890</td>
+              <td data-value="11">$11/user/mo</td>
+            </tr>
+            <tr>
+              <td>Monday.com</td>
+              <td>Project Management</td>
+              <td data-value="4.7">4.7</td>
+              <td data-value="9234">9,234</td>
+              <td data-value="10">$10/user/mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compact Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Compact Table</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Denser spacing for data-heavy views
+    </p>
+    <div class="examples">
+      <div class="elv-table-container">
+        <table class="elv-table elv-table--compact">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jane Doe</td>
+              <td>jane@example.com</td>
+              <td>Admin</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>John Smith</td>
+              <td>john@example.com</td>
+              <td>User</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Alice Johnson</td>
+              <td>alice@example.com</td>
+              <td>User</td>
+              <td>Inactive</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table with Product Avatars -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Product Avatars</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Include product logos using the product_avatar component
+    </p>
+    <div class="examples">
+      <div class="elv-table-container">
+        <table class="elv-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">Logo</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Rating</th>
+              <th>Reviews</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="elv-product-avatar elv-product-avatar--xs">
+                  <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_eaa87303ec37117ba901e5a792a545c2/hubspot-crm.png"
+                       alt="HubSpot CRM"
+                       class="elv-product-avatar__image">
+                </div>
+              </td>
+              <td>HubSpot CRM</td>
+              <td>CRM Software</td>
+              <td>4.5</td>
+              <td>12,345</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="elv-product-avatar elv-product-avatar--xs">
+                  <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_1489697886/salesforce-sales-cloud.png"
+                       alt="Salesforce"
+                       class="elv-product-avatar__image">
+                </div>
+              </td>
+              <td>Salesforce</td>
+              <td>CRM Software</td>
+              <td>4.3</td>
+              <td>18,567</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="elv-product-avatar elv-product-avatar--xs">
+                  <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_1511269831/slack.png"
+                       alt="Slack"
+                       class="elv-product-avatar__image">
+                </div>
+              </td>
+              <td>Slack</td>
+              <td>Team Chat</td>
+              <td>4.6</td>
+              <td>23,891</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="elv-product-avatar elv-product-avatar--xs">
+                  <div class="elv-product-avatar__placeholder">
+                    <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+                  </div>
+                </div>
+              </td>
+              <td>Example Product</td>
+              <td>Business Software</td>
+              <td>4.2</td>
+              <td>8,432</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table with Product Details -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Product Details</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Combine avatar, name, rating, and category in a single cell using product_details component
+    </p>
+    <div class="examples">
+      <div class="elv-table-container">
+        <table class="elv-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Reviews</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="elv-product-details elv-product-details--xs">
+                  <div class="elv-product-avatar elv-product-avatar--xs">
+                    <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_eaa87303ec37117ba901e5a792a545c2/hubspot-crm.png"
+                         alt="HubSpot CRM"
+                         class="elv-product-avatar__image">
+                  </div>
+                  <div class="elv-product-details__content">
+                    <div class="elv-product-details__title">HubSpot CRM</div>
+                    <div class="elv-product-details__rating">
+                      <div class="elv-product-details__stars">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip-table-1)"><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/></g><defs><clipPath id="clip-table-1"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+                      </div>
+                      <span class="elv-product-details__rating-text">4.5 <span class="elv-product-details__rating-count">(12,345)</span></span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>12,345</td>
+              <td>Free</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="elv-product-details elv-product-details--xs">
+                  <div class="elv-product-avatar elv-product-avatar--xs">
+                    <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_1489697886/salesforce-sales-cloud.png"
+                         alt="Salesforce"
+                         class="elv-product-avatar__image">
+                  </div>
+                  <div class="elv-product-details__content">
+                    <div class="elv-product-details__title">Salesforce</div>
+                    <div class="elv-product-details__rating">
+                      <div class="elv-product-details__stars">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/></svg>
+                      </div>
+                      <span class="elv-product-details__rating-text">4.3 <span class="elv-product-details__rating-count">(18,567)</span></span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>18,567</td>
+              <td>$25/user/mo</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="elv-product-details elv-product-details--xs">
+                  <div class="elv-product-avatar elv-product-avatar--xs">
+                    <img src="https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_1511269831/slack.png"
+                         alt="Slack"
+                         class="elv-product-avatar__image">
+                  </div>
+                  <div class="elv-product-details__content">
+                    <div class="elv-product-details__title">Slack</div>
+                    <div class="elv-product-details__rating">
+                      <div class="elv-product-details__stars">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip-table-2)"><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/></g><defs><clipPath id="clip-table-2"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+                      </div>
+                      <span class="elv-product-details__rating-text">4.6 <span class="elv-product-details__rating-count">(23,891)</span></span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>23,891</td>
+              <td>$8/user/mo</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="elv-product-details elv-product-details--xs">
+                  <div class="elv-product-avatar elv-product-avatar--xs">
+                    <div class="elv-product-avatar__placeholder">
+                      <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+                    </div>
+                  </div>
+                  <div class="elv-product-details__content">
+                    <div class="elv-product-details__title">Example Product</div>
+                    <div class="elv-product-details__rating">
+                      <div class="elv-product-details__stars">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/></svg>
+                      </div>
+                      <span class="elv-product-details__rating-text">4.2 <span class="elv-product-details__rating-count">(8,432)</span></span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>8,432</td>
+              <td>Free</td>
+              <td>Active</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage</h2>
+    <pre>&lt;div class="elv-table-container"&gt;
+  &lt;table class="elv-table"&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Column 1&lt;/th&gt;
+        &lt;th&gt;Column 2&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Data 1&lt;/td&gt;
+        &lt;td&gt;Data 2&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+
+&lt;!-- Sortable variant --&gt;
+&lt;table class="elv-table elv-table--sortable"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th data-sortable data-type="text"&gt;Name&lt;/th&gt;
+      &lt;th data-sortable data-type="number"&gt;Count&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Item&lt;/td&gt;
+      &lt;td data-value="100"&gt;100&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+  </div>
+
+  <!-- Design Notes -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design Notes</h2>
+    <ul class="elv-text-sm elv-text-default" style="line-height: 1.6;">
+      <li><strong>No vertical dividers</strong> — Only horizontal borders between rows</li>
+      <li><strong>Alternating rows</strong> — Even rows get N1 background for readability</li>
+      <li><strong>Hover state</strong> — N10 background on row hover</li>
+      <li><strong>Sortable headers</strong> — Click to toggle asc/desc, indicators show current sort</li>
+      <li><strong>Data attributes</strong> — Use <code>data-value</code> for numeric sorting of formatted numbers</li>
+      <li><strong>Responsive</strong> — Use container with <code>overflow-x: auto</code> for horizontal scroll</li>
+      <li><strong>Accessibility</strong> — Semantic <code>&lt;table&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code> elements</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // Sortable table functionality
+  document.querySelectorAll('.elv-table--sortable').forEach(table => {
+    const headers = table.querySelectorAll('th[data-sortable]');
+
+    headers.forEach((header, index) => {
+      header.addEventListener('click', () => {
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const currentSort = header.getAttribute('data-sort');
+        const type = header.getAttribute('data-type') || 'text';
+
+        // Clear all sort indicators
+        headers.forEach(h => h.removeAttribute('data-sort'));
+
+        // Toggle sort direction
+        const newSort = currentSort === 'asc' ? 'desc' : 'asc';
+        header.setAttribute('data-sort', newSort);
+
+        // Sort rows
+        rows.sort((a, b) => {
+          const aCell = a.children[index];
+          const bCell = b.children[index];
+
+          let aVal, bVal;
+
+          if (type === 'number') {
+            // Use data-value if present, otherwise parse text content
+            aVal = parseFloat(aCell.getAttribute('data-value') || aCell.textContent);
+            bVal = parseFloat(bCell.getAttribute('data-value') || bCell.textContent);
+          } else {
+            aVal = aCell.textContent.trim();
+            bVal = bCell.textContent.trim();
+          }
+
+          if (type === 'number') {
+            return newSort === 'asc' ? aVal - bVal : bVal - aVal;
+          } else {
+            if (newSort === 'asc') {
+              return aVal.localeCompare(bVal);
+            } else {
+              return bVal.localeCompare(aVal);
+            }
+          }
+        });
+
+        // Reappend sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accordion Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Accordion Styles — based on Elevate design patterns */
+    .elv-accordion {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .elv-accordion__item:last-child {
+      border-bottom: none;
+    }
+
+    .elv-accordion__header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-neutral-0);
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 600;
+      color: var(--text-default);
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .elv-accordion__header:hover {
+      background: var(--bg-neutral-5);
+    }
+
+    .elv-accordion__header:focus {
+      outline: 3px solid #c3bde5; /* P40 */
+      outline-offset: -2px;
+      z-index: 1;
+    }
+
+    .elv-accordion__header[aria-expanded="true"] {
+      background: var(--bg-neutral-5);
+    }
+
+    .elv-accordion__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--text-subtle);
+    }
+
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    .elv-accordion__content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .elv-accordion__content[aria-hidden="false"] {
+      grid-template-rows: 1fr;
+    }
+
+    .elv-accordion__content-inner {
+      min-height: 0;
+      padding: 0 16px;
+    }
+
+    .elv-accordion__content[aria-hidden="false"] .elv-accordion__content-inner {
+      padding: 0 16px 16px 16px;
+    }
+
+    .elv-accordion__body {
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-default);
+    }
+
+    /* Variants */
+    .elv-accordion--compact .elv-accordion__header {
+      padding: 12px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .elv-accordion--compact .elv-accordion__content-inner {
+      padding: 0 12px;
+    }
+
+    .elv-accordion--compact .elv-accordion__content[aria-hidden="false"] .elv-accordion__content-inner {
+      padding: 0 12px 12px 12px;
+    }
+
+    .elv-accordion--borderless {
+      border: none;
+    }
+
+    .elv-accordion--borderless .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .elv-accordion--borderless .elv-accordion__item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Accordion</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Note: Accordion is not yet in Elevate Lookbook — this is a proposed implementation following Elevate patterns
+  </p>
+
+  <!-- Basic Accordion -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Accordion</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Default accordion with multiple panels that can be opened simultaneously
+    </p>
+    <div class="examples">
+      <div class="elv-accordion" data-accordion>
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-1">
+            <span>What is G2's Review Verification process?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-1" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                G2 verifies every review through email authentication, professional profile validation, and fraud detection algorithms. Reviews are monitored continuously and must meet authenticity standards to remain published.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-2">
+            <span>How are G2 Scores calculated?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-2" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                G2 Scores aggregate satisfaction data, market presence data, and review data to create a composite score from 0-100. Recent reviews are weighted more heavily, and scores update in real-time as new data arrives.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-3">
+            <span>Can I filter reviews by company size?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-3" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Yes. Use the filters panel to segment reviews by company size (small, mid-market, enterprise), industry, user role, and time period. This helps you find reviews from buyers similar to your organization.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-accordion" data-accordion&gt;
+  &lt;div class="elv-accordion__item"&gt;
+    &lt;button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-1"&gt;
+      &lt;span&gt;What is G2's Review Verification process?&lt;/span&gt;
+      &lt;svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"&gt;
+        &lt;path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+    &lt;div class="elv-accordion__content" id="panel-1" aria-hidden="true" role="region"&gt;
+      &lt;div class="elv-accordion__content-inner"&gt;
+        &lt;div class="elv-accordion__body"&gt;
+          Content here...
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Single-Open Mode -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Single-Open Mode</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Only one panel can be open at a time — opening a new panel closes the previous one
+    </p>
+    <div class="examples">
+      <div class="elv-accordion" data-accordion data-single-open="true">
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-single-1">
+            <span>Compare plans and pricing</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-single-1" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                G2 offers three plans: Essentials for individual users, Team for small groups, and Enterprise for large organizations with advanced integrations and priority support.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-single-2">
+            <span>What payment methods are accepted?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-single-2" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                We accept all major credit cards, ACH transfers, and purchase orders for annual contracts. Enterprise customers can work with sales for custom billing arrangements.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-single-3">
+            <span>Can I cancel my subscription?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-single-3" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Yes. Monthly plans can be cancelled anytime with no penalties. Annual plans can be cancelled but are non-refundable. Access continues until the end of your billing period.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Add data-single-open="true" attribute --&gt;
+&lt;div class="elv-accordion" data-accordion data-single-open="true"&gt;
+  &lt;!-- accordion items... --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Compact Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Compact Variant</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Reduced padding for tighter layouts
+    </p>
+    <div class="examples">
+      <div class="elv-accordion elv-accordion--compact" data-accordion>
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-compact-1">
+            <span>What file formats are supported?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-compact-1" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                We support CSV, XLSX, JSON, and XML for data imports. Exports are available in CSV, PDF, and JSON formats.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-compact-2">
+            <span>Is there an API available?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-compact-2" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Yes. Our RESTful API provides access to product data, reviews, and scores. API access is included with Team and Enterprise plans.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-accordion elv-accordion--compact" data-accordion&gt;
+  &lt;!-- accordion items... --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Borderless Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Borderless Variant</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      No outer border, only dividers between items
+    </p>
+    <div class="examples">
+      <div class="elv-accordion elv-accordion--borderless" data-accordion>
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-borderless-1">
+            <span>How do I invite team members?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-borderless-1" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Go to Settings → Team Management and click "Invite Members". Enter email addresses and assign roles. Invited members will receive an email with setup instructions.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-borderless-2">
+            <span>Can I customize user permissions?</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-borderless-2" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Yes. Assign roles like Viewer, Editor, or Admin. Custom roles with granular permissions are available on Enterprise plans.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-accordion elv-accordion--borderless" data-accordion&gt;
+  &lt;!-- accordion items... --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- With Default Open Panel -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Default Open Panel</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Start with one panel expanded by setting <code>aria-expanded="true"</code> and <code>aria-hidden="false"</code>
+    </p>
+    <div class="examples">
+      <div class="elv-accordion" data-accordion>
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="true" aria-controls="panel-default-1">
+            <span>Getting Started (Expanded by default)</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-default-1" aria-hidden="false" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Welcome to G2! Start by exploring product categories, reading verified reviews, and building comparison lists. Use filters to find software that matches your company size and industry.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="panel-default-2">
+            <span>Advanced Features</span>
+            <svg class="elv-accordion__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="elv-accordion__content" id="panel-default-2" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body">
+                Unlock advanced features like saved searches, custom alerts, API access, and bulk data exports with a Team or Enterprise plan.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Set aria-expanded="true" and aria-hidden="false" on default open panel --&gt;
+&lt;button class="elv-accordion__header" aria-expanded="true" aria-controls="panel-1"&gt;
+  &lt;span&gt;Default Open Panel&lt;/span&gt;
+  &lt;svg class="elv-accordion__icon"&gt;...&lt;/svg&gt;
+&lt;/button&gt;
+&lt;div class="elv-accordion__content" id="panel-1" aria-hidden="false" role="region"&gt;
+  &lt;!-- content... --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>When to use:</strong> FAQs, settings panels, product specifications, help documentation</li>
+      <li class="elv-mb-2"><strong>When not to use:</strong> Navigation menus, forms with dependent fields, content that should always be visible</li>
+      <li class="elv-mb-2"><strong>Single-open mode:</strong> Use when only one section should be visible at a time (e.g., settings categories)</li>
+      <li class="elv-mb-2"><strong>Multiple-open mode:</strong> Use when users may need to compare content across panels (e.g., FAQs)</li>
+      <li class="elv-mb-2"><strong>Button semantics:</strong> Always use <code>&lt;button&gt;</code> for headers — never divs or links</li>
+      <li class="elv-mb-2"><strong>Icon position:</strong> Keep chevron/arrow on the right for consistency with established patterns</li>
+      <li class="elv-mb-2"><strong>Content length:</strong> Keep panel content concise (1-3 paragraphs). Link to full pages for longer content</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong>
+        <ul class="elv-ml-4 elv-mt-1">
+          <li><code>Tab</code> — Move focus to next accordion header</li>
+          <li><code>Shift + Tab</code> — Move focus to previous accordion header</li>
+          <li><code>Space</code> or <code>Enter</code> — Toggle accordion panel</li>
+          <li><code>Arrow Down</code> — (Optional) Move focus to next header</li>
+          <li><code>Arrow Up</code> — (Optional) Move focus to previous header</li>
+          <li><code>Home</code> — (Optional) Move focus to first header</li>
+          <li><code>End</code> — (Optional) Move focus to last header</li>
+        </ul>
+      </li>
+      <li class="elv-mb-2"><strong>ARIA Attributes:</strong>
+        <ul class="elv-ml-4 elv-mt-1">
+          <li><code>aria-expanded</code> — "true" when panel is open, "false" when closed</li>
+          <li><code>aria-controls</code> — ID of the associated content panel</li>
+          <li><code>aria-hidden</code> — "false" when panel is visible, "true" when hidden</li>
+          <li><code>role="region"</code> — Identifies content panel as a landmark region</li>
+        </ul>
+      </li>
+      <li class="elv-mb-2"><strong>Focus Management:</strong> Focus remains on the button when toggling — do not move focus to panel content</li>
+      <li class="elv-mb-2"><strong>Screen Readers:</strong> Button text should clearly describe the panel content (avoid generic "More info")</li>
+      <li class="elv-mb-2"><strong>Visual Focus:</strong> Focus outline is 2px solid with <code>outline-offset: -2px</code> for clear keyboard navigation</li>
+    </ul>
+    <pre><code>&lt;!-- Full accessibility markup --&gt;
+&lt;button class="elv-accordion__header"
+        aria-expanded="false"
+        aria-controls="unique-panel-id"&gt;
+  &lt;span&gt;Descriptive header text&lt;/span&gt;
+  &lt;svg class="elv-accordion__icon" aria-hidden="true"&gt;...&lt;/svg&gt;
+&lt;/button&gt;
+&lt;div class="elv-accordion__content"
+     id="unique-panel-id"
+     aria-hidden="true"
+     role="region"&gt;
+  &lt;!-- content --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Header Padding</strong></td>
+        <td style="padding: 8px;">16px (default), 12px (compact)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Content Padding</strong></td>
+        <td style="padding: 8px;">0 16px 16px 16px (when open)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Header Font</strong></td>
+        <td style="padding: 8px;">16px/24px/600 (default), 14px/20px/600 (compact)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Body Font</strong></td>
+        <td style="padding: 8px;">14px/20px/400</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">1px solid #dfdfe2 (border-light)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">12px (radius-md)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Background</strong></td>
+        <td style="padding: 8px;">#ffffff (bg-neutral-0), hover: #f8f8f9 (bg-neutral-5)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Icon Size</strong></td>
+        <td style="padding: 8px;">20px × 20px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Icon Rotation</strong></td>
+        <td style="padding: 8px;">0deg (closed) → 180deg (open)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Transition Duration</strong></td>
+        <td style="padding: 8px;">250ms (content), 200ms (icon), 150ms (hover)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Focus Outline</strong></td>
+        <td style="padding: 8px;">2px solid border-focus, offset -2px</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- JavaScript -->
+<script>
+(function() {
+  // Initialize all accordions on the page
+  const accordions = document.querySelectorAll('[data-accordion]');
+
+  accordions.forEach(accordion => {
+    const isSingleOpen = accordion.dataset.singleOpen === 'true';
+    const headers = accordion.querySelectorAll('.elv-accordion__header');
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        const contentId = header.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+
+        // If single-open mode, close all other panels first
+        if (isSingleOpen && !isExpanded) {
+          headers.forEach(otherHeader => {
+            if (otherHeader !== header) {
+              const otherContentId = otherHeader.getAttribute('aria-controls');
+              const otherContent = document.getElementById(otherContentId);
+              otherHeader.setAttribute('aria-expanded', 'false');
+              otherContent.setAttribute('aria-hidden', 'true');
+            }
+          });
+        }
+
+        // Toggle current panel
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+
+      // Keyboard navigation (optional arrow keys)
+      header.addEventListener('keydown', (e) => {
+        const currentIndex = Array.from(headers).indexOf(header);
+        let newIndex;
+
+        switch(e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            newIndex = (currentIndex + 1) % headers.length;
+            headers[newIndex].focus();
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            newIndex = (currentIndex - 1 + headers.length) % headers.length;
+            headers[newIndex].focus();
+            break;
+          case 'Home':
+            e.preventDefault();
+            headers[0].focus();
+            break;
+          case 'End':
+            e.preventDefault();
+            headers[headers.length - 1].focus();
+            break;
+        }
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

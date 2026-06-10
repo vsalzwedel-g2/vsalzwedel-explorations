@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    .form-group { margin-bottom: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* File Upload Styles — Based on DESIGN.md form patterns */
+    .elv-file-upload {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Drop zone container */
+    .elv-file-upload__zone {
+      position: relative;
+      min-height: 160px;
+      padding: 32px;
+      background: #f2f2f3; /* N10 */
+      border: 2px dashed #dfdfe2; /* border-light */
+      border-radius: 12px; /* radius-md */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .elv-file-upload__zone:hover {
+      background: #fafafa; /* N5 */
+      border-color: #b0afb6; /* N40 */
+    }
+
+    /* Drag-over state */
+    .elv-file-upload__zone--dragover {
+      background: #ebe9f6; /* P20 */
+      border-color: #5746b2; /* P100 */
+      border-style: solid;
+    }
+
+    /* Focus state */
+    .elv-file-upload__zone:has(input:focus) {
+      outline: 2px solid #5746b2; /* P100 */
+      outline-offset: 2px;
+    }
+
+    /* Error state */
+    .elv-file-upload__zone--error {
+      background: #fff6f5; /* R20 */
+      border-color: #eb2000; /* R120 */
+      border-style: solid;
+    }
+
+    /* Disabled state */
+    .elv-file-upload__zone--disabled {
+      background: #fafafa; /* N5 */
+      border-color: #dfdfe2;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* Hidden file input */
+    .elv-file-upload__input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Upload icon */
+    .elv-file-upload__icon {
+      font-size: 48px;
+      color: #6f6d78; /* text-nonessential */
+    }
+
+    .elv-file-upload__zone--dragover .elv-file-upload__icon {
+      color: #5746b2; /* P100 */
+    }
+
+    .elv-file-upload__zone--error .elv-file-upload__icon {
+      color: #eb2000; /* R120 */
+    }
+
+    /* Upload text */
+    .elv-file-upload__text {
+      text-align: center;
+      color: #201f23; /* text-default */
+    }
+
+    .elv-file-upload__primary {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      margin-bottom: 4px;
+    }
+
+    .elv-file-upload__secondary {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #6f6d78; /* text-nonessential */
+    }
+
+    /* Browse button */
+    .elv-file-upload__button {
+      background: #5746b2; /* P100 */
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 24px; /* radius-pill-md */
+      cursor: pointer;
+      transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 4px;
+    }
+
+    .elv-file-upload__button:hover {
+      background: #45388f; /* P120 */
+    }
+
+    .elv-file-upload__button:disabled {
+      background: #b0afb6; /* N40 */
+      cursor: not-allowed;
+    }
+
+    /* File list */
+    .elv-file-upload__files {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .elv-file-upload__file {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid #dfdfe2; /* border-light */
+      border-radius: 8px; /* radius-sm */
+    }
+
+    .elv-file-upload__file-icon {
+      font-size: 24px;
+      color: #5746b2; /* P100 */
+    }
+
+    .elv-file-upload__file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .elv-file-upload__file-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #201f23; /* text-default */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .elv-file-upload__file-size {
+      font-size: 12px;
+      color: #6f6d78; /* text-nonessential */
+    }
+
+    .elv-file-upload__file-remove {
+      background: transparent;
+      border: none;
+      color: #6f6d78;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 20px;
+    }
+
+    .elv-file-upload__file-remove:hover {
+      background: #f2f2f3; /* N10 */
+      color: #201f23;
+    }
+
+    /* File validation error */
+    .elv-file-upload__file--error {
+      border-color: #eb2000; /* R120 */
+      background: #fff6f5; /* R20 */
+    }
+
+    .elv-file-upload__file--error .elv-file-upload__file-icon {
+      color: #eb2000; /* R120 */
+    }
+
+    /* Helper text and labels */
+    .elv-input-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #201f23;
+      margin-bottom: 4px;
+    }
+
+    .elv-required {
+      color: #eb2000;
+    }
+
+    .elv-input-helper {
+      font-size: 12px;
+      color: #6f6d78;
+      margin-top: 4px;
+    }
+
+    .elv-input-error {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b21800; /* R140 */
+      margin-top: 4px;
+    }
+
+    /* Material Symbols styling */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Compact variant */
+    .elv-file-upload--compact .elv-file-upload__zone {
+      min-height: 80px;
+      padding: 16px;
+    }
+
+    .elv-file-upload--compact .elv-file-upload__icon {
+      font-size: 32px;
+    }
+
+    .elv-file-upload--compact .elv-file-upload__text {
+      font-size: 14px;
+    }
+
+    .elv-file-upload--compact .elv-file-upload__button {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">File Upload</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Specs: Based on <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md form patterns (line 444-458)</a>
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="file-upload-1">Upload Files</label>
+        <div class="elv-file-upload">
+          <div class="elv-file-upload__zone" id="drop-zone-1">
+            <span class="elv-file-upload__icon material-symbols-outlined">upload_file</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">Drag and drop files here</div>
+              <div class="elv-file-upload__secondary">or click to browse</div>
+            </div>
+            <button type="button" class="elv-file-upload__button">Browse files</button>
+            <input
+              type="file"
+              id="file-upload-1"
+              class="elv-file-upload__input"
+              multiple
+              aria-label="Upload files"
+            />
+          </div>
+          <div class="elv-file-upload__files" id="file-list-1"></div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-file-upload"&gt;
+  &lt;div class="elv-file-upload__zone" id="drop-zone"&gt;
+    &lt;span class="elv-file-upload__icon material-symbols-outlined"&gt;upload_file&lt;/span&gt;
+    &lt;div class="elv-file-upload__text"&gt;
+      &lt;div class="elv-file-upload__primary"&gt;Drag and drop files here&lt;/div&gt;
+      &lt;div class="elv-file-upload__secondary"&gt;or click to browse&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button type="button" class="elv-file-upload__button"&gt;Browse files&lt;/button&gt;
+    &lt;input type="file" class="elv-file-upload__input" multiple /&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-file-upload__files" id="file-list"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Single File Upload</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="file-upload-2">
+          Upload Profile Picture <span class="elv-required">*</span>
+        </label>
+        <div class="elv-file-upload">
+          <div class="elv-file-upload__zone" id="drop-zone-2">
+            <span class="elv-file-upload__icon material-symbols-outlined">upload_file</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">Drag and drop your image here</div>
+              <div class="elv-file-upload__secondary">or click to browse</div>
+            </div>
+            <button type="button" class="elv-file-upload__button">Browse files</button>
+            <input
+              type="file"
+              id="file-upload-2"
+              class="elv-file-upload__input"
+              accept="image/*"
+              required
+              aria-required="true"
+            />
+          </div>
+          <div class="elv-file-upload__files" id="file-list-2"></div>
+        </div>
+        <p class="elv-input-helper">Accepted formats: JPG, PNG, GIF (max 5MB)</p>
+      </div>
+    </div>
+    <pre><code>&lt;label class="elv-input-label"&gt;
+  Upload Profile Picture &lt;span class="elv-required"&gt;*&lt;/span&gt;
+&lt;/label&gt;
+&lt;div class="elv-file-upload"&gt;
+  &lt;div class="elv-file-upload__zone"&gt;
+    &lt;!-- ... --&gt;
+    &lt;input type="file" accept="image/*" required /&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p class="elv-input-helper"&gt;Accepted formats: JPG, PNG, GIF (max 5MB)&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With File Type Restrictions</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="file-upload-3">Upload Documents</label>
+        <div class="elv-file-upload">
+          <div class="elv-file-upload__zone" id="drop-zone-3">
+            <span class="elv-file-upload__icon material-symbols-outlined">description</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">Drag and drop documents here</div>
+              <div class="elv-file-upload__secondary">PDF, DOC, DOCX only</div>
+            </div>
+            <button type="button" class="elv-file-upload__button">Browse files</button>
+            <input
+              type="file"
+              id="file-upload-3"
+              class="elv-file-upload__input"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              multiple
+            />
+          </div>
+          <div class="elv-file-upload__files" id="file-list-3"></div>
+        </div>
+        <p class="elv-input-helper">Maximum 10MB per file</p>
+      </div>
+    </div>
+    <pre><code>&lt;input
+  type="file"
+  accept=".pdf,.doc,.docx"
+  multiple
+/&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Compact Variant</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-input-label" for="file-upload-4">Upload Attachment</label>
+        <div class="elv-file-upload elv-file-upload--compact">
+          <div class="elv-file-upload__zone" id="drop-zone-4">
+            <span class="elv-file-upload__icon material-symbols-outlined">attach_file</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">Drop files or click to browse</div>
+            </div>
+            <input
+              type="file"
+              id="file-upload-4"
+              class="elv-file-upload__input"
+              multiple
+            />
+          </div>
+          <div class="elv-file-upload__files" id="file-list-4"></div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-file-upload elv-file-upload--compact"&gt;
+  &lt;!-- Smaller height, no button --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">States</h2>
+    <div class="examples">
+      <!-- Error State -->
+      <div class="form-group">
+        <label class="elv-input-label" for="file-upload-5">Error State</label>
+        <div class="elv-file-upload">
+          <div class="elv-file-upload__zone elv-file-upload__zone--error">
+            <span class="elv-file-upload__icon material-symbols-outlined">upload_file</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">Drag and drop files here</div>
+              <div class="elv-file-upload__secondary">or click to browse</div>
+            </div>
+            <button type="button" class="elv-file-upload__button">Browse files</button>
+            <input
+              type="file"
+              id="file-upload-5"
+              class="elv-file-upload__input"
+              aria-invalid="true"
+              aria-describedby="file-error-5"
+            />
+          </div>
+        </div>
+        <p id="file-error-5" class="elv-input-error" role="alert">File type not supported. Please upload PDF, DOC, or DOCX files.</p>
+      </div>
+
+      <!-- Disabled State -->
+      <div class="form-group">
+        <label class="elv-input-label">Disabled State</label>
+        <div class="elv-file-upload">
+          <div class="elv-file-upload__zone elv-file-upload__zone--disabled">
+            <span class="elv-file-upload__icon material-symbols-outlined">upload_file</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">File upload disabled</div>
+              <div class="elv-file-upload__secondary">Complete previous steps first</div>
+            </div>
+            <button type="button" class="elv-file-upload__button" disabled>Browse files</button>
+            <input
+              type="file"
+              class="elv-file-upload__input"
+              disabled
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- With uploaded files -->
+      <div class="form-group">
+        <label class="elv-input-label">With Uploaded Files</label>
+        <div class="elv-file-upload">
+          <div class="elv-file-upload__zone">
+            <span class="elv-file-upload__icon material-symbols-outlined">upload_file</span>
+            <div class="elv-file-upload__text">
+              <div class="elv-file-upload__primary">Drag and drop files here</div>
+              <div class="elv-file-upload__secondary">or click to browse</div>
+            </div>
+            <button type="button" class="elv-file-upload__button">Browse files</button>
+            <input type="file" class="elv-file-upload__input" multiple />
+          </div>
+          <div class="elv-file-upload__files">
+            <div class="elv-file-upload__file">
+              <span class="elv-file-upload__file-icon material-symbols-outlined">description</span>
+              <div class="elv-file-upload__file-info">
+                <div class="elv-file-upload__file-name">Annual_Report_2024.pdf</div>
+                <div class="elv-file-upload__file-size">2.4 MB</div>
+              </div>
+              <button type="button" class="elv-file-upload__file-remove material-symbols-outlined" aria-label="Remove file">close</button>
+            </div>
+            <div class="elv-file-upload__file">
+              <span class="elv-file-upload__file-icon material-symbols-outlined">image</span>
+              <div class="elv-file-upload__file-info">
+                <div class="elv-file-upload__file-name">Company_Logo.png</div>
+                <div class="elv-file-upload__file-size">512 KB</div>
+              </div>
+              <button type="button" class="elv-file-upload__file-remove material-symbols-outlined" aria-label="Remove file">close</button>
+            </div>
+            <div class="elv-file-upload__file elv-file-upload__file--error">
+              <span class="elv-file-upload__file-icon material-symbols-outlined">error</span>
+              <div class="elv-file-upload__file-info">
+                <div class="elv-file-upload__file-name">Large_Video.mp4</div>
+                <div class="elv-file-upload__file-size">File too large (25 MB)</div>
+              </div>
+              <button type="button" class="elv-file-upload__file-remove material-symbols-outlined" aria-label="Remove file">close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Error State --&gt;
+&lt;div class="elv-file-upload__zone elv-file-upload__zone--error"&gt;
+  &lt;!-- ... --&gt;
+&lt;/div&gt;
+&lt;p class="elv-input-error" role="alert"&gt;Error message&lt;/p&gt;
+
+&lt;!-- Disabled State --&gt;
+&lt;div class="elv-file-upload__zone elv-file-upload__zone--disabled"&gt;
+  &lt;input type="file" disabled /&gt;
+&lt;/div&gt;
+
+&lt;!-- File List Item --&gt;
+&lt;div class="elv-file-upload__file"&gt;
+  &lt;span class="material-symbols-outlined"&gt;description&lt;/span&gt;
+  &lt;div class="elv-file-upload__file-info"&gt;
+    &lt;div class="elv-file-upload__file-name"&gt;filename.pdf&lt;/div&gt;
+    &lt;div class="elv-file-upload__file-size"&gt;2.4 MB&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;button class="elv-file-upload__file-remove material-symbols-outlined"&gt;close&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- File Error --&gt;
+&lt;div class="elv-file-upload__file elv-file-upload__file--error"&gt;
+  &lt;!-- ... --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Labels:</strong> Always pair upload zone with a visible label using <code>for</code> and <code>id</code></li>
+      <li class="elv-mb-2"><strong>ARIA Labels:</strong> Include <code>aria-label</code> on hidden file input and remove buttons</li>
+      <li class="elv-mb-2"><strong>Keyboard Access:</strong> Click zone or press Enter/Space to trigger file dialog</li>
+      <li class="elv-mb-2"><strong>Focus Indicator:</strong> Visible outline on keyboard focus</li>
+      <li class="elv-mb-2"><strong>Error States:</strong> Use <code>aria-invalid="true"</code> and <code>aria-describedby</code> for error messages</li>
+      <li class="elv-mb-2"><strong>Screen Readers:</strong> File list updates are announced when files are added/removed</li>
+      <li class="elv-mb-2"><strong>Required Fields:</strong> Use <code>required</code> and <code>aria-required="true"</code></li>
+      <li class="elv-mb-2"><strong>Helper Text:</strong> Clearly indicate accepted file types and size limits</li>
+      <li class="elv-mb-2"><strong>Remove Buttons:</strong> Include descriptive <code>aria-label="Remove [filename]"</code></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Property</strong></td>
+        <td style="padding: 8px;"><strong>Value</strong></td>
+        <td style="padding: 8px;"><strong>Token</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Background</td>
+        <td style="padding: 8px;">#f2f2f3</td>
+        <td style="padding: 8px;">N10</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border (default)</td>
+        <td style="padding: 8px;">2px dashed #dfdfe2</td>
+        <td style="padding: 8px;">border-light</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border Radius</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">radius-md</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Min Height (default)</td>
+        <td style="padding: 8px;">160px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Min Height (compact)</td>
+        <td style="padding: 8px;">80px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Padding</td>
+        <td style="padding: 8px;">32px</td>
+        <td style="padding: 8px;">space-8</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Hover Background</td>
+        <td style="padding: 8px;">#fafafa</td>
+        <td style="padding: 8px;">N5</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Hover Border</td>
+        <td style="padding: 8px;">#b0afb6</td>
+        <td style="padding: 8px;">N40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Dragover Background</td>
+        <td style="padding: 8px;">#ebe9f6</td>
+        <td style="padding: 8px;">P20</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Dragover Border</td>
+        <td style="padding: 8px;">2px solid #5746b2</td>
+        <td style="padding: 8px;">P100</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Focus Outline</td>
+        <td style="padding: 8px;">2px solid #5746b2</td>
+        <td style="padding: 8px;">P100</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Background</td>
+        <td style="padding: 8px;">#fff6f5</td>
+        <td style="padding: 8px;">R20</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Border</td>
+        <td style="padding: 8px;">2px solid #eb2000</td>
+        <td style="padding: 8px;">R120</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Icon Color</td>
+        <td style="padding: 8px;">#6f6d78</td>
+        <td style="padding: 8px;">text-nonessential</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Primary Text</td>
+        <td style="padding: 8px;">16px / 600</td>
+        <td style="padding: 8px;">Body weight 600</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Secondary Text</td>
+        <td style="padding: 8px;">14px / 400 #6f6d78</td>
+        <td style="padding: 8px;">Label Sm</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">File Item Padding</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">space-3</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // File upload functionality
+  function initFileUpload(zoneId, inputId, listId) {
+    const zone = document.getElementById(zoneId);
+    const input = zone ? zone.querySelector('.elv-file-upload__input') : null;
+    const fileList = document.getElementById(listId);
+    const button = zone ? zone.querySelector('.elv-file-upload__button') : null;
+
+    if (!zone || !input) return;
+
+    let files = [];
+
+    // Click zone to trigger file input
+    zone.addEventListener('click', (e) => {
+      if (!input.disabled && e.target !== input && !e.target.classList.contains('elv-file-upload__file-remove')) {
+        input.click();
+      }
+    });
+
+    // Button click
+    if (button) {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!input.disabled) {
+          input.click();
+        }
+      });
+    }
+
+    // File input change
+    input.addEventListener('change', (e) => {
+      handleFiles(e.target.files);
+    });
+
+    // Drag and drop
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!input.disabled) {
+        zone.classList.add('elv-file-upload__zone--dragover');
+      }
+    });
+
+    zone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.classList.remove('elv-file-upload__zone--dragover');
+    });
+
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.classList.remove('elv-file-upload__zone--dragover');
+
+      if (!input.disabled) {
+        handleFiles(e.dataTransfer.files);
+      }
+    });
+
+    // Handle files
+    function handleFiles(newFiles) {
+      const fileArray = Array.from(newFiles);
+
+      if (!input.multiple) {
+        files = fileArray.slice(0, 1);
+      } else {
+        files = [...files, ...fileArray];
+      }
+
+      renderFiles();
+    }
+
+    // Render file list
+    function renderFiles() {
+      if (!fileList) return;
+
+      fileList.innerHTML = '';
+
+      files.forEach((file, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'elv-file-upload__file';
+
+        // Get file icon based on type
+        let iconName = 'description';
+        if (file.type.startsWith('image/')) iconName = 'image';
+        else if (file.type.startsWith('video/')) iconName = 'video_file';
+        else if (file.type.startsWith('audio/')) iconName = 'audio_file';
+        else if (file.type.includes('pdf')) iconName = 'picture_as_pdf';
+
+        // Format file size
+        const size = formatFileSize(file.size);
+
+        fileItem.innerHTML = `
+          <span class="elv-file-upload__file-icon material-symbols-outlined">${iconName}</span>
+          <div class="elv-file-upload__file-info">
+            <div class="elv-file-upload__file-name">${file.name}</div>
+            <div class="elv-file-upload__file-size">${size}</div>
+          </div>
+          <button type="button" class="elv-file-upload__file-remove material-symbols-outlined" aria-label="Remove ${file.name}">close</button>
+        `;
+
+        const removeBtn = fileItem.querySelector('.elv-file-upload__file-remove');
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          files.splice(index, 1);
+          renderFiles();
+        });
+
+        fileList.appendChild(fileItem);
+      });
+    }
+
+    // Format file size
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+  }
+
+  // Initialize all file upload instances
+  initFileUpload('drop-zone-1', 'file-upload-1', 'file-list-1');
+  initFileUpload('drop-zone-2', 'file-upload-2', 'file-list-2');
+  initFileUpload('drop-zone-3', 'file-upload-3', 'file-list-3');
+  initFileUpload('drop-zone-4', 'file-upload-4', 'file-list-4');
+</script>
+
+</body>
+</html>

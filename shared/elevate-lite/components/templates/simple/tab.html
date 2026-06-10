@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: var(--bg-neutral-0);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Tab Styles — adapted from tab/component.rb */
+    .elv-tab-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .elv-tab-list {
+      display: flex;
+      align-items: center;
+    }
+
+    .elv-tab-list--full-width {
+      border-bottom: 1px solid var(--border-medium); /* border-medium */
+    }
+
+    .elv-tab-list--full-width .elv-tab {
+      flex: 1;
+      border-bottom: 1px solid transparent;
+    }
+
+    .elv-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 40px;
+      padding: 0 24px 1px 24px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-subtle); /* text-subtle */
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .elv-tab:hover {
+      color: var(--text-primary); /* text-primary */
+      padding-bottom: 0;
+      border-bottom: 2px solid var(--text-primary); /* border-primary */
+    }
+
+    .elv-tab[aria-selected="true"] {
+      color: var(--text-primary); /* text-primary */
+      padding-bottom: 0;
+      border-bottom: 2px solid var(--text-primary); /* border-primary */
+    }
+
+    .elv-tab:focus {
+      outline: 2px solid var(--text-primary);
+      outline-offset: -2px;
+      z-index: 1;
+    }
+
+    .elv-tab-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .elv-tab-panels {
+      margin-top: 16px;
+    }
+
+    .elv-tab-panel {
+      display: none;
+      animation: fadeIn 200ms ease;
+    }
+
+    .elv-tab-panel[aria-hidden="false"] {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+
+    /* Example content styling */
+    .demo-content {
+      padding: 16px;
+      background: var(--bg-neutral-5);
+      border-radius: var(--radius-sm);
+      color: var(--text-default);
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Tab Component</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/tab/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: tab/component.rb
+  </p>
+
+  <!-- Basic Tabs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Tabs</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Standard horizontal tab navigation with underline indicator
+    </p>
+    <div class="examples">
+      <div class="elv-tab-group" id="basic-tabs">
+        <div class="elv-tab-list" role="tablist" aria-label="Basic example">
+          <button class="elv-tab" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">
+            Overview
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" tabindex="-1">
+            Features
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" tabindex="-1">
+            Pricing
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="panel-4" id="tab-4" tabindex="-1">
+            Reviews
+          </button>
+        </div>
+        <div class="elv-tab-panels">
+          <div class="elv-tab-panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1" aria-hidden="false">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Overview</h3>
+              <p class="elv-text-sm">This is the overview section with general information about the product.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2" aria-hidden="true">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Features</h3>
+              <p class="elv-text-sm">Detailed feature list and capabilities of the product.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="panel-3" aria-labelledby="tab-3" aria-hidden="true">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Pricing</h3>
+              <p class="elv-text-sm">Pricing tiers and subscription options.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="panel-4" aria-labelledby="tab-4" aria-hidden="true">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Reviews</h3>
+              <p class="elv-text-sm">Customer reviews and ratings from verified users.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-tab-group"&gt;
+  &lt;div class="elv-tab-list" role="tablist" aria-label="Product information"&gt;
+    &lt;button class="elv-tab" role="tab" aria-selected="true"
+            aria-controls="panel-1" id="tab-1"&gt;
+      Overview
+    &lt;/button&gt;
+    &lt;button class="elv-tab" role="tab" aria-selected="false"
+            aria-controls="panel-2" id="tab-2" tabindex="-1"&gt;
+      Features
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-tab-panels"&gt;
+    &lt;div class="elv-tab-panel" role="tabpanel"
+         id="panel-1" aria-labelledby="tab-1" aria-hidden="false"&gt;
+      Overview content...
+    &lt;/div&gt;
+    &lt;div class="elv-tab-panel" role="tabpanel"
+         id="panel-2" aria-labelledby="tab-2" aria-hidden="true"&gt;
+      Features content...
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Tabs with Icons -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Tabs with Icons</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Icons provide visual recognition and scan-ability
+    </p>
+    <div class="examples">
+      <div class="elv-tab-group" id="icon-tabs">
+        <div class="elv-tab-list" role="tablist" aria-label="Settings navigation">
+          <button class="elv-tab" role="tab" aria-selected="true" aria-controls="icon-panel-1" id="icon-tab-1">
+            <svg class="elv-tab-icon" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 1.5a7 7 0 0 0-7 7v.5h14v-.5a7 7 0 0 0-7-7z"/>
+            </svg>
+            Profile
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="icon-panel-2" id="icon-tab-2" tabindex="-1">
+            <svg class="elv-tab-icon" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M14 3.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 0 3.5v-2A1.5 1.5 0 0 1 1.5 0h11A1.5 1.5 0 0 1 14 1.5v2zm0 6a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 0 9.5v-2A1.5 1.5 0 0 1 1.5 6h11A1.5 1.5 0 0 1 14 7.5v2z"/>
+            </svg>
+            Security
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="icon-panel-3" id="icon-tab-3" tabindex="-1">
+            <svg class="elv-tab-icon" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm1 11.5v1h-2v-1h2zm0-8v6h-2v-6h2z"/>
+            </svg>
+            Notifications
+          </button>
+        </div>
+        <div class="elv-tab-panels">
+          <div class="elv-tab-panel" role="tabpanel" id="icon-panel-1" aria-labelledby="icon-tab-1" aria-hidden="false">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Profile Settings</h3>
+              <p class="elv-text-sm">Update your personal information and preferences.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="icon-panel-2" aria-labelledby="icon-tab-2" aria-hidden="true">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Security Settings</h3>
+              <p class="elv-text-sm">Manage passwords, two-factor authentication, and sessions.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="icon-panel-3" aria-labelledby="icon-tab-3" aria-hidden="true">
+            <div class="demo-content">
+              <h3 class="elv-text-base elv-font-semibold elv-mb-2">Notification Preferences</h3>
+              <p class="elv-text-sm">Configure email and in-app notification settings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;button class="elv-tab" role="tab" aria-selected="true"
+        aria-controls="panel-1" id="tab-1"&gt;
+  &lt;svg class="elv-tab-icon" viewBox="0 0 16 16" fill="currentColor"&gt;
+    &lt;!-- icon path --&gt;
+  &lt;/svg&gt;
+  Profile
+&lt;/button&gt;</code></pre>
+  </div>
+
+  <!-- Full Width Tabs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Full Width Tabs</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Tabs stretch to fill available width
+    </p>
+    <div class="examples">
+      <div class="elv-tab-group" id="fullwidth-tabs">
+        <div class="elv-tab-list elv-tab-list--full-width" role="tablist" aria-label="View options">
+          <button class="elv-tab" role="tab" aria-selected="true" aria-controls="fw-panel-1" id="fw-tab-1">
+            Grid View
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="fw-panel-2" id="fw-tab-2" tabindex="-1">
+            List View
+          </button>
+          <button class="elv-tab" role="tab" aria-selected="false" aria-controls="fw-panel-3" id="fw-tab-3" tabindex="-1">
+            Table View
+          </button>
+        </div>
+        <div class="elv-tab-panels">
+          <div class="elv-tab-panel" role="tabpanel" id="fw-panel-1" aria-labelledby="fw-tab-1" aria-hidden="false">
+            <div class="demo-content">
+              <p class="elv-text-sm">Grid view with cards in a responsive grid layout.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="fw-panel-2" aria-labelledby="fw-tab-2" aria-hidden="true">
+            <div class="demo-content">
+              <p class="elv-text-sm">List view with items stacked vertically.</p>
+            </div>
+          </div>
+          <div class="elv-tab-panel" role="tabpanel" id="fw-panel-3" aria-labelledby="fw-tab-3" aria-hidden="true">
+            <div class="demo-content">
+              <p class="elv-text-sm">Table view with columns and sortable headers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-tab-list elv-tab-list--full-width" role="tablist"&gt;
+  &lt;button class="elv-tab" role="tab"&gt;Grid View&lt;/button&gt;
+  &lt;button class="elv-tab" role="tab"&gt;List View&lt;/button&gt;
+  &lt;button class="elv-tab" role="tab"&gt;Table View&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Navigation:</strong> Use tabs to organize related content into separate views within the same context</li>
+      <li class="elv-mb-2"><strong>Button Element:</strong> Always use <code>&lt;button&gt;</code> for tab triggers (not links or divs)</li>
+      <li class="elv-mb-2"><strong>Active State:</strong> Exactly one tab must be active at all times</li>
+      <li class="elv-mb-2"><strong>Content Relationship:</strong> Tab content should be closely related (settings sections, product details)</li>
+      <li class="elv-mb-2"><strong>Tab Count:</strong> Keep 3-7 tabs; use different navigation pattern for more options</li>
+      <li class="elv-mb-2"><strong>Icons:</strong> Use icons sparingly and only when they add clear meaning</li>
+      <li class="elv-mb-2"><strong>Full Width:</strong> Use full-width variant when you have 2-4 tabs of similar label length</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>ARIA Roles:</strong> Use <code>role="tablist"</code> on container, <code>role="tab"</code> on buttons, <code>role="tabpanel"</code> on content</li>
+      <li class="elv-mb-2"><strong>aria-selected:</strong> Set to "true" for active tab, "false" for inactive tabs</li>
+      <li class="elv-mb-2"><strong>aria-controls:</strong> Tab button must reference its panel via ID</li>
+      <li class="elv-mb-2"><strong>aria-hidden:</strong> Set to "false" for visible panel, "true" for hidden panels</li>
+      <li class="elv-mb-2"><strong>tabindex:</strong> Active tab has tabindex="0", inactive tabs have tabindex="-1"</li>
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong>
+        <ul class="elv-ml-4 elv-mt-1">
+          <li>Tab: Moves focus into/out of tab list</li>
+          <li>Arrow Left/Right: Navigate between tabs</li>
+          <li>Home: Jump to first tab</li>
+          <li>End: Jump to last tab</li>
+        </ul>
+      </li>
+      <li class="elv-mb-2"><strong>Focus Visible:</strong> Purple outline appears on keyboard focus</li>
+      <li class="elv-mb-2"><strong>Labels:</strong> Provide <code>aria-label</code> on tablist to describe the group</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Tab Height</strong></td>
+        <td style="padding: 8px;">40px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Horizontal Padding</strong></td>
+        <td style="padding: 8px;">24px (0 24px 1px 24px for inactive state)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Icon-Label Gap</strong></td>
+        <td style="padding: 8px;">4px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Inactive Text</strong></td>
+        <td style="padding: 8px;">var(--text-subtle) / #4c4b53</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Active Text</strong></td>
+        <td style="padding: 8px;">var(--text-primary) / #5746b2 (purple)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Active Indicator</strong></td>
+        <td style="padding: 8px;">2px solid var(--text-primary) / #5746b2</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Tab List Border</strong></td>
+        <td style="padding: 8px;">1px solid var(--border-medium) / #c7c6cd</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Font</strong></td>
+        <td style="padding: 8px;">14px/600</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Inactive Border</strong></td>
+        <td style="padding: 8px;">None (padding-bottom: 1px to compensate)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Hover/Active Border</strong></td>
+        <td style="padding: 8px;">2px solid var(--text-primary) / #5746b2 (padding-bottom: 0)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Transition</strong></td>
+        <td style="padding: 8px;">150ms ease on color and border</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Panel Animation</strong></td>
+        <td style="padding: 8px;">200ms fade-in on activation</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Tab component JavaScript
+  // Handles tab switching, keyboard navigation, and ARIA state management
+
+  class TabGroup {
+    constructor(container) {
+      this.container = container;
+      this.tabList = container.querySelector('[role="tablist"]');
+      this.tabs = Array.from(this.tabList.querySelectorAll('[role="tab"]'));
+      this.panels = Array.from(container.querySelectorAll('[role="tabpanel"]'));
+
+      this.init();
+    }
+
+    init() {
+      // Click handlers
+      this.tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => this.selectTab(index));
+      });
+
+      // Keyboard navigation
+      this.tabList.addEventListener('keydown', (e) => this.handleKeydown(e));
+    }
+
+    selectTab(index) {
+      // Update tabs
+      this.tabs.forEach((tab, i) => {
+        const isSelected = i === index;
+        tab.setAttribute('aria-selected', isSelected);
+        tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+      });
+
+      // Update panels
+      this.panels.forEach((panel, i) => {
+        panel.setAttribute('aria-hidden', i !== index);
+      });
+
+      // Focus the selected tab
+      this.tabs[index].focus();
+    }
+
+    handleKeydown(e) {
+      const currentIndex = this.tabs.findIndex(tab => tab === document.activeElement);
+      if (currentIndex === -1) return;
+
+      let nextIndex = currentIndex;
+
+      switch(e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          nextIndex = currentIndex > 0 ? currentIndex - 1 : this.tabs.length - 1;
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          nextIndex = currentIndex < this.tabs.length - 1 ? currentIndex + 1 : 0;
+          break;
+        case 'Home':
+          e.preventDefault();
+          nextIndex = 0;
+          break;
+        case 'End':
+          e.preventDefault();
+          nextIndex = this.tabs.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      this.selectTab(nextIndex);
+    }
+  }
+
+  // Initialize all tab groups on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.elv-tab-group').forEach(group => {
+      new TabGroup(group);
+    });
+  });
+</script>
+
+</body>
+</html>

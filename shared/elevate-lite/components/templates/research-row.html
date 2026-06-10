@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Row</title>
+  <link rel="stylesheet" href="../../tokens/elevate.css">
+  <link rel="stylesheet" href="../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; flex-direction: column; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Research Row</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Horizontal list item for research documents with label, title, tags, and timestamp.
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Single tag, typical for research spikes focused on one area.
+    </p>
+    <div class="examples">
+      <a href="#"
+         class="research-row elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-px-5 elv-py-4 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium"
+         style="text-decoration: none;">
+        <div class="elv-flex elv-items-center elv-gap-4">
+          <span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap">
+            Spike
+          </span>
+          <span class="elv-text-sm elv-font-semibold elv-text-default elv-flex-1">
+            BuyerCaddy API — capabilities, endpoints, integration flow
+          </span>
+          <div class="elv-flex elv-gap-2">
+            <div
+              class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+              onclick="event.preventDefault(); event.stopPropagation();">
+              <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">G2 Activate</span>
+            </div>
+          </div>
+          <span class="elv-text-2xs elv-text-nonessential elv-whitespace-nowrap">Apr 15, 2026</span>
+        </div>
+      </a>
+    </div>
+    <pre><code>&lt;a href="./path/to/document.md"
+   class="research-row elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-px-5 elv-py-4 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium"
+   style="text-decoration: none;"&gt;
+  &lt;div class="elv-flex elv-items-center elv-gap-4"&gt;
+    &lt;!-- Label --&gt;
+    &lt;span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap"&gt;
+      Spike
+    &lt;/span&gt;
+    &lt;!-- Title --&gt;
+    &lt;span class="elv-text-sm elv-font-semibold elv-text-default elv-flex-1"&gt;
+      Research Title — brief description
+    &lt;/span&gt;
+    &lt;!-- Tags --&gt;
+    &lt;div class="elv-flex elv-gap-2"&gt;
+      &lt;div class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+           onclick="event.preventDefault(); event.stopPropagation();"&gt;
+        &lt;span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap"&gt;Tag&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Timestamp --&gt;
+    &lt;span class="elv-text-2xs elv-text-nonessential elv-whitespace-nowrap"&gt;Apr 15, 2026&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/a&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Multiple Tags</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Research that spans multiple epics or areas.
+    </p>
+    <div class="examples">
+      <a href="#"
+         class="research-row elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-px-5 elv-py-4 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium"
+         style="text-decoration: none;">
+        <div class="elv-flex elv-items-center elv-gap-4">
+          <span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap">
+            Spike
+          </span>
+          <span class="elv-text-sm elv-font-semibold elv-text-default elv-flex-1">
+            Automated UI Change Monitoring — weekly digest for design team awareness
+          </span>
+          <div class="elv-flex elv-gap-2">
+            <div
+              class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+              onclick="event.preventDefault(); event.stopPropagation();">
+              <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">G2 Activate</span>
+            </div>
+            <div
+              class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+              onclick="event.preventDefault(); event.stopPropagation();">
+              <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">Agent Marketplace</span>
+            </div>
+          </div>
+          <span class="elv-text-2xs elv-text-nonessential elv-whitespace-nowrap">Apr 16, 2026</span>
+        </div>
+      </a>
+    </div>
+    <pre><code>&lt;div class="elv-flex elv-gap-2"&gt;
+  &lt;div class="tag-chip ... elv-h-6 elv-p-0.5" onclick="event.preventDefault(); event.stopPropagation();"&gt;
+    &lt;span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap"&gt;G2 Activate&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="tag-chip ... elv-h-6 elv-p-0.5" onclick="event.preventDefault(); event.stopPropagation();"&gt;
+    &lt;span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap"&gt;Agent Marketplace&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Alternative Labels</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Use different labels for different types of research documents.
+    </p>
+    <div class="examples">
+      <a href="#" class="research-row elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-px-5 elv-py-4 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium" style="text-decoration: none;">
+        <div class="elv-flex elv-items-center elv-gap-4">
+          <span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap">Spike</span>
+          <span class="elv-text-sm elv-font-semibold elv-text-default elv-flex-1">Spike title</span>
+          <div class="elv-flex elv-gap-2">
+            <div class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5">
+              <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">Tag</span>
+            </div>
+          </div>
+          <span class="elv-text-2xs elv-text-nonessential elv-whitespace-nowrap">Apr 16, 2026</span>
+        </div>
+      </a>
+
+      <a href="#" class="research-row elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-px-5 elv-py-4 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium" style="text-decoration: none;">
+        <div class="elv-flex elv-items-center elv-gap-4">
+          <span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap">Research</span>
+          <span class="elv-text-sm elv-font-semibold elv-text-default elv-flex-1">Research title</span>
+          <div class="elv-flex elv-gap-2">
+            <div class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5">
+              <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">Tag</span>
+            </div>
+          </div>
+          <span class="elv-text-2xs elv-text-nonessential elv-whitespace-nowrap">Apr 16, 2026</span>
+        </div>
+      </a>
+
+      <a href="#" class="research-row elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-px-5 elv-py-4 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium" style="text-decoration: none;">
+        <div class="elv-flex elv-items-center elv-gap-4">
+          <span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap">Analysis</span>
+          <span class="elv-text-sm elv-font-semibold elv-text-default elv-flex-1">Analysis title</span>
+          <div class="elv-flex elv-gap-2">
+            <div class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5">
+              <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">Tag</span>
+            </div>
+          </div>
+          <span class="elv-text-2xs elv-text-nonessential elv-whitespace-nowrap">Apr 16, 2026</span>
+        </div>
+      </a>
+    </div>
+    <pre><code>&lt;!-- Change label text as needed --&gt;
+&lt;span class="elv-text-sm elv-font-semibold elv-text-subtle elv-whitespace-nowrap"&gt;
+  Spike | Research | Analysis | Doc
+&lt;/span&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">List Container</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Vertical flex column with gap-2 spacing.
+    </p>
+    <pre><code>&lt;div class="elv-flex elv-flex-col elv-gap-2"&gt;
+  &lt;!-- Research row items here --&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Specifications</h2>
+    <ul class="elv-text-xs elv-text-default" style="line-height: 1.8;">
+      <li><strong>Container:</strong> flex row, items-center, gap-4 (16px), px-5 py-4 (20px horizontal, 16px vertical)</li>
+      <li><strong>Border:</strong> border-light, rounded-md (6px)</li>
+      <li><strong>Hover:</strong> shadow-2, border-medium</li>
+      <li><strong>Label:</strong> text-sm (14px), font-semibold, text-subtle, whitespace-nowrap</li>
+      <li><strong>Title:</strong> text-sm (14px), font-semibold, text-default, flex-1 (grows to fill space)</li>
+      <li><strong>Tag chips:</strong> h-6 (24px), flex gap-2 container, single-select pattern</li>
+      <li><strong>Timestamp:</strong> text-2xs (11px), text-nonessential, whitespace-nowrap</li>
+      <li><strong>Tag click:</strong> preventDefault and stopPropagation to allow filtering without navigating</li>
+      <li><strong>List spacing:</strong> gap-2 (8px) between rows</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

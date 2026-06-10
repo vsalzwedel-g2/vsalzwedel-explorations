@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rating Distribution Bar Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Rating Distribution Bar Styles — from rating_distribution_bar/component.rb */
+    .elv-rating-distribution-bar {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    /* Size variants */
+    .elv-rating-distribution-bar--sm {
+      gap: 12px;
+      padding: 4px 8px;
+    }
+
+    .elv-rating-distribution-bar--lg {
+      gap: 12px;
+      padding: 8px;
+    }
+
+    /* Interactive states (when used with radio inputs) */
+    .elv-rating-distribution-bar:has(:focus-visible) {
+      outline: 2px solid var(--palette-purple-40); /* purple-40 */
+      outline-offset: 0;
+    }
+
+    .elv-rating-distribution-bar:not(:has(input:disabled)):hover {
+      background: #f5f3fd; /* primary-5 */
+    }
+
+    .elv-rating-distribution-bar:has(input:checked) {
+      background: #f5f3fd; /* primary-5 */
+    }
+
+    .elv-rating-distribution-bar:not(:has(input:disabled)) {
+      cursor: pointer;
+    }
+
+    /* Prefix (star or text label) */
+    .elv-rating-distribution-bar__prefix {
+      flex-shrink: 0;
+    }
+
+    /* Progress bar container */
+    .elv-rating-distribution-bar__progress {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Suffix (count) */
+    .elv-rating-distribution-bar__suffix {
+      flex-shrink: 0;
+      text-align: right;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--text-default); /* text-default */
+    }
+
+    .elv-rating-distribution-bar--sm .elv-rating-distribution-bar__suffix {
+      font-weight: 400;
+    }
+
+    .elv-rating-distribution-bar--lg .elv-rating-distribution-bar__suffix {
+      font-weight: 600;
+    }
+
+    /* Width classes for count (dynamic based on digit count) */
+    .elv-w-1ch { width: 1ch; }
+    .elv-w-2ch { width: 2ch; }
+    .elv-w-3ch { width: 3ch; }
+    .elv-w-5ch { width: 5ch; }
+    .elv-w-6ch { width: 6ch; }
+    .elv-w-7ch { width: 7ch; }
+
+    /* Progress Bar Styles — from progress_bar/component.rb */
+    .elv-progress-bar__track {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 9999px;
+      background: var(--bg-neutral-10); /* N10 */
+      height: 8px;
+    }
+
+    .elv-progress-bar__fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--bg-brand); /* #ff492c - rorange brand color */
+    }
+
+    /* Star Rating Styles — for prefix */
+    .elv-star-rating__star--md {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Rating Distribution Bar</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/rating_distribution_bar/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: rating_distribution_bar/component.rb
+  </p>
+
+  <!-- Basic Examples -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Examples</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Shows rating distribution at a specific star level with horizontal bar
+    </p>
+    <div class="examples">
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">Small size (default)</p>
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 75%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            1,234
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">Large size</p>
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--lg">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 75%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            1,234
+          </div>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Small rating distribution bar --&gt;
+&lt;div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm"&gt;
+  &lt;div class="elv-rating-distribution-bar__prefix"&gt;
+    &lt;svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none"&gt;
+      &lt;path d="..." fill="#FF492C"/&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-rating-distribution-bar__progress"&gt;
+    &lt;div class="elv-progress-bar__track"&gt;
+      &lt;div class="elv-progress-bar__fill" style="width: 75%"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-rating-distribution-bar__suffix elv-w-5ch"&gt;
+    1,234
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Full 5-Star Distribution -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Full 5-Star Distribution</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Complete rating breakdown showing all star levels
+    </p>
+    <div style="max-width: 500px;">
+      <div class="elv-flex elv-flex-col elv-gap-2">
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 65%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            2,145
+          </div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 22%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            721
+          </div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 8%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            264
+          </div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 4%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            132
+          </div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 1%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">
+            38
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Context: Review Summary -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: Review Summary</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common usage in product review summaries
+    </p>
+
+    <!-- Product Review Summary -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4" style="max-width: 500px;">
+      <h3 class="elv-text-lg elv-font-semibold elv-text-default elv-mb-2">Customer Reviews</h3>
+
+      <!-- Overall Rating -->
+      <div class="elv-flex elv-items-center elv-gap-3 elv-mb-4 elv-pb-4 elv-border-b elv-border-light">
+        <div class="elv-text-5xl elv-font-bold elv-text-default">4.5</div>
+        <div>
+          <div class="elv-flex elv-gap-1 elv-mb-1">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <g clip-path="url(#clip-summary)">
+                <path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/>
+                <path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/>
+              </g>
+              <defs>
+                <clipPath id="clip-summary"><rect width="24" height="24" fill="white"/></clipPath>
+              </defs>
+            </svg>
+          </div>
+          <p class="elv-text-xs elv-text-subtle">Based on 3,300 reviews</p>
+        </div>
+      </div>
+
+      <!-- Distribution -->
+      <div class="elv-flex elv-flex-col elv-gap-2">
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 65%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">2,145</div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 22%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">721</div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 8%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">264</div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 4%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">132</div>
+        </div>
+
+        <div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 1%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">38</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- With Radio Input (Interactive) -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Interactive Filter (with Radio Input)</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Can be used as clickable filters to show reviews by star rating
+    </p>
+    <div style="max-width: 500px;">
+      <div class="elv-flex elv-flex-col elv-gap-2">
+        <label class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <input type="radio" name="rating-filter" value="5" style="position: absolute; opacity: 0; pointer-events: none;">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 65%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">2,145</div>
+        </label>
+
+        <label class="elv-rating-distribution-bar elv-rating-distribution-bar--sm">
+          <input type="radio" name="rating-filter" value="4" style="position: absolute; opacity: 0; pointer-events: none;">
+          <div class="elv-rating-distribution-bar__prefix elv-flex elv-gap-0.5">
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg class="elv-star-rating__star--md" viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+            </svg>
+          </div>
+          <div class="elv-rating-distribution-bar__progress">
+            <div class="elv-progress-bar__track">
+              <div class="elv-progress-bar__fill" style="width: 22%"></div>
+            </div>
+          </div>
+          <div class="elv-rating-distribution-bar__suffix elv-w-5ch">721</div>
+        </label>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Interactive rating filter --&gt;
+&lt;label class="elv-rating-distribution-bar elv-rating-distribution-bar--sm"&gt;
+  &lt;input type="radio" name="rating-filter" value="5"
+         style="position: absolute; opacity: 0; pointer-events: none;"&gt;
+  &lt;div class="elv-rating-distribution-bar__prefix"&gt;
+    &lt;!-- stars --&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-rating-distribution-bar__progress"&gt;
+    &lt;div class="elv-progress-bar__track"&gt;
+      &lt;div class="elv-progress-bar__fill" style="width: 65%"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-rating-distribution-bar__suffix elv-w-5ch"&gt;2,145&lt;/div&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Purpose:</strong> Display rating distribution across 5 star levels in review summaries</li>
+      <li class="elv-mb-2"><strong>Prefix:</strong> Use star icons (1-5 stars) to show rating level. Can also use text labels.</li>
+      <li class="elv-mb-2"><strong>Progress Bar:</strong> Width represents proportion of total reviews at that rating level</li>
+      <li class="elv-mb-2"><strong>Suffix Count:</strong> Show actual number of reviews (not percentage) for transparency</li>
+      <li class="elv-mb-2"><strong>Ordering:</strong> Always display 5 stars to 1 star (descending order)</li>
+      <li class="elv-mb-2"><strong>Interactive Use:</strong> Can wrap in label with radio input to filter reviews by rating</li>
+      <li class="elv-mb-2"><strong>Size Selection:</strong> Use sm for compact contexts, lg for prominent displays</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Static Display:</strong> Add <code>role="group"</code> and <code>aria-label="Rating distribution"</code> to container</li>
+      <li class="elv-mb-2"><strong>Interactive Filter:</strong> Use semantic <code>&lt;label&gt;</code> wrapping <code>&lt;input type="radio"&gt;</code></li>
+      <li class="elv-mb-2"><strong>Focus Visible:</strong> Component shows visible focus ring via <code>:focus-visible</code> on radio input</li>
+      <li class="elv-mb-2"><strong>Screen Reader:</strong> Each bar should describe "X star rating: Y reviews"</li>
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong> Interactive version supports arrow keys for radio group navigation</li>
+    </ul>
+    <pre><code>&lt;!-- Static (non-interactive) --&gt;
+&lt;div role="group" aria-label="Rating distribution"&gt;
+  &lt;div class="elv-rating-distribution-bar elv-rating-distribution-bar--sm"
+       role="img" aria-label="5 stars: 2,145 reviews"&gt;
+    &lt;!-- content --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Interactive filter --&gt;
+&lt;fieldset&gt;
+  &lt;legend class="elv-sr-only"&gt;Filter reviews by rating&lt;/legend&gt;
+  &lt;label class="elv-rating-distribution-bar elv-rating-distribution-bar--sm"&gt;
+    &lt;input type="radio" name="rating" value="5"
+           aria-label="Filter by 5 star reviews (2,145 reviews)"&gt;
+    &lt;!-- content --&gt;
+  &lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Sizes</strong></td>
+        <td style="padding: 8px;">SM (4px/8px padding, 12px gap), LG (8px padding, 12px gap)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Progress Bar Height</strong></td>
+        <td style="padding: 8px;">8px (sm size from progress_bar component)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Progress Fill Color</strong></td>
+        <td style="padding: 8px;">#ff492c (Rorange / brand color)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Progress Track Color</strong></td>
+        <td style="padding: 8px;">#f2f2f3 (N10)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Star Size (prefix)</strong></td>
+        <td style="padding: 8px;">20px (md size from star_rating component)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Count Font (suffix)</strong></td>
+        <td style="padding: 8px;">SM: 14px/400, LG: 14px/600</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Hover Background</strong></td>
+        <td style="padding: 8px;">#f5f3fd (primary-5) when interactive</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Focus Outline</strong></td>
+        <td style="padding: 8px;">2px solid #c3bde5 (purple-40)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">4px (sm from radius scale)</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

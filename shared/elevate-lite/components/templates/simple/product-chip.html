@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Chip Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Product Chip Styles — from product_chip/component.rb */
+    .elv-product-chip {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--bg-neutral-20); /* border-light */
+      background: var(--bg-neutral-5); /* bg-neutral-5 */
+      cursor: pointer;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .elv-product-chip:hover {
+      background: var(--bg-primary-20); /* bg-primary-20 */
+    }
+
+    .elv-product-chip:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--text-primary), 0 0 0 4px var(--bg-primary-20); /* focus ring */
+    }
+
+    .elv-product-chip:active {
+      border-color: var(--text-primary); /* border-focus */
+      box-shadow: inset 0 0 4px 1px rgba(31, 31, 35, 0.2);
+    }
+
+    /* Size variants */
+    .elv-product-chip--xs {
+      border-radius: 4px;
+      padding: 4px 4px 4px 4px;
+      gap: 4px;
+    }
+
+    .elv-product-chip--sm {
+      border-radius: 8px;
+      padding: 8px;
+      gap: 8px;
+    }
+
+    .elv-product-chip--md {
+      border-radius: 8px;
+      padding: 8px;
+      gap: 12px;
+    }
+
+    .elv-product-chip__avatar {
+      flex-shrink: 0;
+      border-radius: 4px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .elv-product-chip__avatar--xs {
+      width: 24px;
+      height: 24px;
+    }
+
+    .elv-product-chip__avatar--sm {
+      width: 32px;
+      height: 32px;
+    }
+
+    .elv-product-chip__avatar--md {
+      width: 44px;
+      height: 44px;
+    }
+
+    .elv-product-chip__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .elv-product-chip__content {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .elv-product-chip__title {
+      font-weight: 600;
+      color: var(--text-default); /* text-default */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .elv-product-chip__title--xs {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .elv-product-chip__title--sm {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .elv-product-chip__title--md {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .elv-product-chip__rating {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-top: 4px;
+    }
+
+    .elv-product-chip__rating svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .elv-product-chip__rating-text {
+      font-size: 12px;
+      color: var(--text-subtle); /* text-subtle */
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Product Chip</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/product_chip/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: product_chip/component.rb
+  </p>
+
+  <!-- Size Variants -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      3 sizes: xs (24px avatar), sm (32px avatar), md (44px avatar)
+    </p>
+    <div class="examples">
+      <a href="#" class="elv-product-chip elv-product-chip--xs" style="max-width: 200px;">
+        <div class="elv-product-chip__avatar elv-product-chip__avatar--xs">
+          <img src="https://via.placeholder.com/24" alt="Product">
+        </div>
+        <div class="elv-product-chip__content">
+          <div class="elv-product-chip__title elv-product-chip__title--xs">Salesforce</div>
+        </div>
+      </a>
+
+      <a href="#" class="elv-product-chip elv-product-chip--sm" style="max-width: 220px;">
+        <div class="elv-product-chip__avatar elv-product-chip__avatar--sm">
+          <img src="https://via.placeholder.com/32" alt="Product">
+        </div>
+        <div class="elv-product-chip__content">
+          <div class="elv-product-chip__title elv-product-chip__title--sm">Salesforce CRM</div>
+        </div>
+      </a>
+
+      <a href="#" class="elv-product-chip elv-product-chip--md" style="max-width: 280px;">
+        <div class="elv-product-chip__avatar elv-product-chip__avatar--md">
+          <img src="https://via.placeholder.com/44" alt="Product">
+        </div>
+        <div class="elv-product-chip__content">
+          <div class="elv-product-chip__title elv-product-chip__title--md">Salesforce CRM</div>
+          <div class="elv-product-chip__rating">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none">
+              <g clip-path="url(#clip-chip)">
+                <path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/>
+                <path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/>
+              </g>
+              <defs>
+                <clipPath id="clip-chip"><rect width="24" height="24" fill="white"/></clipPath>
+              </defs>
+            </svg>
+            <span class="elv-product-chip__rating-text">4.5 (1.2k)</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    <pre><code>&lt;!-- Extra Small --&gt;
+&lt;a href="/product" class="elv-product-chip elv-product-chip--xs"&gt;
+  &lt;div class="elv-product-chip__avatar elv-product-chip__avatar--xs"&gt;
+    &lt;img src="/product.png" alt="Product"&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-product-chip__content"&gt;
+    &lt;div class="elv-product-chip__title elv-product-chip__title--xs"&gt;Salesforce&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/a&gt;
+
+&lt;!-- Medium with rating --&gt;
+&lt;a href="/product" class="elv-product-chip elv-product-chip--md"&gt;
+  &lt;div class="elv-product-chip__avatar elv-product-chip__avatar--md"&gt;
+    &lt;img src="/product.png" alt="Product"&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-product-chip__content"&gt;
+    &lt;div class="elv-product-chip__title elv-product-chip__title--md"&gt;Salesforce CRM&lt;/div&gt;
+    &lt;div class="elv-product-chip__rating"&gt;
+      &lt;!-- 4.5 star rating SVGs --&gt;
+      &lt;span class="elv-product-chip__rating-text"&gt;4.5 (1.2k)&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/a&gt;</code></pre>
+  </div>
+
+  <!-- Without Rating -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Without Rating</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Product chips can omit rating for compact displays
+    </p>
+    <div class="examples">
+      <a href="#" class="elv-product-chip elv-product-chip--md" style="max-width: 280px;">
+        <div class="elv-product-chip__avatar elv-product-chip__avatar--md">
+          <img src="https://via.placeholder.com/44" alt="Product">
+        </div>
+        <div class="elv-product-chip__content">
+          <div class="elv-product-chip__title elv-product-chip__title--md">HubSpot Marketing Hub</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- In Context -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common usage in comparison tables and related products
+    </p>
+
+    <!-- Related Products List -->
+    <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-4" style="max-width: 400px;">
+      <h3 class="elv-text-base elv-font-semibold elv-text-default elv-mb-3">Similar Products</h3>
+      <div class="elv-flex elv-flex-col elv-gap-2">
+        <a href="#" class="elv-product-chip elv-product-chip--md">
+          <div class="elv-product-chip__avatar elv-product-chip__avatar--md">
+            <img src="https://via.placeholder.com/44" alt="Salesforce">
+          </div>
+          <div class="elv-product-chip__content">
+            <div class="elv-product-chip__title elv-product-chip__title--md">Salesforce CRM</div>
+            <div class="elv-product-chip__rating">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+              </svg>
+              <span class="elv-product-chip__rating-text">4 (12k)</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="elv-product-chip elv-product-chip--md">
+          <div class="elv-product-chip__avatar elv-product-chip__avatar--md">
+            <img src="https://via.placeholder.com/44" alt="HubSpot">
+          </div>
+          <div class="elv-product-chip__content">
+            <div class="elv-product-chip__title elv-product-chip__title--md">HubSpot CRM</div>
+            <div class="elv-product-chip__rating">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <g clip-path="url(#clip-context)">
+                  <path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/>
+                  <path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/>
+                </g>
+                <defs>
+                  <clipPath id="clip-context"><rect width="24" height="24" fill="white"/></clipPath>
+                </defs>
+              </svg>
+              <span class="elv-product-chip__rating-text">4.5 (8k)</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="#" class="elv-product-chip elv-product-chip--md">
+          <div class="elv-product-chip__avatar elv-product-chip__avatar--md">
+            <img src="https://via.placeholder.com/44" alt="Pipedrive">
+          </div>
+          <div class="elv-product-chip__content">
+            <div class="elv-product-chip__title elv-product-chip__title--md">Pipedrive</div>
+            <div class="elv-product-chip__rating">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+              </svg>
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/>
+              </svg>
+              <span class="elv-product-chip__rating-text">3 (5k)</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Size Selection:</strong> Use xs for compact lists, sm for sidebar navigation, md for featured products</li>
+      <li class="elv-mb-2"><strong>Rating Display:</strong> Only md size includes star rating - smaller sizes focus on product name</li>
+      <li class="elv-mb-2"><strong>Interactivity:</strong> Always use as clickable link (not button) to product page</li>
+      <li class="elv-mb-2"><strong>Avatar:</strong> Use product logo or brand icon - ensure sufficient contrast on white background</li>
+      <li class="elv-mb-2"><strong>Title:</strong> Truncate long product names with ellipsis to maintain chip width</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Semantics:</strong> Use <code>&lt;a&gt;</code> tag with href for navigation</li>
+      <li class="elv-mb-2"><strong>Alt Text:</strong> Provide descriptive alt text for product avatar images</li>
+      <li class="elv-mb-2"><strong>Focus Indicators:</strong> Purple focus ring is visible and meets WCAG standards</li>
+      <li class="elv-mb-2"><strong>Touch Targets:</strong> Ensure sufficient size for mobile taps (min 44x44px)</li>
+      <li class="elv-mb-2"><strong>Rating Context:</strong> Include review count to provide context beyond just star rating</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Sizes</strong></td>
+        <td style="padding: 8px;">XS (24px avatar), SM (32px avatar), MD (44px avatar)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Background</strong></td>
+        <td style="padding: 8px;">#f7f7f8 (bg-neutral-5)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">1px solid #dfdfe2 (border-light)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Hover Background</strong></td>
+        <td style="padding: 8px;">#ebe9f6 (bg-primary-20)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Focus Ring</strong></td>
+        <td style="padding: 8px;">2px #5746b2 + 4px #ebe9f6 (purple with light bg)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Active Border</strong></td>
+        <td style="padding: 8px;">#5746b2 with inset shadow</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">XS: 4px, SM/MD: 8px</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

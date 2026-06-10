@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inset Card Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: var(--bg-neutral-0);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Inset Card Styles */
+    .elv-inset-card {
+      display: flex;
+      background: var(--bg-neutral-5);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      border: 1px solid var(--border-light);
+    }
+
+    /* Border-only variant - lighter appearance */
+    .elv-inset-card--bordered {
+      background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light);
+    }
+
+    /* Subtle variant - even lighter */
+    .elv-inset-card--subtle {
+      background: var(--bg-neutral-10);
+      border: none;
+    }
+
+    /* Small padding variant */
+    .elv-inset-card--sm {
+      padding: 8px;
+    }
+
+    /* Large padding variant */
+    .elv-inset-card--lg {
+      padding: 24px;
+    }
+
+    /* Demonstration: standard card containing inset */
+    .demo-standard-card {
+      background: var(--bg-neutral-0);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border-light);
+    }
+
+    .demo-standard-card__title {
+      font-size: 21px;
+      line-height: 28px;
+      font-weight: 700;
+      color: var(--text-default);
+      margin: 0 0 16px 0;
+    }
+
+    .demo-standard-card__text {
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--text-default);
+      margin: 0 0 16px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Inset Card Component</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md</a>
+  </p>
+
+  <!-- Basic Inset Card -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Inset Card</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Recessed appearance for nested or secondary content
+    </p>
+    <div class="examples">
+      <div class="elv-inset-card">
+        <p class="elv-text-sm elv-text-default" style="margin: 0;">
+          This is an inset card with a subtle background that creates a recessed appearance. It's perfect for nested content within standard cards.
+        </p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-inset-card"&gt;
+  &lt;p&gt;This is an inset card with a subtle background...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Bordered Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Bordered Variant</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Border-only style for even lighter appearance
+    </p>
+    <div class="examples">
+      <div class="elv-inset-card elv-inset-card--bordered">
+        <p class="elv-text-sm elv-text-default" style="margin: 0;">
+          This variant uses white background with just a border, creating a subtle container without visual weight.
+        </p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-inset-card elv-inset-card--bordered"&gt;
+  &lt;p&gt;Border-only variant...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Subtle Variant -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Subtle Variant</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Minimal background with no border
+    </p>
+    <div class="examples">
+      <div class="elv-inset-card elv-inset-card--subtle">
+        <p class="elv-text-sm elv-text-default" style="margin: 0;">
+          The subtle variant has a very light background with no border, perfect for inline notes or callouts.
+        </p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-inset-card elv-inset-card--subtle"&gt;
+  &lt;p&gt;Subtle variant with minimal styling...&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Nested in Standard Card -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Nested in Standard Card</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common pattern: inset card within a standard card
+    </p>
+    <div class="examples">
+      <div class="demo-standard-card">
+        <h3 class="demo-standard-card__title">Product Overview</h3>
+        <p class="demo-standard-card__text">
+          This is a standard card with primary content and information about the product.
+        </p>
+        <div class="elv-inset-card">
+          <p class="elv-text-xs elv-font-semibold elv-text-subtle" style="margin: 0 0 4px 0;">Note:</p>
+          <p class="elv-text-sm elv-text-default" style="margin: 0;">
+            This inset card contains secondary information, like a note, disclaimer, or related tip.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="demo-standard-card"&gt;
+  &lt;h3&gt;Product Overview&lt;/h3&gt;
+  &lt;p&gt;Primary content...&lt;/p&gt;
+  &lt;div class="elv-inset-card"&gt;
+    &lt;p&gt;Secondary nested content...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Size Variants -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Small, default, and large padding options
+    </p>
+    <div class="examples">
+      <div class="elv-inset-card elv-inset-card--sm">
+        <p class="elv-text-sm elv-text-default" style="margin: 0;">
+          Small padding (8px) - compact for dense layouts
+        </p>
+      </div>
+      <div class="elv-inset-card">
+        <p class="elv-text-sm elv-text-default" style="margin: 0;">
+          Default padding (16px) - standard size for most uses
+        </p>
+      </div>
+      <div class="elv-inset-card elv-inset-card--lg">
+        <p class="elv-text-sm elv-text-default" style="margin: 0;">
+          Large padding (24px) - generous spacing for important content
+        </p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-inset-card elv-inset-card--sm"&gt;Small&lt;/div&gt;
+&lt;div class="elv-inset-card"&gt;Default&lt;/div&gt;
+&lt;div class="elv-inset-card elv-inset-card--lg"&gt;Large&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Common Use Cases</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Practical examples of when to use inset cards
+    </p>
+    <div class="examples">
+      <!-- Quote/Testimonial -->
+      <div class="demo-standard-card">
+        <h3 class="demo-standard-card__title">Customer Testimonial</h3>
+        <div class="elv-inset-card elv-inset-card--lg">
+          <p class="elv-text-base" style="margin: 0 0 12px 0; font-style: italic; color: var(--text-default);">
+            "This product has completely transformed our workflow. The team support is excellent and the features are exactly what we needed."
+          </p>
+          <p class="elv-text-sm elv-text-subtle" style="margin: 0;">
+            — Sarah Johnson, Product Manager at TechCorp
+          </p>
+        </div>
+      </div>
+
+      <!-- Code Block / Technical Info -->
+      <div class="demo-standard-card">
+        <h3 class="demo-standard-card__title">API Integration</h3>
+        <p class="demo-standard-card__text">
+          To integrate with our API, use the following endpoint:
+        </p>
+        <div class="elv-inset-card elv-inset-card--subtle">
+          <code style="font-family: monospace; font-size: 13px; color: var(--text-default);">
+            POST https://api.example.com/v1/products
+          </code>
+        </div>
+      </div>
+
+      <!-- Warning / Note -->
+      <div class="demo-standard-card">
+        <h3 class="demo-standard-card__title">Important Notice</h3>
+        <p class="demo-standard-card__text">
+          Please review the following before proceeding:
+        </p>
+        <div class="elv-inset-card" style="border-left: 4px solid var(--color-yellow-100);">
+          <p class="elv-text-xs elv-font-semibold" style="margin: 0 0 4px 0; color: var(--color-yellow-160);">Warning</p>
+          <p class="elv-text-sm elv-text-default" style="margin: 0;">
+            This action cannot be undone. Make sure you have a backup before proceeding.
+          </p>
+        </div>
+      </div>
+
+      <!-- Nested Form Section -->
+      <div class="demo-standard-card">
+        <h3 class="demo-standard-card__title">Account Settings</h3>
+        <p class="demo-standard-card__text">
+          Update your profile information below:
+        </p>
+        <div class="elv-inset-card elv-inset-card--bordered">
+          <label class="elv-text-sm elv-font-semibold elv-text-default" style="display: block; margin-bottom: 4px;">
+            Display Name
+          </label>
+          <input type="text" placeholder="Enter your name" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 14px;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Purpose:</strong> Container for secondary, nested, or supporting content</li>
+      <li class="elv-mb-2"><strong>Visual Hierarchy:</strong> Inset cards are less prominent than standard cards</li>
+      <li class="elv-mb-2"><strong>Nesting:</strong> Common to place inset cards inside standard cards</li>
+      <li class="elv-mb-2"><strong>Background:</strong> Default uses bg-neutral-5 for subtle recessed appearance</li>
+      <li class="elv-mb-2"><strong>vs Standard Card:</strong> Standard cards float on page; inset cards are embedded within</li>
+      <li class="elv-mb-2"><strong>Common Uses:</strong> Quotes, code blocks, notes, warnings, nested forms</li>
+      <li class="elv-mb-2"><strong>Accent Borders:</strong> Can add left border for warnings/notes (4px solid)</li>
+      <li class="elv-mb-2"><strong>Size:</strong> Use small for compact info, large for emphasis</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Semantic HTML:</strong> Use appropriate semantic tags for content (blockquote, code, aside)</li>
+      <li class="elv-mb-2"><strong>Color Contrast:</strong> All text meets WCAG AA standards on default backgrounds</li>
+      <li class="elv-mb-2"><strong>Focus:</strong> Interactive elements inside inset cards should have visible focus</li>
+      <li class="elv-mb-2"><strong>Landmarks:</strong> For important notes, consider <code>&lt;aside&gt;</code> with <code>aria-label</code></li>
+      <li class="elv-mb-2"><strong>Visual Only:</strong> Don't rely on background color alone to convey meaning</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Default Background</strong></td>
+        <td style="padding: 8px;">var(--bg-neutral-5) / #fafafa</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Bordered Background</strong></td>
+        <td style="padding: 8px;">var(--bg-neutral-0) / #ffffff</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Subtle Background</strong></td>
+        <td style="padding: 8px;">var(--bg-neutral-10) / #f2f2f3</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">1px solid var(--border-light) / #dfdfe2</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">8px (radius-sm)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Small Padding</strong></td>
+        <td style="padding: 8px;">8px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Default Padding</strong></td>
+        <td style="padding: 8px;">16px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Large Padding</strong></td>
+        <td style="padding: 8px;">24px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Accent Border</strong></td>
+        <td style="padding: 8px;">4px solid (left border for notes/warnings)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Text Color</strong></td>
+        <td style="padding: 8px;">var(--text-default) / #201f23</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Comparison -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Standard Card vs Inset Card</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Understanding when to use each card type
+    </p>
+    <table class="elv-text-sm" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 2px solid var(--border-light);">
+          <th style="padding: 8px; text-align: left; font-weight: 600;">Aspect</th>
+          <th style="padding: 8px; text-align: left; font-weight: 600;">Standard Card</th>
+          <th style="padding: 8px; text-align: left; font-weight: 600;">Inset Card</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 8px;">Background</td>
+          <td style="padding: 8px;">var(--bg-neutral-0) / #ffffff (brightest)</td>
+          <td style="padding: 8px;">var(--bg-neutral-5) / #fafafa (recessed)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 8px;">Elevation</td>
+          <td style="padding: 8px;">Floats on page</td>
+          <td style="padding: 8px;">Embedded within</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 8px;">Shadow</td>
+          <td style="padding: 8px;">Optional (floating only)</td>
+          <td style="padding: 8px;">Never</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="padding: 8px;">Usage</td>
+          <td style="padding: 8px;">Primary content containers</td>
+          <td style="padding: 8px;">Secondary nested content</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px;">Border Radius</td>
+          <td style="padding: 8px;">12-16px (md-lg)</td>
+          <td style="padding: 8px;">8px (sm)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

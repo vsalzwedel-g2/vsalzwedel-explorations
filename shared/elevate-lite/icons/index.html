@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elevate Icon Library — 293 Icons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../tokens/elevate.css">
+  <link rel="stylesheet" href="../components/elevate.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fafafa;
+      color: #201f23;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumb styles */
+    .elv-breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .elv-breadcrumb-item {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .elv-breadcrumb-link {
+      color: #4c4b53;
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 16px;
+      transition: color 150ms ease;
+    }
+    .elv-breadcrumb-link:hover {
+      color: #201f23;
+    }
+    .elv-breadcrumb-link--current {
+      color: #84838a;
+    }
+    .elv-breadcrumb-separator {
+      width: 20px;
+      height: 20px;
+      fill: #6f6d78;
+    }
+
+    .content-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem 2rem 2rem;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6f6d78;
+      margin-top: 0.5rem;
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 11px 16px 11px 44px;
+      border: 2px solid #dfdfe2;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Figtree', sans-serif;
+      background: white;
+      transition: all 150ms ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border: 2px solid #5746b2;
+      padding: 11px 16px 11px 44px;
+      box-shadow: 0 0 0 4px rgba(87, 70, 178, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6f6d78;
+      font-size: 20px;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 0.5px solid #dfdfe2;
+      background: white;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4c4b53;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: #f4f2f8;
+      border-color: #5746b2;
+    }
+
+    .chip.active {
+      background: #5746b2;
+      color: white;
+      border-color: #5746b2;
+    }
+
+    .stats {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 0.5px solid #dfdfe2;
+      font-size: 14px;
+      color: #6f6d78;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .icon-card {
+      background: white;
+      border: 0.5px solid #dfdfe2;
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .icon-card:hover {
+      border-color: #5746b2;
+      box-shadow: 0 4px 12px rgba(87, 70, 178, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .icon-card.copied {
+      border-color: #00a869;
+      background: #f0fdf7;
+    }
+
+    .icon-preview {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #201f23; /* Default icon color */
+    }
+
+    .icon-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .icon-card:hover .icon-preview {
+      color: #5746b2; /* Purple on hover */
+    }
+
+    .icon-name {
+      font-size: 12px;
+      color: #4c4b53;
+      text-align: center;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .copy-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #00a869;
+      color: white;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .icon-card.copied .copy-badge {
+      opacity: 1;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #6f6d78;
+      background: white;
+      border-radius: 12px;
+      border: 0.5px solid #dfdfe2;
+    }
+
+    .no-results-icon {
+      font-size: 48px;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 0.5px solid #dfdfe2;
+      text-align: center;
+      color: #6f6d78;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #5746b2;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div elv="" class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list">
+          <li class="elv-breadcrumb-item">
+            <a href="../../index.html" class="elv-breadcrumb-link">Chicago Labs</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"></path>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <a href="../components/elevate-demo.html" class="elv-breadcrumb-link">Elevate Components</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"></path>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">Icon Library</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-leading-tight">
+        Elevate Icon Library
+      </h1>
+      <p class="subtitle">Complete icon library for Elevate Lite — Click any icon to copy its filename</p>
+    </div>
+  </header>
+
+  <div class="content-container">
+    <div class="elv-flex elv-items-center elv-gap-3 elv-mb-6 elv-flex-wrap" style="margin-top: 2rem;">
+      <!-- Search Input -->
+      <div class="elv-flex-1 elv-min-w-60 elv-relative">
+        <svg width="20" height="20" class="elv-icon elv-icon-sm elv-absolute elv-left-3 elv-fill-neutral-80" style="top: 50%; transform: translateY(-50%);" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.9375 17L10.9583 12.0208C10.5417 12.3264 10.0848 12.566 9.58767 12.7396C9.09056 12.9132 8.56158 13 8.00073 13C6.61135 13 5.43056 12.5139 4.45833 11.5417C3.48611 10.5694 3 9.38889 3 8C3 6.61111 3.48611 5.43056 4.45833 4.45833C5.43056 3.48611 6.61111 3 8 3C9.38889 3 10.5694 3.48611 11.5417 4.45833C12.5139 5.43056 13 6.61135 13 8.00073C13 8.56158 12.9132 9.09056 12.7396 9.58767C12.566 10.0848 12.3264 10.5417 12.0208 10.9583L17 15.9375L15.9375 17ZM8 11.5C8.97222 11.5 9.79861 11.1597 10.4792 10.4792C11.1597 9.79861 11.5 8.97222 11.5 8C11.5 7.02778 11.1597 6.20139 10.4792 5.52083C9.79861 4.84028 8.97222 4.5 8 4.5C7.02778 4.5 6.20139 4.84028 5.52083 5.52083C4.84028 6.20139 4.5 7.02778 4.5 8C4.5 8.97222 4.84028 9.79861 5.52083 10.4792C6.20139 11.1597 7.02778 11.5 8 11.5Z"></path>
+        </svg>
+        <input type="search" id="searchInput" placeholder="Search icons..." aria-label="Search icons" class="elv-input elv-w-full elv-h-9 elv-pl-10 elv-rounded-full elv-text-sm">
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="elv-flex elv-gap-2">
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-purple elv-text-neutral-0 elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="all" data-selected="true">
+          All
+        </div>
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="ui-icon" data-selected="false">
+          UI Icons
+        </div>
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="func-icon" data-selected="false">
+          Functional
+        </div>
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="navigation" data-selected="false">
+          Navigation
+        </div>
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="action" data-selected="false">
+          Actions
+        </div>
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="people" data-selected="false">
+          People
+        </div>
+        <div class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium" data-filter="communication" data-selected="false">
+          Communication
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <span id="statsText">Showing <strong>293</strong> icons</span>
+    </div>
+
+    <div id="iconGrid" class="icon-grid"></div>
+
+    <div id="noResults" class="no-results" style="display: none;">
+      <div class="no-results-icon">🔍</div>
+      <h3>No icons found</h3>
+      <p>Try a different search term or filter</p>
+    </div>
+
+    <footer>
+      <p>
+        <strong>293 total icons</strong> — 178 from UE Elevate + 115 extended set<br>
+        <a href="README.md">View Documentation</a> •
+        <a href="../components/elevate-demo.html#icons">Back to Component Demo</a> •
+        <a href="../../index.html">Back to Explorations</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // Icon data (loaded dynamically)
+    const icons = [
+      // Will be populated from file system
+    ];
+
+    // Load icons from file list
+    async function loadIcons() {
+      const iconFiles = await fetchIconList();
+      return iconFiles.map(filename => ({
+        name: filename.replace('.svg', ''),
+        filename: filename,
+        path: `./${filename}`,
+        category: getCategoryFromName(filename)
+      }));
+    }
+
+    // Simulate icon list (in production, this would be generated server-side)
+    function fetchIconList() {
+      // Since we're a static file, we'll hardcode the icon list
+      // In a real implementation, this would be generated by the build script
+      return Promise.resolve([
+        'ui-icon-account-circle.svg',
+        'ui-icon-add-circle-filled.svg',
+        'ui-icon-add-circle.svg',
+        'ui-icon-ai-search.svg',
+        'ui-icon-ai-stars.svg',
+        'ui-icon-ai.svg',
+        'ui-icon-analytics.svg',
+        'ui-icon-android.svg',
+        'ui-icon-apple.svg',
+        'ui-icon-apps.svg',
+        'ui-icon-arrow-down.svg',
+        'ui-icon-arrow-left.svg',
+        'ui-icon-arrow-redo.svg',
+        'ui-icon-arrow-renew.svg',
+        'ui-icon-arrow-right.svg',
+        'ui-icon-arrow-undo.svg',
+        'ui-icon-arrow-up.svg',
+        'ui-icon-arrow.svg',
+        'ui-icon-atom.svg',
+        'ui-icon-badge.svg',
+        'ui-icon-bar-chart-4-bars.svg',
+        'ui-icon-bar-chart.svg',
+        'ui-icon-bar-trend-graph.svg',
+        'ui-icon-barchart.svg',
+        'ui-icon-bell.svg',
+        'ui-icon-bid-landscape.svg',
+        'ui-icon-binders.svg',
+        'ui-icon-bomb.svg',
+        'ui-icon-book.svg',
+        'ui-icon-bookmark-filled.svg',
+        'ui-icon-bookmark.svg',
+        'ui-icon-box.svg',
+        'ui-icon-brain.svg',
+        'ui-icon-bubble-chart.svg',
+        'ui-icon-bullhorn-circle.svg',
+        'ui-icon-calendar.svg',
+        'ui-icon-camera.svg',
+        'ui-icon-cancel-circle-filled.svg',
+        'ui-icon-cancel-circle.svg',
+        'ui-icon-candlestick-chart.svg',
+        'ui-icon-caret-down.svg',
+        'ui-icon-caret-left.svg',
+        'ui-icon-caret-right.svg',
+        'ui-icon-caret-up-down.svg',
+        'ui-icon-caret-up.svg',
+        'ui-icon-category.svg',
+        'ui-icon-changelog.svg',
+        'ui-icon-chart.svg',
+        'ui-icon-chat.svg',
+        'ui-icon-check-circle-filled.svg',
+        'ui-icon-check-circle.svg',
+        'ui-icon-check-stamp.svg',
+        'ui-icon-check.svg',
+        'ui-icon-checkbox-checked.svg',
+        'ui-icon-checkbox-indeterminate.svg',
+        'ui-icon-chevron-down.svg',
+        'ui-icon-chevron-g2-down.svg',
+        'ui-icon-chevron-g2-left.svg',
+        'ui-icon-chevron-g2-right.svg',
+        'ui-icon-chevron-g2-up-wide.svg',
+        'ui-icon-chevron-g2-up.svg',
+        'ui-icon-chevron-left.svg',
+        'ui-icon-chevron-right.svg',
+        'ui-icon-chevron-up-down.svg',
+        'ui-icon-chevron-up.svg',
+        'ui-icon-circle.svg',
+        'ui-icon-click-neutral.svg',
+        'ui-icon-click.svg',
+        'ui-icon-clipboard.svg',
+        'ui-icon-clock.svg',
+        'ui-icon-close-x.svg',
+        'ui-icon-close.svg',
+        'ui-icon-cloud-offline.svg',
+        'ui-icon-coffee.svg',
+        'ui-icon-collapse-content.svg',
+        'ui-icon-company.svg',
+        'ui-icon-controls.svg',
+        'ui-icon-copy.svg',
+        'ui-icon-credit-card-add.svg',
+        'ui-icon-credit-card-heart.svg',
+        'ui-icon-credit-card.svg',
+        'ui-icon-csv.svg',
+        'ui-icon-curved-arrow.svg',
+        'ui-icon-dark-mode.svg',
+        'ui-icon-data-search.svg',
+        'ui-icon-data-usage.svg',
+        'ui-icon-diamond.svg',
+        'ui-icon-doc-edit.svg',
+        'ui-icon-dollar-symbol.svg',
+        'ui-icon-download.svg',
+        'ui-icon-drag-handle.svg',
+        'ui-icon-edit.svg',
+        'ui-icon-education.svg',
+        'ui-icon-exclamation-circle-filled.svg',
+        'ui-icon-exclamation-circle.svg',
+        'ui-icon-expand-content.svg',
+        'ui-icon-fast-clock.svg',
+        'ui-icon-file-open.svg',
+        'ui-icon-file-save.svg',
+        'ui-icon-file.svg',
+        'ui-icon-filter-list.svg',
+        'ui-icon-filter-list_off.svg',
+        'ui-icon-filter-off.svg',
+        'ui-icon-filter.svg',
+        'ui-icon-flag.svg',
+        'ui-icon-funnel.svg',
+        'ui-icon-g2.svg',
+        'ui-icon-gears.svg',
+        'ui-icon-globe.svg',
+        'ui-icon-group.svg',
+        'ui-icon-handshake.svg',
+        'ui-icon-heart-filled.svg',
+        'ui-icon-heart.svg',
+        'ui-icon-help-circle-filled.svg',
+        'ui-icon-help-circle.svg',
+        'ui-icon-home.svg',
+        'ui-icon-image.svg',
+        'ui-icon-info-circle-filled.svg',
+        'ui-icon-info-circle.svg',
+        'ui-icon-key-slim.svg',
+        'ui-icon-keyboard.svg',
+        'ui-icon-knowledge-learn.svg',
+        'ui-icon-lightbulb.svg',
+        'ui-icon-link.svg',
+        'ui-icon-loading.svg',
+        'ui-icon-lock.svg',
+        'ui-icon-mail.svg',
+        'ui-icon-media.svg',
+        'ui-icon-menu.svg',
+        'ui-icon-message-reply.svg',
+        'ui-icon-message.svg',
+        'ui-icon-mic.svg',
+        'ui-icon-minus.svg',
+        'ui-icon-monitor.svg',
+        'ui-icon-monitoring.svg',
+        'ui-icon-more-vertical.svg',
+        'ui-icon-more.svg',
+        'ui-icon-no-signal.svg',
+        'ui-icon-payments.svg',
+        'ui-icon-pdf.svg',
+        'ui-icon-people-group.svg',
+        'ui-icon-people.svg',
+        'ui-icon-person-add.svg',
+        'ui-icon-person.svg',
+        'ui-icon-phone-call.svg',
+        'ui-icon-phone-iphone.svg',
+        'ui-icon-pin-filled.svg',
+        'ui-icon-pin.svg',
+        'ui-icon-play-button.svg',
+        'ui-icon-play-circle-filled.svg',
+        'ui-icon-play-circle.svg',
+        'ui-icon-plus.svg',
+        'ui-icon-pop-out.svg',
+        'ui-icon-popover-tail.svg',
+        'ui-icon-pricing.svg',
+        'ui-icon-query-stats.svg',
+        'ui-icon-rocket.svg',
+        'ui-icon-rounded-triangle-left.svg',
+        'ui-icon-rounded-triangle-right.svg',
+        'ui-icon-save.svg',
+        'ui-icon-search.svg',
+        'ui-icon-sell.svg',
+        'ui-icon-service.svg',
+        'ui-icon-settings.svg',
+        'ui-icon-share.svg',
+        'ui-icon-shopping-cart-add.svg',
+        'ui-icon-shopping-cart-checkout.svg',
+        'ui-icon-shopping-cart.svg',
+        'ui-icon-signal-high.svg',
+        'ui-icon-signal-low.svg',
+        'ui-icon-signal-mid.svg',
+        'ui-icon-social-facebook.svg',
+        'ui-icon-social-google.svg',
+        'ui-icon-social-linkedin.svg',
+        'ui-icon-social-twitter-x.svg',
+        'ui-icon-stacked-line-chart.svg',
+        'ui-icon-star-circle.svg',
+        'ui-icon-star-half.svg',
+        'ui-icon-star-power-up.svg',
+        'ui-icon-star-stack.svg',
+        'ui-icon-star.svg',
+        'ui-icon-suitcase.svg',
+        'ui-icon-tag.svg',
+        'ui-icon-thumb-down.svg',
+        'ui-icon-thumb-up.svg',
+        'ui-icon-tooltip-tail.svg',
+        'ui-icon-trash.svg',
+        'ui-icon-trend-up.svg',
+        'ui-icon-trending-arrow.svg',
+        'ui-icon-unlock-filled.svg',
+        'ui-icon-unlock.svg',
+        'ui-icon-upload-cloud.svg',
+        'ui-icon-upload-file.svg',
+        'ui-icon-upload.svg',
+        'ui-icon-verified.svg',
+        'ui-icon-visibility-off.svg',
+        'ui-icon-visibility.svg',
+        'ui-icon-warning.svg',
+        'func-icon-building.svg',
+        'func-icon-new-release.svg',
+        'func-icon-people-group.svg',
+        'func-icon-person.svg',
+        'func-icon-star-rating-full.svg',
+        'func-icon-star-rating-half.svg',
+        'func-icon-star-rating-none.svg'
+      ]);
+    }
+
+    function getCategoryFromName(filename) {
+      const name = filename.toLowerCase();
+
+      if (name.includes('arrow') || name.includes('chevron') || name.includes('caret')) return 'navigation';
+      if (name.includes('check') || name.includes('close') || name.includes('edit') || name.includes('plus') || name.includes('add')) return 'action';
+      if (name.includes('person') || name.includes('people') || name.includes('user') || name.includes('group') || name.includes('account')) return 'people';
+      if (name.includes('mail') || name.includes('message') || name.includes('chat') || name.includes('phone') || name.includes('bell')) return 'communication';
+      if (name.startsWith('func-icon')) return 'func-icon';
+      if (name.startsWith('ui-icon')) return 'ui-icon';
+
+      return 'other';
+    }
+
+    function renderIcon(icon) {
+      const card = document.createElement('div');
+      card.className = 'icon-card';
+      card.dataset.name = icon.name;
+      card.dataset.category = icon.category;
+
+      card.innerHTML = `
+        <div class="copy-badge">Copied!</div>
+        <div class="icon-preview">
+          <img src="${icon.path}" alt="${icon.name}" loading="lazy">
+        </div>
+        <div class="icon-name">${icon.filename}</div>
+      `;
+
+      card.addEventListener('click', () => copyToClipboard(icon.filename, card));
+
+      return card;
+    }
+
+    function copyToClipboard(text, card) {
+      navigator.clipboard.writeText(text).then(() => {
+        card.classList.add('copied');
+        setTimeout(() => card.classList.remove('copied'), 2000);
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+      });
+    }
+
+    function filterIcons(searchTerm, category) {
+      const grid = document.getElementById('iconGrid');
+      const cards = grid.querySelectorAll('.icon-card');
+      const noResults = document.getElementById('noResults');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const cardCategory = card.dataset.category;
+
+        const matchesSearch = !searchTerm || name.includes(searchTerm.toLowerCase());
+        const matchesCategory = category === 'all' || cardCategory === category ||
+                               (category === 'navigation' && (name.includes('arrow') || name.includes('chevron') || name.includes('caret'))) ||
+                               (category === 'action' && (name.includes('check') || name.includes('close') || name.includes('edit') || name.includes('plus') || name.includes('add'))) ||
+                               (category === 'people' && (name.includes('person') || name.includes('people') || name.includes('user') || name.includes('group') || name.includes('account'))) ||
+                               (category === 'communication' && (name.includes('mail') || name.includes('message') || name.includes('chat') || name.includes('phone') || name.includes('bell')));
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('statsText').innerHTML = `Showing <strong>${visibleCount}</strong> of <strong>293</strong> icons`;
+
+      if (visibleCount === 0) {
+        grid.style.display = 'none';
+        noResults.style.display = 'block';
+      } else {
+        grid.style.display = 'grid';
+        noResults.style.display = 'none';
+      }
+    }
+
+    // Initialize
+    async function init() {
+      const iconList = await loadIcons();
+      const grid = document.getElementById('iconGrid');
+
+      iconList.forEach(icon => {
+        grid.appendChild(renderIcon(icon));
+      });
+
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', (e) => {
+        const currentFilter = document.querySelector('.filter-chip[data-selected="true"]').dataset.filter;
+        filterIcons(e.target.value, currentFilter);
+      });
+
+      // Filter chips
+      const chips = document.querySelectorAll('.filter-chip');
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => {
+            c.dataset.selected = 'false';
+            c.classList.remove('elv-bg-purple', 'elv-text-neutral-0');
+            c.classList.add('elv-bg-neutral-10', 'elv-text-neutral');
+          });
+          chip.dataset.selected = 'true';
+          chip.classList.remove('elv-bg-neutral-10', 'elv-text-neutral');
+          chip.classList.add('elv-bg-purple', 'elv-text-neutral-0');
+          filterIcons(searchInput.value, chip.dataset.filter);
+        });
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

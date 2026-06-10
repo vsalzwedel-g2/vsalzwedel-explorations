@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Product Avatar — all sizes from Elevate */
+    .elv-product-avatar {
+      display: flex;
+      flex-shrink: 0;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--border-light);
+      background: var(--bg-neutral-0);
+      overflow: hidden;
+    }
+
+    .elv-product-avatar--xxs { width: 24px; height: 24px; border-radius: 2px; }
+    .elv-product-avatar--xs { width: 48px; height: 48px; border-radius: 4px; }
+    .elv-product-avatar--sm { width: 64px; height: 64px; border-radius: 4px; }
+    .elv-product-avatar--md { width: 80px; height: 80px; border-radius: 4px; }
+    .elv-product-avatar--lg { width: 104px; height: 104px; padding: 4px; border-radius: 4px; }
+    .elv-product-avatar--xl { width: 144px; height: 144px; padding: 8px; border-radius: 8px; }
+
+    .elv-product-avatar__image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .elv-product-avatar__placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 25%;
+    }
+
+    .elv-product-avatar__placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0.3;
+    }
+
+    /* Product Details — HORIZONTAL layout (avatar | content) */
+    .elv-product-details {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 12px; /* default: md */
+    }
+
+    /* Size variants — gap between avatar and content */
+    .elv-product-details--xxs,
+    .elv-product-details--xs { gap: 4px; }
+    .elv-product-details--sm { gap: 8px; }
+    .elv-product-details--md { gap: 12px; }
+    .elv-product-details--lg { gap: 16px; }
+    .elv-product-details--xl { gap: 20px; }
+
+    /* Content column (stacks vertically: title, seller, rating) */
+    .elv-product-details__content {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Title — Typography heading sizes based on component size */
+    .elv-product-details__title {
+      font-weight: 600;
+      color: var(--text-default);
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* xxs, xs, sm → :xs heading (14px) */
+    .elv-product-details--xxs .elv-product-details__title,
+    .elv-product-details--xs .elv-product-details__title,
+    .elv-product-details--sm .elv-product-details__title {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* md → :sm heading (16px) */
+    .elv-product-details--md .elv-product-details__title,
+    .elv-product-details .elv-product-details__title {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    /* lg → :lg heading (20px) */
+    .elv-product-details--lg .elv-product-details__title {
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    /* xl → :xl heading (24px) */
+    .elv-product-details--xl .elv-product-details__title {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    /* Seller (by line) — Typography body sizes */
+    .elv-product-details__seller {
+      color: var(--text-subtle);
+      margin: 0;
+    }
+
+    /* xxs through md → :sm body (14px) */
+    .elv-product-details--xxs .elv-product-details__seller,
+    .elv-product-details--xs .elv-product-details__seller,
+    .elv-product-details--sm .elv-product-details__seller,
+    .elv-product-details--md .elv-product-details__seller,
+    .elv-product-details .elv-product-details__seller {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* lg, xl → :md body (16px) */
+    .elv-product-details--lg .elv-product-details__seller,
+    .elv-product-details--xl .elv-product-details__seller {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .elv-product-details__seller-link {
+      color: var(--text-link);
+      text-decoration: none;
+    }
+
+    .elv-product-details__seller-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Star rating row (uses inline star_rating component) */
+    .elv-product-details__rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Stars container */
+    .elv-product-details__stars {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Default: star_rating :sm (16px stars) */
+    .elv-product-details__stars svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* lg, xl: star_rating :lg (24px stars) */
+    .elv-product-details--lg .elv-product-details__stars svg,
+    .elv-product-details--xl .elv-product-details__stars svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Rating text (number + review count) */
+    .elv-product-details__rating-text {
+      padding-left: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      color: var(--text-subtle);
+      font-weight: 600;  /* Correct - semibold */
+    }
+
+    /* Default: star_rating :sm → Label :xs (12px) */
+    .elv-product-details__rating-text {
+      font-size: 12px;  /* Correct */
+      line-height: 16px;  /* Correct */
+    }
+
+    /* lg, xl: :lg text (16px) */
+    .elv-product-details--lg .elv-product-details__rating-text,
+    .elv-product-details--xl .elv-product-details__rating-text {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .elv-product-details__rating-count {
+      color: var(--text-subtle);
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Product Details Component</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    Component: product_details
+  </p>
+
+  <!-- Size Variants -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Horizontal layout (avatar | content). Avatar size matches component size. Default is :md (80px avatar).
+    </p>
+    <div class="examples">
+      <div style="max-width: 300px;">
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">XXS (24px avatar, 14px text)</p>
+        <div class="elv-product-details elv-product-details--xxs">
+          <div class="elv-product-avatar elv-product-avatar--xxs">
+            <div class="elv-product-avatar__placeholder">
+              <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+            </div>
+          </div>
+          <div class="elv-product-details__content">
+            <div class="elv-product-details__title">HubSpot CRM</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 300px;">
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">XS (48px avatar, 14px text, with rating, no seller)</p>
+        <div class="elv-product-details elv-product-details--xs">
+          <div class="elv-product-avatar elv-product-avatar--xs">
+            <div class="elv-product-avatar__placeholder">
+              <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+            </div>
+          </div>
+          <div class="elv-product-details__content">
+            <div class="elv-product-details__title">HubSpot CRM</div>
+            <div class="elv-product-details__rating">
+              <div class="elv-product-details__stars">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0)"><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/></g><defs><clipPath id="clip0"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+              </div>
+              <span class="elv-product-details__rating-text">4.5 <span class="elv-product-details__rating-count">(28,123)</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 300px;">
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">SM (64px avatar, 14px text)</p>
+        <div class="elv-product-details elv-product-details--sm">
+          <div class="elv-product-avatar elv-product-avatar--sm">
+            <div class="elv-product-avatar__placeholder">
+              <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+            </div>
+          </div>
+          <div class="elv-product-details__content">
+            <div class="elv-product-details__title">HubSpot CRM</div>
+            <div class="elv-product-details__rating">
+              <div class="elv-product-details__stars">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/></svg>
+              </div>
+              <span class="elv-product-details__rating-text">4.5 <span class="elv-product-details__rating-count">(12,345)</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 400px;">
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">MD (80px avatar, 16px text) — DEFAULT</p>
+        <div class="elv-product-details elv-product-details--md">
+          <div class="elv-product-avatar elv-product-avatar--md">
+            <div class="elv-product-avatar__placeholder">
+              <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+            </div>
+          </div>
+          <div class="elv-product-details__content">
+            <div class="elv-product-details__title">Salesforce Sales Cloud</div>
+            <p class="elv-product-details__seller">
+              By <a href="#" class="elv-product-details__seller-link">Salesforce</a>
+            </p>
+            <div class="elv-product-details__rating">
+              <div class="elv-product-details__stars">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#DFDFE2"/></svg>
+              </div>
+              <span class="elv-product-details__rating-text">4.3 <span class="elv-product-details__rating-count">(4,391,167)</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 500px;">
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">LG (104px avatar, 20px text)</p>
+        <div class="elv-product-details elv-product-details--lg">
+          <div class="elv-product-avatar elv-product-avatar--lg">
+            <div class="elv-product-avatar__placeholder">
+              <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+            </div>
+          </div>
+          <div class="elv-product-details__content">
+            <div class="elv-product-details__title">Slack</div>
+            <p class="elv-product-details__seller">
+              By <a href="#" class="elv-product-details__seller-link">Slack Technologies</a>
+            </p>
+            <div class="elv-product-details__rating">
+              <div class="elv-product-details__stars">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip1)"><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/></g><defs><clipPath id="clip1"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+              </div>
+              <span class="elv-product-details__rating-text">4.6 <span class="elv-product-details__rating-count">(23,891)</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: 600px;">
+        <p class="elv-text-xs elv-text-subtle elv-mb-2">XL (144px avatar, 24px text)</p>
+        <div class="elv-product-details elv-product-details--xl">
+          <div class="elv-product-avatar elv-product-avatar--xl">
+            <div class="elv-product-avatar__placeholder">
+              <img src="../../../icons/product-placeholder.png" alt="Product placeholder">
+            </div>
+          </div>
+          <div class="elv-product-details__content">
+            <div class="elv-product-details__title">Zoom Meetings</div>
+            <p class="elv-product-details__seller">
+              By <a href="#" class="elv-product-details__seller-link">Zoom Video Communications</a>
+            </p>
+            <div class="elv-product-details__rating">
+              <div class="elv-product-details__stars">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/></svg>
+                <svg viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip2)"><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999L14.6719 8.69999L21.5 9.27499L16.3047 13.75L17.8633 20.4L12 16.875L6.13672 20.4Z" fill="#DFDFE2"/><path d="M6.13672 20.4L7.69531 13.75L2.5 9.27499L9.32812 8.67499L12 2.39999V16.875L6.13672 20.4Z" fill="#FF492C"/></g><defs><clipPath id="clip2"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>
+              </div>
+              <span class="elv-product-details__rating-text">4.5 <span class="elv-product-details__rating-count">(15,234)</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage</h2>
+    <pre>&lt;!-- Default (md): 80px avatar, 16px text --&gt;
+&lt;div class="elv-product-details"&gt;
+  &lt;div class="elv-product-avatar elv-product-avatar--md"&gt;
+    &lt;img src="product.png" alt="Product" class="elv-product-avatar__image"&gt;
+  &lt;/div&gt;
+  &lt;div class="elv-product-details__content"&gt;
+    &lt;div class="elv-product-details__title"&gt;Product Name&lt;/div&gt;
+    &lt;p class="elv-product-details__seller"&gt;
+      By &lt;a href="#" class="elv-product-details__seller-link"&gt;Seller Name&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;div class="elv-product-details__rating"&gt;
+      &lt;div class="elv-product-details__stars"&gt;
+        &lt;!-- 5 stars total: full/half/empty based on rating --&gt;
+        &lt;svg viewBox="0 0 24 24" fill="none"&gt;&lt;path d="M14.7002 8.7002L21.5996 9.27539L16.3496 13.75L17.9248 20.4004L12 16.875L6.0752 20.4004L7.65039 13.75L2.40039 9.27539L9.2998 8.6748L12 2.40039L14.7002 8.7002Z" fill="#FF492C"/&gt;&lt;/svg&gt;
+        &lt;!-- Repeat for each full star, use half-star SVG for partial ratings --&gt;
+      &lt;/div&gt;
+      &lt;span class="elv-product-details__rating-text"&gt;4.5 &lt;span class="elv-product-details__rating-count"&gt;(1,000)&lt;/span&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- XS: 48px avatar, 14px text --&gt;
+&lt;div class="elv-product-details elv-product-details--xs"&gt;
+  &lt;div class="elv-product-avatar elv-product-avatar--xs"&gt;...&lt;/div&gt;
+  &lt;div class="elv-product-details__content"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- LG: 104px avatar, 20px text --&gt;
+&lt;div class="elv-product-details elv-product-details--lg"&gt;
+  &lt;div class="elv-product-avatar elv-product-avatar--lg"&gt;...&lt;/div&gt;
+  &lt;div class="elv-product-details__content"&gt;...&lt;/div&gt;
+&lt;/div&gt;</pre>
+  </div>
+
+  <!-- Design Notes -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design Notes</h2>
+    <ul class="elv-text-sm elv-text-subtle elv-ml-6" style="list-style: disc;">
+      <li><strong>Layout</strong>: Horizontal flex (avatar | content). Content stacks vertically (title, seller, rating).</li>
+      <li><strong>Avatar sizes</strong>: xxs=24px, xs=48px, sm=64px, md=80px, lg=104px, xl=144px</li>
+      <li><strong>Default</strong>: :md (80px avatar, 16px title, 14px seller/rating)</li>
+      <li><strong>Title sizes</strong>: xxs/xs/sm→14px, md→16px, lg→20px, xl→24px</li>
+      <li><strong>Gaps</strong>: xxs/xs=4px, sm=8px, md=12px, lg=16px, xl=20px</li>
+      <li><strong>Star rating</strong>: Uses inline star_rating component (:sm for most, :lg for lg/xl sizes)</li>
+      <li><strong>Conditional elements</strong>:
+        <ul style="margin-left: 1.5rem; list-style: circle;">
+          <li>xxs: Title only (no seller, no rating)</li>
+          <li>xs: Title + rating (no seller)</li>
+          <li>sm and above: Title + seller + rating</li>
+        </ul>
+      </li>
+      <li><strong>Use cases</strong>:
+        <ul style="margin-left: 1.5rem; list-style: circle;">
+          <li>xxs: Ultra-compact lists</li>
+          <li>xs: Dense tables, chips</li>
+          <li>sm: Compact cards</li>
+          <li>md: Product cards, search results (DEFAULT)</li>
+          <li>lg: Category pages, expanded cards</li>
+          <li>xl: Product headers, hero sections</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

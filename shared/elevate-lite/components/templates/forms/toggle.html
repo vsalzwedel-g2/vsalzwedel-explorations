@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Switch Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+    .form-group { margin-bottom: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Toggle Switch Styles — Based on Elevate form patterns */
+    .elv-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .elv-toggle--disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* Hidden checkbox */
+    .elv-toggle__input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* Switch track */
+    .elv-toggle__track {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 24px;
+      background: var(--bg-neutral-20); /* N20 - neutral-20 */
+      border-radius: 3rem; /* 48px - pill-lg */
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+
+    /* Switch thumb */
+    .elv-toggle__thumb {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 16px;
+      height: 16px;
+      background: var(--bg-neutral-0);
+      border-radius: 50%;
+      transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 1px 0 rgba(32, 31, 35, 0.32), 4px 0 4px 0 rgba(32, 31, 35, 0.04);
+    }
+
+    /* Checked state */
+    .elv-toggle__input:checked + .elv-toggle__track {
+      background: var(--text-primary); /* P100 */
+    }
+
+    .elv-toggle__input:checked + .elv-toggle__track .elv-toggle__thumb {
+      transform: translateX(28px);
+    }
+
+    .elv-toggle__input:checked + .elv-toggle__track .elv-toggle__thumb {
+      box-shadow: 0 0 1px 0 rgba(32, 31, 35, 0.32), -4px 0 4px 0 rgba(32, 31, 35, 0.04);
+    }
+
+    /* Focus state */
+    .elv-toggle__input:focus + .elv-toggle__track {
+      outline-style: solid;
+      outline-width: 3px;
+      outline-color: var(--palette-purple-40);
+      outline-offset: 1px;
+    }
+
+    /* Hover state (not disabled) */
+    .elv-toggle:not(.elv-toggle--disabled):hover .elv-toggle__track {
+      background: var(--border-medium); /* N40 */
+    }
+
+    .elv-toggle:not(.elv-toggle--disabled):hover .elv-toggle__input:checked + .elv-toggle__track {
+      background: #45388f; /* P120 */
+    }
+
+    /* Disabled state */
+    .elv-toggle__input:disabled + .elv-toggle__track {
+      background: var(--bg-neutral-10); /* N10 - neutral-10 */
+      cursor: not-allowed;
+    }
+
+    .elv-toggle__input:disabled:checked + .elv-toggle__track {
+      background: var(--border-medium); /* N40 */
+    }
+
+    /* Label text */
+    .elv-toggle__label {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      color: var(--text-default); /* text-default */
+    }
+
+    .elv-toggle--disabled .elv-toggle__label {
+      color: var(--border-medium); /* N40 */
+    }
+
+    /* Label positioning variants */
+    .elv-toggle--label-left {
+      flex-direction: row-reverse;
+    }
+
+    /* Size variants */
+    /* Small (default is 48x24) */
+    .elv-toggle--sm .elv-toggle__track {
+      width: 36px;
+      height: 20px;
+      border-radius: 10px;
+    }
+
+    .elv-toggle--sm .elv-toggle__thumb {
+      top: 4px;
+      left: 4px;
+      width: 12px;
+      height: 12px;
+    }
+
+    .elv-toggle--sm .elv-toggle__input:checked + .elv-toggle__track .elv-toggle__thumb {
+      transform: translateX(20px);
+    }
+
+    .elv-toggle--sm .elv-toggle__label {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    /* Large */
+    .elv-toggle--lg .elv-toggle__track {
+      width: 60px;
+      height: 28px;
+      border-radius: 14px;
+    }
+
+    .elv-toggle--lg .elv-toggle__thumb {
+      width: 20px;
+      height: 20px;
+    }
+
+    .elv-toggle--lg .elv-toggle__input:checked + .elv-toggle__track .elv-toggle__thumb {
+      transform: translateX(36px);
+    }
+
+    .elv-toggle--lg .elv-toggle__label {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    /* Helper text */
+    .elv-toggle-helper {
+      font-size: 12px;
+      color: var(--text-neutral-70); /* text-nonessential */
+      margin-top: 4px;
+      margin-left: 48px; /* Align with toggle when label is on right */
+    }
+
+    .elv-toggle--label-left + .elv-toggle-helper {
+      margin-left: 0;
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .elv-toggle__track,
+      .elv-toggle__thumb {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Toggle Switch</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md (form patterns)</a>
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default Toggle (Medium)</h2>
+    <div class="examples">
+      <label class="elv-toggle">
+        <input type="checkbox" class="elv-toggle__input" aria-label="Toggle setting">
+        <span class="elv-toggle__track">
+          <span class="elv-toggle__thumb"></span>
+        </span>
+      </label>
+    </div>
+    <pre><code>&lt;label class="elv-toggle"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input" aria-label="Toggle setting"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Label (Right)</h2>
+    <div class="examples">
+      <label class="elv-toggle">
+        <input type="checkbox" class="elv-toggle__input">
+        <span class="elv-toggle__track">
+          <span class="elv-toggle__thumb"></span>
+        </span>
+        <span class="elv-toggle__label">Enable notifications</span>
+      </label>
+
+      <label class="elv-toggle">
+        <input type="checkbox" class="elv-toggle__input" checked>
+        <span class="elv-toggle__track">
+          <span class="elv-toggle__thumb"></span>
+        </span>
+        <span class="elv-toggle__label">Auto-save enabled</span>
+      </label>
+    </div>
+    <pre><code>&lt;label class="elv-toggle"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Enable notifications&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Label (Left)</h2>
+    <div class="examples">
+      <label class="elv-toggle elv-toggle--label-left">
+        <input type="checkbox" class="elv-toggle__input">
+        <span class="elv-toggle__track">
+          <span class="elv-toggle__thumb"></span>
+        </span>
+        <span class="elv-toggle__label">Email notifications</span>
+      </label>
+
+      <label class="elv-toggle elv-toggle--label-left">
+        <input type="checkbox" class="elv-toggle__input" checked>
+        <span class="elv-toggle__track">
+          <span class="elv-toggle__thumb"></span>
+        </span>
+        <span class="elv-toggle__label">Two-factor authentication</span>
+      </label>
+    </div>
+    <pre><code>&lt;label class="elv-toggle elv-toggle--label-left"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Email notifications&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Size Variants</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-toggle elv-toggle--sm">
+          <input type="checkbox" class="elv-toggle__input">
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Small toggle (36x20)</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle">
+          <input type="checkbox" class="elv-toggle__input" checked>
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Medium toggle (48x24) — Default</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle elv-toggle--lg">
+          <input type="checkbox" class="elv-toggle__input">
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Large toggle (60x28)</span>
+        </label>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Small --&gt;
+&lt;label class="elv-toggle elv-toggle--sm"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Small toggle&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Medium (default) --&gt;
+&lt;label class="elv-toggle"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Medium toggle&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Large --&gt;
+&lt;label class="elv-toggle elv-toggle--lg"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Large toggle&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">States</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-toggle">
+          <input type="checkbox" class="elv-toggle__input">
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Off state (hover to see effect)</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle">
+          <input type="checkbox" class="elv-toggle__input" checked>
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">On state (purple background)</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle">
+          <input type="checkbox" class="elv-toggle__input">
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Focus state (tab to see outline)</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle elv-toggle--disabled">
+          <input type="checkbox" class="elv-toggle__input" disabled>
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Disabled off</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle elv-toggle--disabled">
+          <input type="checkbox" class="elv-toggle__input" checked disabled>
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Disabled on</span>
+        </label>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Off state --&gt;
+&lt;label class="elv-toggle"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input"&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Off state&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- On state --&gt;
+&lt;label class="elv-toggle"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input" checked&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;On state&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;label class="elv-toggle elv-toggle--disabled"&gt;
+  &lt;input type="checkbox" class="elv-toggle__input" disabled&gt;
+  &lt;span class="elv-toggle__track"&gt;
+    &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="elv-toggle__label"&gt;Disabled&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Helper Text</h2>
+    <div class="examples">
+      <div class="form-group">
+        <label class="elv-toggle">
+          <input type="checkbox" class="elv-toggle__input" checked>
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Marketing emails</span>
+        </label>
+        <p class="elv-toggle-helper">Receive updates about new features and products</p>
+      </div>
+
+      <div class="form-group">
+        <label class="elv-toggle elv-toggle--label-left">
+          <input type="checkbox" class="elv-toggle__input">
+          <span class="elv-toggle__track">
+            <span class="elv-toggle__thumb"></span>
+          </span>
+          <span class="elv-toggle__label">Share usage data</span>
+        </label>
+        <p class="elv-toggle-helper">Help us improve by sharing anonymous usage statistics</p>
+      </div>
+    </div>
+    <pre><code>&lt;div class="form-group"&gt;
+  &lt;label class="elv-toggle"&gt;
+    &lt;input type="checkbox" class="elv-toggle__input" checked&gt;
+    &lt;span class="elv-toggle__track"&gt;
+      &lt;span class="elv-toggle__thumb"&gt;&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="elv-toggle__label"&gt;Marketing emails&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;p class="elv-toggle-helper"&gt;Receive updates about new features&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Settings Panel Example</h2>
+    <div class="examples">
+      <div style="max-width: 500px; background: var(--bg-neutral-5); padding: 1.5rem; border-radius: 8px;">
+        <h3 style="margin: 0 0 1rem 0; font-size: 18px; font-weight: 700;">Notification Settings</h3>
+
+        <div class="form-group">
+          <label class="elv-toggle elv-toggle--label-left">
+            <input type="checkbox" class="elv-toggle__input" checked>
+            <span class="elv-toggle__track">
+              <span class="elv-toggle__thumb"></span>
+            </span>
+            <span class="elv-toggle__label">Push notifications</span>
+          </label>
+          <p class="elv-toggle-helper">Get notified about important updates</p>
+        </div>
+
+        <div class="form-group">
+          <label class="elv-toggle elv-toggle--label-left">
+            <input type="checkbox" class="elv-toggle__input" checked>
+            <span class="elv-toggle__track">
+              <span class="elv-toggle__thumb"></span>
+            </span>
+            <span class="elv-toggle__label">Email notifications</span>
+          </label>
+          <p class="elv-toggle-helper">Receive email summaries of your activity</p>
+        </div>
+
+        <div class="form-group">
+          <label class="elv-toggle elv-toggle--label-left">
+            <input type="checkbox" class="elv-toggle__input">
+            <span class="elv-toggle__track">
+              <span class="elv-toggle__thumb"></span>
+            </span>
+            <span class="elv-toggle__label">SMS notifications</span>
+          </label>
+          <p class="elv-toggle-helper">Get text messages for critical alerts</p>
+        </div>
+
+        <div class="form-group">
+          <label class="elv-toggle elv-toggle--label-left elv-toggle--disabled">
+            <input type="checkbox" class="elv-toggle__input" disabled>
+            <span class="elv-toggle__track">
+              <span class="elv-toggle__thumb"></span>
+            </span>
+            <span class="elv-toggle__label">Desktop notifications</span>
+          </label>
+          <p class="elv-toggle-helper">Requires desktop app installation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong> Tab to focus, Space to toggle on/off</li>
+      <li class="elv-mb-2"><strong>Focus State:</strong> 2px purple outline with offset — CRITICAL for accessibility</li>
+      <li class="elv-mb-2"><strong>ARIA Labels:</strong> Include <code>aria-label</code> when label text is not visible</li>
+      <li class="elv-mb-2"><strong>Screen Readers:</strong> Native checkbox announces "checked" or "not checked" state</li>
+      <li class="elv-mb-2"><strong>Reduced Motion:</strong> Respects <code>prefers-reduced-motion</code> setting</li>
+      <li class="elv-mb-2"><strong>Touch Targets:</strong> Minimum 24px height for default, meets WCAG guidelines</li>
+      <li class="elv-mb-2"><strong>Disabled State:</strong> Use <code>disabled</code> attribute and add <code>elv-toggle--disabled</code> class to label</li>
+      <li class="elv-mb-2"><strong>Helper Text:</strong> Use descriptive text below toggle to explain what it controls</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Property</strong></td>
+        <td style="padding: 8px;"><strong>Small</strong></td>
+        <td style="padding: 8px;"><strong>Medium (Default)</strong></td>
+        <td style="padding: 8px;"><strong>Large</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track Width × Height</td>
+        <td style="padding: 8px;">36px × 20px</td>
+        <td style="padding: 8px;">48px × 24px</td>
+        <td style="padding: 8px;">60px × 28px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Thumb Size</td>
+        <td style="padding: 8px;">12px × 12px</td>
+        <td style="padding: 8px;">16px × 16px</td>
+        <td style="padding: 8px;">20px × 20px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Font Size</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">14px</td>
+        <td style="padding: 8px;">16px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track (Off)</td>
+        <td style="padding: 8px;" colspan="3">#dfdfe2 (border-light)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track (On)</td>
+        <td style="padding: 8px;" colspan="3">#5746b2 (P100)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track (Hover Off)</td>
+        <td style="padding: 8px;" colspan="3">#b0afb6 (N40)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track (Hover On)</td>
+        <td style="padding: 8px;" colspan="3">#45388f (P120)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track (Disabled Off)</td>
+        <td style="padding: 8px;" colspan="3">#f2f2f3 (N10)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Track (Disabled On)</td>
+        <td style="padding: 8px;" colspan="3">#b0afb6 (N40)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Thumb Color</td>
+        <td style="padding: 8px;" colspan="3">#ffffff (Pure White)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Thumb Shadow</td>
+        <td style="padding: 8px;" colspan="3">0 2px 4px 0 rgba(32, 31, 35, 0.12)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Focus Outline</td>
+        <td style="padding: 8px;" colspan="3">2px solid #5746b2 (P100) with 2px offset</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border Radius</td>
+        <td style="padding: 8px;" colspan="3">50% of height (pill shape)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Transition Duration</td>
+        <td style="padding: 8px;" colspan="3">150ms cubic-bezier(0.4, 0, 0.2, 1)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Weight</td>
+        <td style="padding: 8px;" colspan="3">600 (Semibold)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Gap (label to track)</td>
+        <td style="padding: 8px;" colspan="3">8px (space-2)</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <div class="elv-text-sm elv-text-default">
+      <p><strong>When to use toggles:</strong></p>
+      <ul>
+        <li class="elv-mb-2">Settings and preferences that take effect immediately</li>
+        <li class="elv-mb-2">Binary on/off states (enable/disable features)</li>
+        <li class="elv-mb-2">Individual settings in a list or panel</li>
+      </ul>
+
+      <p style="margin-top: 1rem;"><strong>When NOT to use toggles:</strong></p>
+      <ul>
+        <li class="elv-mb-2">Form submissions that require a "Save" action (use checkbox instead)</li>
+        <li class="elv-mb-2">Multiple related options (use checkbox group or radio buttons)</li>
+        <li class="elv-mb-2">Destructive or critical actions (use explicit button confirmation)</li>
+      </ul>
+
+      <p style="margin-top: 1rem;"><strong>Best practices:</strong></p>
+      <ul>
+        <li class="elv-mb-2">Use descriptive labels that clearly state what the toggle controls</li>
+        <li class="elv-mb-2">Add helper text to explain the impact of toggling on/off</li>
+        <li class="elv-mb-2">Place label on the left for settings panels (standard pattern)</li>
+        <li class="elv-mb-2">Use medium size (default) for most UI contexts</li>
+        <li class="elv-mb-2">Group related toggles together in panels or sections</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // No JavaScript needed for basic toggle functionality
+  // Native checkbox handles all interaction
+  // Add custom event handlers here if needed for form validation or API calls
+
+  // Example: Log toggle changes (remove in production)
+  document.querySelectorAll('.elv-toggle__input').forEach(input => {
+    input.addEventListener('change', function() {
+      console.log(`Toggle ${this.parentElement.querySelector('.elv-toggle__label')?.textContent || 'unnamed'}: ${this.checked ? 'ON' : 'OFF'}`);
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "$schema": "../../schema/epic.schema.json",
+  "title": "Self-Serve Events",
+  "tag": "events",
+  "tagLabel": "Events",
+  "date": "2026-06-03",
+  "description": "Self-serve event marketing pages — countdown, event-closed, and future states for partner-driven activations.",
+  "icon": "calendar",
+  "iconBg": "#EEF2FF",
+  "iconFg": "#4F46E5"
+}

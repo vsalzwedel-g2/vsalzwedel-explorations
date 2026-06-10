@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbox & Radio Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; }
+    .form-group { margin-bottom: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Checkbox & Radio Styles — Derived from DESIGN.md form specs */
+
+    /* Base checkbox/radio container */
+    .elv-choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px; /* Default gap (md/lg) */
+      position: relative;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    /* Small variant - reduced gap */
+    .elv-choice--sm {
+      gap: 4px; /* gap-1 */
+    }
+
+    /* Hide native checkbox/radio but keep it accessible */
+    .elv-choice__input {
+      position: absolute;
+      opacity: 0;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* Custom checkbox/radio visual */
+    .elv-choice__box {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--bg-neutral-0); /* N0 / neutral-0 */
+      border: 1px solid var(--border-medium); /* border-medium / N40 */
+      border-radius: 4px; /* radius-xs for checkbox */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    /* Radio gets circle border-radius */
+    .elv-choice--radio .elv-choice__box {
+      border-radius: 50%;
+    }
+
+    /* Checkmark icon (hidden by default) */
+    .elv-choice__box::after {
+      content: '';
+      display: none;
+    }
+
+    /* Checkbox checkmark */
+    .elv-choice--checkbox .elv-choice__box::after {
+      width: 12px;
+      height: 12px;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 3L4.5 8.5L2 6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* Radio dot - default/md size (scale-60 of 20px = 12px) */
+    .elv-choice--radio .elv-choice__box::after {
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    /* Radio dot - small size (scale-40 of 16px = 6.4px, round to 6px) */
+    .elv-choice--radio.elv-choice--sm .elv-choice__box::after {
+      width: 6px;
+      height: 6px;
+    }
+
+    /* Checked state */
+    .elv-choice__input:checked + .elv-choice__box {
+      background: var(--text-primary); /* P100 */
+      border-color: var(--text-primary);
+    }
+
+    /* Checkbox checked: increase border width */
+    .elv-choice--checkbox .elv-choice__input:checked + .elv-choice__box {
+      border-width: 2px;
+    }
+
+    /* Radio checked: increase border width to 2px */
+    .elv-choice--radio .elv-choice__input:checked + .elv-choice__box {
+      border-width: 2px;
+    }
+
+    .elv-choice__input:checked + .elv-choice__box::after {
+      display: block;
+    }
+
+    /* Focus state — CRITICAL for accessibility */
+    .elv-choice__input:focus + .elv-choice__box {
+      outline: 3px solid var(--palette-purple-40); /* P40 */
+      outline-offset: 1px;
+    }
+
+    /* Hover state - for unchecked, not disabled, not indeterminate checkbox */
+    .elv-choice--checkbox:hover .elv-choice__input:not(:checked):not(:disabled):not(:indeterminate) + .elv-choice__box {
+      background: var(--bg-primary-20); /* P20 / primary-20 */
+    }
+
+    /* Hover state - radio (unchecked, not disabled) */
+    .elv-choice--radio:hover .elv-choice__input:not(:checked):not(:disabled) + .elv-choice__box {
+      background: var(--bg-primary-20); /* P20 / primary-20 */
+    }
+
+    /* Disabled state */
+    .elv-choice__input:disabled + .elv-choice__box {
+      background: var(--bg-neutral-10); /* N10 */
+      border-color: var(--bg-neutral-20); /* N20 / border-neutral */
+      cursor: not-allowed;
+    }
+
+    .elv-choice__input:disabled:checked + .elv-choice__box {
+      background: var(--bg-neutral-20); /* N20 */
+      border-color: var(--bg-neutral-20); /* N20 */
+    }
+
+    .elv-choice__input:disabled ~ .elv-choice__label {
+      color: var(--border-medium); /* N40 */
+      cursor: not-allowed;
+    }
+
+    /* Error state */
+    .elv-choice--error .elv-choice__box {
+      border-color: #eb2000; /* R120 */
+      border-width: 2px;
+    }
+
+    .elv-choice--error .elv-choice__input:focus + .elv-choice__box {
+      outline-color: #eb2000;
+    }
+
+    /* Indeterminate state (checkbox only) */
+    .elv-choice__input:indeterminate + .elv-choice__box {
+      background: var(--text-primary); /* P100 */
+      border-color: var(--text-primary);
+    }
+
+    .elv-choice__input:indeterminate + .elv-choice__box::after {
+      display: block;
+      width: 12px;
+      height: 2px;
+      background: white;
+      border-radius: 1px;
+      background-image: none;
+    }
+
+    /* Label */
+    .elv-choice__label {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: var(--text-default); /* text-default */
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Radio label uses text-primary */
+    .elv-choice--radio .elv-choice__label {
+      color: var(--text-primary); /* text-primary / P100 */
+    }
+
+    /* Helper text */
+    .elv-choice__helper {
+      font-size: 12px;
+      color: var(--text-neutral-70); /* text-nonessential */
+      margin-top: 4px;
+      margin-left: 28px; /* Align with label */
+    }
+
+    /* Error message */
+    .elv-choice__error {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b21800; /* R140 */
+      margin-top: 4px;
+      margin-left: 28px; /* Align with label */
+    }
+
+    /* Choice group wrapper */
+    .elv-choice-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Inline layout */
+    .elv-choice-group--inline {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .elv-choice-group--inline .elv-choice {
+      margin-bottom: 0;
+    }
+
+    /* Group label */
+    .elv-choice-group__label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default); /* text-default */
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* Required indicator */
+    .elv-required {
+      color: #eb2000; /* R120 */
+    }
+
+    /* Large variant for better touch targets */
+    .elv-choice--lg .elv-choice__box {
+      width: 24px;
+      height: 24px;
+    }
+
+    .elv-choice--lg .elv-choice__label {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .elv-choice--lg.elv-choice--checkbox .elv-choice__box::after {
+      width: 14px;
+      height: 14px;
+      background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 4L5.5 9.5L3 7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    /* Radio dot - large size (scale-75 of 24px = 18px) */
+    .elv-choice--lg.elv-choice--radio .elv-choice__box::after {
+      width: 18px;
+      height: 18px;
+    }
+
+    .elv-choice--lg .elv-choice__helper,
+    .elv-choice--lg .elv-choice__error {
+      margin-left: 32px;
+    }
+
+    /* Material Symbols styling */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Checkbox & Radio</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    Specs: Derived from <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md line 444-458</a> (form input standards)
+  </p>
+
+  <!-- CHECKBOXES -->
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Checkbox — Default</h2>
+    <div class="examples">
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">I agree to the terms and conditions</span>
+      </label>
+
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" checked />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Send me marketing emails</span>
+      </label>
+    </div>
+    <pre><code>&lt;label class="elv-choice elv-choice--checkbox"&gt;
+  &lt;input type="checkbox" class="elv-choice__input" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label text&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Checkbox — All States</h2>
+    <div class="examples">
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Unchecked</span>
+      </label>
+
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" checked />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Checked</span>
+      </label>
+
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" id="indeterminate-demo" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Indeterminate (for "select all" scenarios)</span>
+      </label>
+
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" disabled />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Disabled unchecked</span>
+      </label>
+
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" checked disabled />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Disabled checked</span>
+      </label>
+
+      <div>
+        <label class="elv-choice elv-choice--checkbox elv-choice--error">
+          <input type="checkbox" class="elv-choice__input" aria-invalid="true" aria-describedby="checkbox-error" />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Error state — you must accept terms</span>
+        </label>
+        <p id="checkbox-error" class="elv-choice__error" role="alert">You must accept the terms to continue</p>
+      </div>
+
+      <label class="elv-choice elv-choice--checkbox">
+        <input type="checkbox" class="elv-choice__input" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Hover over this checkbox to see border change</span>
+      </label>
+    </div>
+    <pre><code>&lt;!-- Unchecked --&gt;
+&lt;label class="elv-choice elv-choice--checkbox"&gt;
+  &lt;input type="checkbox" class="elv-choice__input" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Unchecked&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Checked --&gt;
+&lt;label class="elv-choice elv-choice--checkbox"&gt;
+  &lt;input type="checkbox" class="elv-choice__input" checked /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Checked&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Indeterminate (set via JavaScript) --&gt;
+&lt;input type="checkbox" id="checkbox-id" class="elv-choice__input" /&gt;
+&lt;script&gt;
+  document.getElementById('checkbox-id').indeterminate = true;
+&lt;/script&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;input type="checkbox" class="elv-choice__input" disabled /&gt;
+
+&lt;!-- Error --&gt;
+&lt;label class="elv-choice elv-choice--checkbox elv-choice--error"&gt;
+  &lt;input type="checkbox" class="elv-choice__input" aria-invalid="true" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label&lt;/span&gt;
+&lt;/label&gt;
+&lt;p class="elv-choice__error" role="alert"&gt;Error message&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Checkbox — With Helper Text</h2>
+    <div class="examples">
+      <div>
+        <label class="elv-choice elv-choice--checkbox">
+          <input type="checkbox" class="elv-choice__input" aria-describedby="helper-1" />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Enable two-factor authentication</span>
+        </label>
+        <p id="helper-1" class="elv-choice__helper">Adds an extra layer of security to your account</p>
+      </div>
+
+      <div>
+        <label class="elv-choice elv-choice--checkbox">
+          <input type="checkbox" class="elv-choice__input" aria-describedby="helper-2" />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Subscribe to weekly digest</span>
+        </label>
+        <p id="helper-2" class="elv-choice__helper">Get the best software reviews delivered to your inbox</p>
+      </div>
+    </div>
+    <pre><code>&lt;label class="elv-choice elv-choice--checkbox"&gt;
+  &lt;input type="checkbox" class="elv-choice__input" aria-describedby="helper-id" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label&lt;/span&gt;
+&lt;/label&gt;
+&lt;p id="helper-id" class="elv-choice__helper"&gt;Helper text&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Checkbox Group — Stacked</h2>
+    <div class="examples">
+      <div role="group" aria-labelledby="group-label-1">
+        <span id="group-label-1" class="elv-choice-group__label">
+          Select your interests <span class="elv-required">*</span>
+        </span>
+        <div class="elv-choice-group">
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="interests" value="design" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Design Software</span>
+          </label>
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="interests" value="dev" checked />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Development Tools</span>
+          </label>
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="interests" value="marketing" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Marketing Software</span>
+          </label>
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="interests" value="sales" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Sales Tools</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div role="group" aria-labelledby="group-label"&gt;
+  &lt;span id="group-label" class="elv-choice-group__label"&gt;Group label&lt;/span&gt;
+  &lt;div class="elv-choice-group"&gt;
+    &lt;label class="elv-choice elv-choice--checkbox"&gt;
+      &lt;input type="checkbox" class="elv-choice__input" name="group" value="1" /&gt;
+      &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+      &lt;span class="elv-choice__label"&gt;Option 1&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;!-- More options... --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Checkbox Group — Inline</h2>
+    <div class="examples">
+      <div role="group" aria-labelledby="group-label-2">
+        <span id="group-label-2" class="elv-choice-group__label">Notification preferences</span>
+        <div class="elv-choice-group elv-choice-group--inline">
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="notifications" value="email" checked />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Email</span>
+          </label>
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="notifications" value="sms" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">SMS</span>
+          </label>
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="notifications" value="push" checked />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Push</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-choice-group elv-choice-group--inline"&gt;
+  &lt;label class="elv-choice elv-choice--checkbox"&gt;...&lt;/label&gt;
+  &lt;label class="elv-choice elv-choice--checkbox"&gt;...&lt;/label&gt;
+  &lt;label class="elv-choice elv-choice--checkbox"&gt;...&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- RADIOS -->
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Radio — Default</h2>
+    <div class="examples">
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="demo-radio" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Option A</span>
+      </label>
+
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="demo-radio" checked />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Option B (selected)</span>
+      </label>
+
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="demo-radio" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Option C</span>
+      </label>
+    </div>
+    <pre><code>&lt;label class="elv-choice elv-choice--radio"&gt;
+  &lt;input type="radio" class="elv-choice__input" name="group-name" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label text&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Radio — All States</h2>
+    <div class="examples">
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="states-radio" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Unselected</span>
+      </label>
+
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="states-radio" checked />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Selected</span>
+      </label>
+
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="disabled-radio" disabled />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Disabled unselected</span>
+      </label>
+
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="disabled-radio-2" checked disabled />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Disabled selected</span>
+      </label>
+
+      <div>
+        <label class="elv-choice elv-choice--radio elv-choice--error">
+          <input type="radio" class="elv-choice__input" name="error-radio" aria-invalid="true" aria-describedby="radio-error" />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Error state — selection required</span>
+        </label>
+        <p id="radio-error" class="elv-choice__error" role="alert">Please select an option</p>
+      </div>
+
+      <label class="elv-choice elv-choice--radio">
+        <input type="radio" class="elv-choice__input" name="hover-radio" />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Hover over this radio to see border change</span>
+      </label>
+    </div>
+    <pre><code>&lt;!-- Unselected --&gt;
+&lt;label class="elv-choice elv-choice--radio"&gt;
+  &lt;input type="radio" class="elv-choice__input" name="group" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Unselected&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Selected --&gt;
+&lt;label class="elv-choice elv-choice--radio"&gt;
+  &lt;input type="radio" class="elv-choice__input" name="group" checked /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Selected&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Disabled --&gt;
+&lt;input type="radio" class="elv-choice__input" disabled /&gt;
+
+&lt;!-- Error --&gt;
+&lt;label class="elv-choice elv-choice--radio elv-choice--error"&gt;
+  &lt;input type="radio" class="elv-choice__input" aria-invalid="true" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label&lt;/span&gt;
+&lt;/label&gt;
+&lt;p class="elv-choice__error" role="alert"&gt;Error message&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Radio — With Helper Text</h2>
+    <div class="examples">
+      <div>
+        <label class="elv-choice elv-choice--radio">
+          <input type="radio" class="elv-choice__input" name="plan-radio" value="basic" aria-describedby="helper-basic" checked />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Basic Plan</span>
+        </label>
+        <p id="helper-basic" class="elv-choice__helper">$9/month — Perfect for individuals</p>
+      </div>
+
+      <div>
+        <label class="elv-choice elv-choice--radio">
+          <input type="radio" class="elv-choice__input" name="plan-radio" value="pro" aria-describedby="helper-pro" />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Pro Plan</span>
+        </label>
+        <p id="helper-pro" class="elv-choice__helper">$29/month — For growing teams</p>
+      </div>
+
+      <div>
+        <label class="elv-choice elv-choice--radio">
+          <input type="radio" class="elv-choice__input" name="plan-radio" value="enterprise" aria-describedby="helper-enterprise" />
+          <span class="elv-choice__box"></span>
+          <span class="elv-choice__label">Enterprise Plan</span>
+        </label>
+        <p id="helper-enterprise" class="elv-choice__helper">Custom pricing — Advanced features and support</p>
+      </div>
+    </div>
+    <pre><code>&lt;label class="elv-choice elv-choice--radio"&gt;
+  &lt;input type="radio" class="elv-choice__input" aria-describedby="helper-id" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label&lt;/span&gt;
+&lt;/label&gt;
+&lt;p id="helper-id" class="elv-choice__helper"&gt;Helper text&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Radio Group — Stacked</h2>
+    <div class="examples">
+      <fieldset style="border: none; padding: 0; margin: 0;">
+        <legend class="elv-choice-group__label">
+          Choose your company size <span class="elv-required">*</span>
+        </legend>
+        <div class="elv-choice-group">
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="company-size" value="1-10" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">1-10 employees</span>
+          </label>
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="company-size" value="11-50" checked />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">11-50 employees</span>
+          </label>
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="company-size" value="51-200" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">51-200 employees</span>
+          </label>
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="company-size" value="201+" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">201+ employees</span>
+          </label>
+        </div>
+      </fieldset>
+    </div>
+    <pre><code>&lt;fieldset&gt;
+  &lt;legend class="elv-choice-group__label"&gt;Group label&lt;/legend&gt;
+  &lt;div class="elv-choice-group"&gt;
+    &lt;label class="elv-choice elv-choice--radio"&gt;
+      &lt;input type="radio" class="elv-choice__input" name="group" value="1" /&gt;
+      &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+      &lt;span class="elv-choice__label"&gt;Option 1&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;!-- More options... --&gt;
+  &lt;/div&gt;
+&lt;/fieldset&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Radio Group — Inline</h2>
+    <div class="examples">
+      <fieldset style="border: none; padding: 0; margin: 0;">
+        <legend class="elv-choice-group__label">How did you hear about us?</legend>
+        <div class="elv-choice-group elv-choice-group--inline">
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="source" value="search" checked />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Search Engine</span>
+          </label>
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="source" value="social" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Social Media</span>
+          </label>
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="source" value="referral" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Referral</span>
+          </label>
+          <label class="elv-choice elv-choice--radio">
+            <input type="radio" class="elv-choice__input" name="source" value="other" />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">Other</span>
+          </label>
+        </div>
+      </fieldset>
+    </div>
+    <pre><code>&lt;div class="elv-choice-group elv-choice-group--inline"&gt;
+  &lt;label class="elv-choice elv-choice--radio"&gt;...&lt;/label&gt;
+  &lt;label class="elv-choice elv-choice--radio"&gt;...&lt;/label&gt;
+  &lt;label class="elv-choice elv-choice--radio"&gt;...&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Large Variant (Better Touch Targets)</h2>
+    <div class="examples">
+      <label class="elv-choice elv-choice--checkbox elv-choice--lg">
+        <input type="checkbox" class="elv-choice__input" checked />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Large checkbox for mobile</span>
+      </label>
+
+      <label class="elv-choice elv-choice--radio elv-choice--lg">
+        <input type="radio" class="elv-choice__input" name="large-radio" checked />
+        <span class="elv-choice__box"></span>
+        <span class="elv-choice__label">Large radio for mobile</span>
+      </label>
+    </div>
+    <pre><code>&lt;!-- Large checkbox --&gt;
+&lt;label class="elv-choice elv-choice--checkbox elv-choice--lg"&gt;
+  &lt;input type="checkbox" class="elv-choice__input" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;!-- Large radio --&gt;
+&lt;label class="elv-choice elv-choice--radio elv-choice--lg"&gt;
+  &lt;input type="radio" class="elv-choice__input" name="group" /&gt;
+  &lt;span class="elv-choice__box"&gt;&lt;/span&gt;
+  &lt;span class="elv-choice__label"&gt;Label&lt;/span&gt;
+&lt;/label&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Complete Form Example</h2>
+    <div class="examples">
+      <form style="max-width: 500px;">
+        <fieldset style="border: none; padding: 0; margin: 0 0 1.5rem 0;">
+          <legend class="elv-choice-group__label">
+            Account type <span class="elv-required">*</span>
+          </legend>
+          <div class="elv-choice-group">
+            <label class="elv-choice elv-choice--radio">
+              <input type="radio" class="elv-choice__input" name="account-type" value="buyer" checked required />
+              <span class="elv-choice__box"></span>
+              <span class="elv-choice__label">Buyer</span>
+            </label>
+            <label class="elv-choice elv-choice--radio">
+              <input type="radio" class="elv-choice__input" name="account-type" value="vendor" />
+              <span class="elv-choice__box"></span>
+              <span class="elv-choice__label">Vendor</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div role="group" aria-labelledby="prefs-label" style="margin-bottom: 1.5rem;">
+          <span id="prefs-label" class="elv-choice-group__label">Preferences</span>
+          <div class="elv-choice-group">
+            <label class="elv-choice elv-choice--checkbox">
+              <input type="checkbox" class="elv-choice__input" name="newsletter" checked />
+              <span class="elv-choice__box"></span>
+              <span class="elv-choice__label">Subscribe to newsletter</span>
+            </label>
+            <label class="elv-choice elv-choice--checkbox">
+              <input type="checkbox" class="elv-choice__input" name="updates" />
+              <span class="elv-choice__box"></span>
+              <span class="elv-choice__label">Product updates</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="elv-choice elv-choice--checkbox">
+            <input type="checkbox" class="elv-choice__input" name="terms" required />
+            <span class="elv-choice__box"></span>
+            <span class="elv-choice__label">
+              I agree to the <a href="#" class="elv-text-link">terms and conditions</a> <span class="elv-required">*</span>
+            </span>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Labels:</strong> Always wrap input and label in a <code>&lt;label&gt;</code> element for clickability</li>
+      <li class="elv-mb-2"><strong>Radio Groups:</strong> Use <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code> for radio button groups</li>
+      <li class="elv-mb-2"><strong>Checkbox Groups:</strong> Use <code>role="group"</code> and <code>aria-labelledby</code> for checkbox groups</li>
+      <li class="elv-mb-2"><strong>Focus State:</strong> 3px solid #c3bde5 (light purple P40) outline offset by 1px — CRITICAL for keyboard navigation</li>
+      <li class="elv-mb-2"><strong>Keyboard Navigation:</strong> Space to toggle checkbox/radio, Tab to move between inputs</li>
+      <li class="elv-mb-2"><strong>Error States:</strong> Use <code>aria-invalid="true"</code> and <code>aria-describedby</code> for error messages</li>
+      <li class="elv-mb-2"><strong>Helper Text:</strong> Use <code>aria-describedby</code> to link helper text to input</li>
+      <li class="elv-mb-2"><strong>Required Fields:</strong> Use <code>required</code> attribute for form validation</li>
+      <li class="elv-mb-2"><strong>Touch Targets:</strong> Minimum 20px × 20px, use 24px for better mobile accessibility (--lg variant)</li>
+      <li class="elv-mb-2"><strong>Indeterminate:</strong> Set via JavaScript: <code>checkbox.indeterminate = true</code></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Property</strong></td>
+        <td style="padding: 8px;"><strong>Value</strong></td>
+        <td style="padding: 8px;"><strong>Token</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Box Size (default)</td>
+        <td style="padding: 8px;">20px × 20px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Box Size (large)</td>
+        <td style="padding: 8px;">24px × 24px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Background (unchecked)</td>
+        <td style="padding: 8px;">#ffffff</td>
+        <td style="padding: 8px;">N0 / neutral-0</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border (unchecked)</td>
+        <td style="padding: 8px;">1px solid #b0afb6</td>
+        <td style="padding: 8px;">border-medium / N40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border Radius (checkbox)</td>
+        <td style="padding: 8px;">4px</td>
+        <td style="padding: 8px;">radius-xs</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Border Radius (radio)</td>
+        <td style="padding: 8px;">50%</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Checked Background</td>
+        <td style="padding: 8px;">#5746b2</td>
+        <td style="padding: 8px;">P100</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Checked Border</td>
+        <td style="padding: 8px;">2px solid #5746b2</td>
+        <td style="padding: 8px;">P100</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Focus State</td>
+        <td style="padding: 8px;">3px solid #c3bde5, offset 1px</td>
+        <td style="padding: 8px;">P40</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Hover Background (unchecked)</td>
+        <td style="padding: 8px;">#ebe9f6</td>
+        <td style="padding: 8px;">P20 / primary-20</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Border</td>
+        <td style="padding: 8px;">2px solid #eb2000</td>
+        <td style="padding: 8px;">R120</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Disabled Background</td>
+        <td style="padding: 8px;">#f2f2f3</td>
+        <td style="padding: 8px;">N10</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Disabled Border</td>
+        <td style="padding: 8px;">#dfdfe2</td>
+        <td style="padding: 8px;">N20 / border-neutral</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Disabled Checked Background</td>
+        <td style="padding: 8px;">#dfdfe2</td>
+        <td style="padding: 8px;">N20</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Font Size</td>
+        <td style="padding: 8px;">14px (default), 16px (large)</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Font Weight</td>
+        <td style="padding: 8px;">400</td>
+        <td style="padding: 8px;">Regular</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Color (checkbox)</td>
+        <td style="padding: 8px;">#201f23</td>
+        <td style="padding: 8px;">text-default</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label Color (radio)</td>
+        <td style="padding: 8px;">#5746b2</td>
+        <td style="padding: 8px;">text-primary / P100</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Radio Inner Circle</td>
+        <td style="padding: 8px;">sm: 6px, md: 12px, lg: 18px</td>
+        <td style="padding: 8px;">scale-40/60/75</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Helper Text Size</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Helper Text Color</td>
+        <td style="padding: 8px;">#6f6d78</td>
+        <td style="padding: 8px;">text-nonessential</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Message Size</td>
+        <td style="padding: 8px;">12px</td>
+        <td style="padding: 8px;">—</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Error Message Weight</td>
+        <td style="padding: 8px;">600</td>
+        <td style="padding: 8px;">Semibold</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Error Message Color</td>
+        <td style="padding: 8px;">#b21800</td>
+        <td style="padding: 8px;">R140</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Spacing Guidelines</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Element</strong></td>
+        <td style="padding: 8px;"><strong>Spacing</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Box to label (sm)</td>
+        <td style="padding: 8px;">4px (gap-1)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Box to label (md/lg)</td>
+        <td style="padding: 8px;">8px (gap-2)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Between choices (stacked)</td>
+        <td style="padding: 8px;">12px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Between choices (inline)</td>
+        <td style="padding: 8px;">24px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;">Label to helper text</td>
+        <td style="padding: 8px;">4px</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;">Group label to choices</td>
+        <td style="padding: 8px;">8px</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Set indeterminate state demo
+  document.getElementById('indeterminate-demo').indeterminate = true;
+</script>
+
+</body>
+</html>

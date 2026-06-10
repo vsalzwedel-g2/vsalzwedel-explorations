@@ -1,0 +1,306 @@
+/* ============================================================
+   Elevate Design System — CSS Custom Properties
+   Sourced from: ue/engines/elevate/theme/
+
+   DO NOT edit values here directly. If Elevate tokens change,
+   update from source: ue/engines/elevate/theme/*.js
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+
+  /* ----------------------------------------------------------
+     COLOR PALETTE
+     Raw palette values. Prefer semantic tokens below.
+     ---------------------------------------------------------- */
+
+  /* Rorange (Brand) */
+  --palette-rorange-20:  #fff6f5;
+  --palette-rorange-40:  #FFD7D1;
+  --palette-rorange-60:  #ffa394;
+  --palette-rorange-80:  #ff7761;
+  --palette-rorange-100: #ff492c;
+  --palette-rorange-120: #eb2000;
+  --palette-rorange-140: #b21800;
+  --palette-rorange-160: #610d00;
+  --palette-rorange-180: #2e0600;
+
+  /* Purple (Primary) */
+  --palette-purple-5:    #f5f4fb;
+  --palette-purple-10:   #f2f0f9;
+  --palette-purple-20:   #ebe9f6;
+  --palette-purple-30:   #dedaf1;
+  --palette-purple-40:   #c3bde5;
+  --palette-purple-60:   #988ed2;
+  --palette-purple-80:   #7769c4;
+  --palette-purple-100:  #5746b2;
+  --palette-purple-120:  #45388f;
+  --palette-purple-140:  #342a6a;
+  --palette-purple-160:  #211b46;
+  --palette-purple-180:  #15112c;
+
+  /* Neutral */
+  --palette-neutral-0:   #ffffff;
+  --palette-neutral-1:   #fcfcfd;
+  --palette-neutral-5:   #fafafa;
+  --palette-neutral-10:  #f2f2f3;
+  --palette-neutral-20:  #dfdfe2;
+  --palette-neutral-30:  #cacace;
+  --palette-neutral-40:  #b0afb6;
+  --palette-neutral-50:  #9b99a3;
+  --palette-neutral-70:  #6f6d78;
+  --palette-neutral-80:  #4c4b53;
+  --palette-neutral-90:  #2f2e33;
+  --palette-neutral-100: #201f23;
+
+  /* Blue (Info) */
+  --palette-blue-20:     #dbecff;
+  --palette-blue-40:     #9eccff;
+  --palette-blue-60:     #66aeff;
+  --palette-blue-80:     #2e90ff;
+  --palette-blue-100:    #0073f5;
+  --palette-blue-120:    #005bc2;
+  --palette-blue-140:    #00438f;
+  --palette-blue-160:    #002b5c;
+  --palette-blue-180:    #001329;
+
+  /* Green (Success) */
+  --palette-green-20:    #d0f6f1;
+  --palette-green-40:    #a9efe5;
+  --palette-green-60:    #86e9dc;
+  --palette-green-80:    #5be1cf;
+  --palette-green-100:   #27d3bc;
+  --palette-green-120:   #1fa896;
+  --palette-green-140:   #177d6f;
+  --palette-green-160:   #0f5249;
+  --palette-green-180:   #072723;
+
+  /* Yellow (Warning) */
+  --palette-yellow-20:   #fff9e5;
+  --palette-yellow-40:   #fff2c2;
+  --palette-yellow-60:   #ffe78f;
+  --palette-yellow-80:   #ffd747;
+  --palette-yellow-100:  #ffc800;
+  --palette-yellow-120:  #cca400;
+  --palette-yellow-140:  #997800;
+  --palette-yellow-160:  #665000;
+
+
+  /* ----------------------------------------------------------
+     SEMANTIC COLORS — BACKGROUND
+     ---------------------------------------------------------- */
+
+  --bg-primary-5:        var(--palette-purple-5);
+  --bg-primary-10:       var(--palette-purple-10);
+  --bg-primary-20:       var(--palette-purple-20);
+  --bg-primary-30:       var(--palette-purple-30);
+  --bg-primary-40:       var(--palette-purple-40);
+  --bg-primary-60:       var(--palette-purple-60);
+  --bg-primary-80:       var(--palette-purple-80);
+  --bg-primary:          var(--palette-purple-100);
+  --bg-primary-120:      var(--palette-purple-120);
+
+  --bg-neutral-0:        var(--palette-neutral-0);
+  --bg-neutral-1:        var(--palette-neutral-1);
+  --bg-neutral-5:        var(--palette-neutral-5);
+  --bg-neutral-10:       var(--palette-neutral-10);
+  --bg-neutral-20:       var(--palette-neutral-20);
+  --bg-neutral:          var(--palette-neutral-20);
+  --bg-neutral-40:       var(--palette-neutral-40);
+  --bg-neutral-100:      var(--palette-neutral-100);
+
+  --bg-info-20:          var(--palette-blue-20);
+  --bg-info:             var(--palette-blue-100);
+
+  --bg-critical-20:      var(--palette-rorange-20);
+  --bg-critical-40:      var(--palette-rorange-40);
+  --bg-critical:         var(--palette-rorange-120);
+  --bg-critical-140:     var(--palette-rorange-140);
+
+  --bg-warning-20:       var(--palette-yellow-20);
+  --bg-warning:          var(--palette-yellow-100);
+
+  --bg-success-20:       var(--palette-green-20);
+  --bg-success-40:       var(--palette-green-40);
+  --bg-success:          var(--palette-green-120);
+
+  --bg-brand:            var(--palette-rorange-100);
+  --bg-inverted:         var(--palette-neutral-0);
+
+
+  /* ----------------------------------------------------------
+     SEMANTIC COLORS — FOREGROUND (TEXT)
+     ---------------------------------------------------------- */
+
+  --text-default:        var(--palette-neutral-100);
+  --text-subtle:         var(--palette-neutral-80);
+  --text-nonessential:   var(--palette-neutral-70);
+  --text-disabled:       var(--palette-neutral-20);
+  --text-inverted:       var(--palette-neutral-0);
+
+  --text-link:           var(--palette-blue-100);
+  --text-link-hover:     var(--palette-blue-120);
+  --text-link-visited:   var(--palette-blue-80);
+
+  --text-primary:        var(--palette-purple-100);
+  --text-primary-hover:  var(--palette-purple-120);
+  --text-neutral:        var(--palette-neutral-80);
+
+  --text-info:           var(--palette-blue-160);
+  --text-success:        var(--palette-green-160);
+  --text-success-data:   var(--palette-green-120);
+  --text-warning:        var(--palette-yellow-160);
+  --text-critical:       var(--palette-rorange-140);
+
+
+  /* ----------------------------------------------------------
+     SEMANTIC COLORS — BORDER
+     ---------------------------------------------------------- */
+
+  --border-whisper:      var(--palette-neutral-10);
+  --border-light:        var(--palette-neutral-20);
+  --border-medium:       var(--palette-neutral-40);
+  --border-dark:         var(--palette-neutral-80);
+  --border-inverted:     var(--palette-neutral-0);
+  --border-neutral:      var(--palette-neutral-20);
+
+  --border-info:         var(--palette-blue-100);
+  --border-success:      var(--palette-green-120);
+  --border-critical:     var(--palette-rorange-120);
+  --border-warning:      var(--palette-yellow-100);
+  --border-primary:      var(--palette-purple-100);
+  --border-focus:        var(--palette-purple-40);
+
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY
+     ---------------------------------------------------------- */
+
+  --font-sans:           'Figtree', sans-serif;
+
+  --text-xs:             0.75rem;    /* 12px */
+  --text-sm:             0.875rem;   /* 14px */
+  --text-base:           1rem;       /* 16px */
+  --text-lg:             1.3125rem;  /* 21px */
+  --text-xl:             1.75rem;    /* 28px */
+  --text-2xl:            2.375rem;   /* 38px */
+  --text-3xl:            3.1875rem;  /* 51px */
+  --text-4xl:            4.1875rem;  /* 67px */
+
+  --font-light:          300;
+  --font-normal:         400;
+  --font-medium:         500;
+  --font-semibold:       600;
+  --font-bold:           700;
+  --font-extrabold:      800;
+  --font-black:          900;
+
+  --leading-xs:          1rem;
+  --leading-sm:          1.25rem;
+  --leading-base:        1.5rem;
+  --leading-lg:          1.75rem;
+  --leading-xl:          2.25rem;
+  --leading-2xl:         3rem;
+  --leading-3xl:         4rem;
+  --leading-4xl:         5rem;
+
+
+  /* ----------------------------------------------------------
+     SPACING
+     1 unit = 0.25rem. --space-4 = 1rem, --space-8 = 2rem, etc.
+     ---------------------------------------------------------- */
+
+  --space-0:    0;
+  --space-px:   1px;
+  --space-0-5:  0.125rem;
+  --space-1:    0.25rem;
+  --space-2:    0.5rem;
+  --space-3:    0.75rem;
+  --space-4:    1rem;
+  --space-5:    1.25rem;
+  --space-6:    1.5rem;
+  --space-7:    1.75rem;
+  --space-8:    2rem;
+  --space-9:    2.25rem;
+  --space-10:   2.5rem;
+  --space-12:   3rem;
+  --space-14:   3.5rem;
+  --space-16:   4rem;
+  --space-18:   4.5rem;
+  --space-20:   5rem;
+  --space-24:   6rem;
+  --space-28:   7rem;
+  --space-32:   8rem;
+  --space-36:   9rem;
+  --space-40:   10rem;
+  --space-48:   12rem;
+  --space-56:   14rem;
+  --space-64:   16rem;
+  --space-80:   20rem;
+  --space-96:   24rem;
+  --space-100:  25rem;
+
+
+  /* ----------------------------------------------------------
+     BORDER RADIUS
+     ---------------------------------------------------------- */
+
+  --radius-2xs:  0.125rem;
+  --radius-xs:   0.25rem;
+  --radius-sm:   0.5rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1rem;
+  --radius-xl:   1.25rem;
+  --radius-full: 9999rem;
+
+  /* Pill variants (for tags, badges, buttons) */
+  --radius-pill-3xs: 0.5rem;
+  --radius-pill-2xs: 0.75rem;
+  --radius-pill-xs:  1rem;
+  --radius-pill-sm:  1.25rem;
+  --radius-pill-md:  1.5rem;
+  --radius-pill-lg:  3rem;
+
+
+  /* ----------------------------------------------------------
+     BORDER WIDTH
+     ---------------------------------------------------------- */
+
+  --border-width-default: 0.5px;
+  --border-width-1:       1px;
+  --border-width-2:       2px;
+  --border-width-4:       4px;
+  --border-width-8:       8px;
+
+
+  /* ----------------------------------------------------------
+     SHADOWS
+     ---------------------------------------------------------- */
+
+  --shadow-0: none;
+  --shadow-1: 0px 0px 1px 0px rgba(32, 31, 35, 0.32),
+              0px 4px 4px 0px rgba(32, 31, 35, 0.04);
+  --shadow-2: 0px 0px 1px 0px rgba(32, 31, 35, 0.32),
+              0px 8px 14px -2px rgba(32, 31, 35, 0.15);
+  --shadow-3: 0px 0px 1px 0px rgba(32, 31, 35, 0.32),
+              0px 18px 28px -4px rgba(32, 31, 35, 0.15);
+
+  --shadow-left-1:  0px 0px 1px 0px rgba(32, 31, 35, 0.32), -4px 0px 4px 0px rgba(32, 31, 35, 0.04);
+  --shadow-left-2:  0px 0px 1px 0px rgba(32, 31, 35, 0.32), -8px 0px 14px -2px rgba(32, 31, 35, 0.15);
+  --shadow-left-3:  0px 0px 1px 0px rgba(32, 31, 35, 0.32), -18px 0px 28px -4px rgba(32, 31, 35, 0.15);
+  --shadow-right-1: 0px 0px 1px 0px rgba(32, 31, 35, 0.32), 4px 0px 4px 0px rgba(32, 31, 35, 0.04);
+  --shadow-right-2: 0px 0px 1px 0px rgba(32, 31, 35, 0.32), 8px 0px 14px -2px rgba(32, 31, 35, 0.15);
+  --shadow-right-3: 0px 0px 1px 0px rgba(32, 31, 35, 0.32), 18px 0px 28px -4px rgba(32, 31, 35, 0.15);
+
+  --shadow-focus:           0px 0px 0px 0.5px rgb(255, 255, 255),
+                            0px 0px 0px 3px rgb(195, 189, 229);
+  --shadow-button-press:    0px 0px 4px 1px rgba(32, 31, 35, 0.20);
+
+
+  /* ----------------------------------------------------------
+     BREAKPOINTS (reference only — use in media queries)
+     sm: 600px  |  md: 750px  |  lg: 1000px  |  xl: 1270px  |  2xl: 1400px
+     ---------------------------------------------------------- */
+
+}

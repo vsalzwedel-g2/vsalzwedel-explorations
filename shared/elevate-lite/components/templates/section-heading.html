@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section Heading</title>
+  <link rel="stylesheet" href="../../tokens/elevate.css">
+  <link rel="stylesheet" href="../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; flex-direction: column; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Section Heading</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Section heading with optional count badge for content lists.
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Bold heading with subtle count in parentheses.
+    </p>
+    <div class="examples">
+      <h2 class="elv-text-lg elv-font-bold elv-text-default">
+        Epics <span class="elv-text-lg elv-font-normal elv-text-subtle">(5)</span>
+      </h2>
+
+      <h2 class="elv-text-lg elv-font-bold elv-text-default">
+        Research <span class="elv-text-lg elv-font-normal elv-text-subtle">(12)</span>
+      </h2>
+    </div>
+    <pre><code>&lt;h2 class="elv-text-lg elv-font-bold elv-text-default"&gt;
+  Epics &lt;span class="elv-text-lg elv-font-normal elv-text-subtle"&gt;(5)&lt;/span&gt;
+&lt;/h2&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Without Count</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      For sections without dynamic counts.
+    </p>
+    <div class="examples">
+      <h2 class="elv-text-lg elv-font-bold elv-text-default">
+        Recent Activity
+      </h2>
+
+      <h2 class="elv-text-lg elv-font-bold elv-text-default">
+        Documentation
+      </h2>
+    </div>
+    <pre><code>&lt;h2 class="elv-text-lg elv-font-bold elv-text-default"&gt;
+  Recent Activity
+&lt;/h2&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Dynamic ID</h2>
+    <p class="elv-text-xs elv-text-subtle elv-mb-3">
+      Add an id to the count span for JavaScript updates.
+    </p>
+    <div class="examples">
+      <h2 class="elv-text-lg elv-font-bold elv-text-default">
+        Components <span class="elv-text-lg elv-font-normal elv-text-subtle" id="componentCount">(23)</span>
+      </h2>
+    </div>
+    <pre><code>&lt;h2 class="elv-text-lg elv-font-bold elv-text-default"&gt;
+  Components &lt;span class="elv-text-lg elv-font-normal elv-text-subtle" id="componentCount"&gt;(23)&lt;/span&gt;
+&lt;/h2&gt;
+
+&lt;script&gt;
+  // Update count dynamically
+  document.getElementById('componentCount').textContent = '(25)';
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Specifications</h2>
+    <ul class="elv-text-xs elv-text-default" style="line-height: 1.8;">
+      <li><strong>Label text:</strong> text-lg (18px), font-bold (700), text-default (#201f23)</li>
+      <li><strong>Count text:</strong> text-lg (18px), font-normal (400), text-subtle (#57534E)</li>
+      <li><strong>Usage:</strong> Precedes content sections like grids or lists</li>
+      <li><strong>Spacing:</strong> Typically mb-4 (16px) below the heading</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

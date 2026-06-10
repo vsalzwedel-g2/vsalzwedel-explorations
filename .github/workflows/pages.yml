@@ -1,0 +1,130 @@
+name: Deploy GitHub Pages
+
+# Discovers every epic under epics/<slug>/ (folder with an epic.json) and every
+# project under it. For each project with a "build" value of "vite", runs
+# `npm ci && npm run build` and copies the dist/ output. Static projects
+# (build: "static") are copied as-is. The root index and each per-epic page
+# are generated from epic.json / project.json metadata. The shared/ directory
+# (Elevate Lite design system) is copied verbatim.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
+      SITE_BASE_HREF: /${{ github.event.repository.name }}/
+      HEADER_EYEBROW: Vsalzwedel
+      HEADER_TAGLINE: Gestural HTML prototypes organized by epic.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Prepare deploy directory
+        run: |
+          mkdir -p _site
+          # Tell GitHub Pages not to run Jekyll over our assets.
+          touch _site/.nojekyll
+
+      - name: Copy shared assets
+        run: |
+          if [ -d shared ]; then
+            mkdir -p _site/shared
+            cp -R shared/. _site/shared/
+            echo "Copied shared/ to _site/shared/"
+          else
+            echo "::warning::No shared/ directory found"
+          fi
+
+      - name: Discover and build projects
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d epics ]; then
+            echo "::warning::No epics/ directory found"
+            exit 0
+          fi
+          for epic_dir in epics/*/; do
+            epic_slug="$(basename "$epic_dir")"
+            [ -f "$epic_dir/epic.json" ] || { echo "Skipping $epic_slug (no epic.json)"; continue; }
+            echo "::group::Epic: $epic_slug"
+            for project_dir in "$epic_dir"*/; do
+              [ -d "$project_dir" ] || continue
+              project_slug="$(basename "$project_dir")"
+              # Determine build type: explicit project.json.build wins, otherwise infer from package.json.
+              build_type="static"
+              if [ -f "$project_dir/project.json" ]; then
+                build_type="$(node -e "const fs=require('fs'); const j=JSON.parse(fs.readFileSync('$project_dir/project.json','utf8')); process.stdout.write(j.build ?? (fs.existsSync('$project_dir/package.json') ? 'vite' : 'static'));")"
+              elif [ -f "$project_dir/package.json" ]; then
+                build_type="vite"
+              fi
+              dest="_site/epics/$epic_slug/$project_slug"
+              mkdir -p "$dest"
+              echo "  → $project_slug (build: $build_type)"
+              case "$build_type" in
+                vite)
+                  pushd "$project_dir" > /dev/null
+                  if [ -f package-lock.json ]; then npm ci; else npm install; fi
+                  BASE_PATH="/${REPO_NAME}/epics/${epic_slug}/${project_slug}/" npm run build
+                  popd > /dev/null
+                  if [ ! -d "$project_dir/dist" ]; then
+                    echo "::error::$project_slug produced no dist/"
+                    exit 1
+                  fi
+                  cp -R "$project_dir/dist/." "$dest/"
+                  ;;
+                static)
+                  # Copy everything except project.json and metadata noise.
+                  rsync -a --exclude='project.json' --exclude='node_modules' --exclude='dist' "$project_dir" "$dest/"
+                  ;;
+                *)
+                  echo "::error::Unknown build type '$build_type' for $project_slug"
+                  exit 1
+                  ;;
+              esac
+            done
+            echo "::endgroup::"
+          done
+
+      - name: Generate root index
+        run: node scripts/build-index.mjs . _site
+
+      - name: Generate epic pages
+        run: node scripts/build-epics.mjs . _site
+
+      - name: List deploy tree
+        run: find _site -maxdepth 4 -mindepth 1 -type d -print
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

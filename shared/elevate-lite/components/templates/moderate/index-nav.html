@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Nav Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Index Nav Styles */
+    .elv-index-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Horizontal variant */
+    .elv-index-nav--horizontal {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .elv-index-nav__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      color: var(--text-default);
+      text-decoration: none;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: var(--radius-sm);
+      text-align: left;
+    }
+
+    .elv-index-nav__item:hover {
+      background: var(--bg-neutral-10);
+      color: var(--color-purple-100);
+    }
+
+    .elv-index-nav__item:focus {
+      outline: 3px solid #c3bde5; /* P40 */
+      outline-offset: 2px;
+    }
+
+    .elv-index-nav__item--active {
+      background: var(--color-purple-10);
+      color: var(--color-purple-100);
+      font-weight: 600;
+    }
+
+    .elv-index-nav__item--active:hover {
+      background: var(--color-purple-20);
+    }
+
+    .elv-index-nav__icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Compact variant */
+    .elv-index-nav--compact .elv-index-nav__item {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    /* Sidebar variant */
+    .elv-index-nav--sidebar {
+      border-right: 1px solid var(--border-light);
+      padding-right: 0;
+    }
+
+    .elv-index-nav--sidebar .elv-index-nav__item {
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+
+    .elv-index-nav--sidebar .elv-index-nav__item--active {
+      border-right: 2px solid var(--color-purple-100);
+      padding-right: 14px;
+    }
+
+    /* Demo content sections */
+    .demo-content {
+      padding: 16px;
+      background: var(--bg-neutral-5);
+      border-radius: var(--radius-sm);
+      color: var(--text-default);
+      margin-top: 16px;
+    }
+
+    .demo-section-target {
+      padding: 32px 0;
+      min-height: 200px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .demo-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 24px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Index Nav Component</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook" class="elv-text-link">Elevate Lookbook</a> |
+    <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md</a>
+  </p>
+
+  <!-- Basic Vertical Index Nav -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Basic Vertical Navigation</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Simple vertical list of navigation links for page sections
+    </p>
+    <div class="examples">
+      <nav class="elv-index-nav" aria-label="Page sections">
+        <a href="#section-1" class="elv-index-nav__item elv-index-nav__item--active">
+          Overview
+        </a>
+        <a href="#section-2" class="elv-index-nav__item">
+          Features
+        </a>
+        <a href="#section-3" class="elv-index-nav__item">
+          Pricing
+        </a>
+        <a href="#section-4" class="elv-index-nav__item">
+          FAQs
+        </a>
+      </nav>
+    </div>
+    <pre><code>&lt;nav class="elv-index-nav" aria-label="Page sections"&gt;
+  &lt;a href="#section-1" class="elv-index-nav__item elv-index-nav__item--active"&gt;
+    Overview
+  &lt;/a&gt;
+  &lt;a href="#section-2" class="elv-index-nav__item"&gt;
+    Features
+  &lt;/a&gt;
+  &lt;a href="#section-3" class="elv-index-nav__item"&gt;
+    Pricing
+  &lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <!-- Horizontal Index Nav -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Horizontal Navigation</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Horizontal layout for narrow content or top-level navigation
+    </p>
+    <div class="examples">
+      <nav class="elv-index-nav elv-index-nav--horizontal" aria-label="Article sections">
+        <a href="#intro" class="elv-index-nav__item elv-index-nav__item--active">
+          Introduction
+        </a>
+        <a href="#methodology" class="elv-index-nav__item">
+          Methodology
+        </a>
+        <a href="#results" class="elv-index-nav__item">
+          Results
+        </a>
+        <a href="#conclusion" class="elv-index-nav__item">
+          Conclusion
+        </a>
+      </nav>
+    </div>
+    <pre><code>&lt;nav class="elv-index-nav elv-index-nav--horizontal" aria-label="Article sections"&gt;
+  &lt;a href="#intro" class="elv-index-nav__item elv-index-nav__item--active"&gt;
+    Introduction
+  &lt;/a&gt;
+  &lt;a href="#methodology" class="elv-index-nav__item"&gt;
+    Methodology
+  &lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <!-- Sidebar Style -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Sidebar Navigation</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Fixed sidebar with active indicator border
+    </p>
+    <div class="examples">
+      <div class="demo-layout">
+        <nav class="elv-index-nav elv-index-nav--sidebar" aria-label="Documentation">
+          <a href="#getting-started" class="elv-index-nav__item elv-index-nav__item--active">
+            Getting Started
+          </a>
+          <a href="#components" class="elv-index-nav__item">
+            Components
+          </a>
+          <a href="#tokens" class="elv-index-nav__item">
+            Design Tokens
+          </a>
+          <a href="#patterns" class="elv-index-nav__item">
+            Patterns
+          </a>
+          <a href="#accessibility" class="elv-index-nav__item">
+            Accessibility
+          </a>
+        </nav>
+        <div style="padding: 16px; background: var(--bg-neutral-5); border-radius: var(--radius-sm);">
+          <p class="elv-text-sm">Main content area</p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;nav class="elv-index-nav elv-index-nav--sidebar" aria-label="Documentation"&gt;
+  &lt;a href="#getting-started" class="elv-index-nav__item elv-index-nav__item--active"&gt;
+    Getting Started
+  &lt;/a&gt;
+  &lt;a href="#components" class="elv-index-nav__item"&gt;
+    Components
+  &lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <!-- With Icons -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Icons</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Icons provide visual recognition for sections
+    </p>
+    <div class="examples">
+      <nav class="elv-index-nav" aria-label="Settings">
+        <a href="#account" class="elv-index-nav__item elv-index-nav__item--active">
+          <svg class="elv-index-nav__icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 1.5a7 7 0 0 0-7 7v.5h14v-.5a7 7 0 0 0-7-7z"/>
+          </svg>
+          Account Settings
+        </a>
+        <a href="#security" class="elv-index-nav__item">
+          <svg class="elv-index-nav__icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 1l6 2v4.5c0 3.5-2 6.5-6 8.5-4-2-6-5-6-8.5V3l6-2z"/>
+          </svg>
+          Security
+        </a>
+        <a href="#notifications" class="elv-index-nav__item">
+          <svg class="elv-index-nav__icon" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM14 12V8c0-3.3-1.8-6-5-6.5V.5a1 1 0 1 0-2 0V1.5C3.8 2 2 4.7 2 8v4l-2 2v1h16v-1l-2-2z"/>
+          </svg>
+          Notifications
+        </a>
+      </nav>
+    </div>
+    <pre><code>&lt;a href="#account" class="elv-index-nav__item elv-index-nav__item--active"&gt;
+  &lt;svg class="elv-index-nav__icon" viewBox="0 0 16 16" fill="currentColor"&gt;
+    &lt;path d="..."/&gt;
+  &lt;/svg&gt;
+  Account Settings
+&lt;/a&gt;</code></pre>
+  </div>
+
+  <!-- Compact Size -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Compact Size</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Smaller padding for dense interfaces
+    </p>
+    <div class="examples">
+      <nav class="elv-index-nav elv-index-nav--compact" aria-label="Quick links">
+        <a href="#quick-1" class="elv-index-nav__item elv-index-nav__item--active">
+          Quick Start
+        </a>
+        <a href="#quick-2" class="elv-index-nav__item">
+          API Reference
+        </a>
+        <a href="#quick-3" class="elv-index-nav__item">
+          Examples
+        </a>
+      </nav>
+    </div>
+    <pre><code>&lt;nav class="elv-index-nav elv-index-nav--compact"&gt;
+  &lt;a href="#quick-1" class="elv-index-nav__item elv-index-nav__item--active"&gt;
+    Quick Start
+  &lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+  </div>
+
+  <!-- Interactive Demo -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Interactive Example</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Click navigation items to scroll to content sections
+    </p>
+    <div class="examples">
+      <nav class="elv-index-nav" id="demo-nav" aria-label="Demo navigation">
+        <a href="#demo-section-1" class="elv-index-nav__item elv-index-nav__item--active" data-section="demo-section-1">
+          Section 1
+        </a>
+        <a href="#demo-section-2" class="elv-index-nav__item" data-section="demo-section-2">
+          Section 2
+        </a>
+        <a href="#demo-section-3" class="elv-index-nav__item" data-section="demo-section-3">
+          Section 3
+        </a>
+      </nav>
+
+      <div id="demo-section-1" class="demo-section-target">
+        <h3 class="elv-text-lg elv-font-semibold elv-mb-2">Section 1: Overview</h3>
+        <p class="elv-text-sm">This is the first section of content. The navigation above will track your scroll position and update the active state automatically.</p>
+      </div>
+      <div id="demo-section-2" class="demo-section-target">
+        <h3 class="elv-text-lg elv-font-semibold elv-mb-2">Section 2: Details</h3>
+        <p class="elv-text-sm">This is the second section of content with more information.</p>
+      </div>
+      <div id="demo-section-3" class="demo-section-target">
+        <h3 class="elv-text-lg elv-font-semibold elv-mb-2">Section 3: Summary</h3>
+        <p class="elv-text-sm">This is the final section with concluding content.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Purpose:</strong> Use for table of contents or anchor links to page sections</li>
+      <li class="elv-mb-2"><strong>vs Tabs:</strong> Tabs switch content views; index nav scrolls to content on same page</li>
+      <li class="elv-mb-2"><strong>Active State:</strong> One item should be active at a time, tracking current section</li>
+      <li class="elv-mb-2"><strong>Anchors:</strong> Always use anchor links (href="#section-id") for proper navigation</li>
+      <li class="elv-mb-2"><strong>Smooth Scroll:</strong> Set <code>scroll-behavior: smooth</code> on html element</li>
+      <li class="elv-mb-2"><strong>Vertical:</strong> Default for sidebars and content navigation</li>
+      <li class="elv-mb-2"><strong>Horizontal:</strong> Use for narrow content or when space is limited</li>
+      <li class="elv-mb-2"><strong>Icons:</strong> Optional; use when they clarify section type</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Semantic HTML:</strong> Use <code>&lt;nav&gt;</code> element with <code>aria-label</code></li>
+      <li class="elv-mb-2"><strong>Links:</strong> Use anchor tags with proper href attributes</li>
+      <li class="elv-mb-2"><strong>Active State:</strong> Use <code>aria-current="location"</code> on active item</li>
+      <li class="elv-mb-2"><strong>Keyboard:</strong> Standard link keyboard navigation (Tab to focus, Enter to activate)</li>
+      <li class="elv-mb-2"><strong>Focus Visible:</strong> Purple outline indicates keyboard focus</li>
+      <li class="elv-mb-2"><strong>Skip Links:</strong> Consider adding skip link for keyboard users</li>
+    </ul>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Item Padding</strong></td>
+        <td style="padding: 8px;">Default: 8px 16px, Compact: 6px 12px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Icon-Label Gap</strong></td>
+        <td style="padding: 8px;">8px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">8px (radius-sm)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Inactive Text</strong></td>
+        <td style="padding: 8px;">#201f23 (text-default)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Active Text</strong></td>
+        <td style="padding: 8px;">#5746b2 (purple), weight 600</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Active Background</strong></td>
+        <td style="padding: 8px;">#f2f0f9 (P10)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Hover Background</strong></td>
+        <td style="padding: 8px;">#f2f2f3 (N10)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Sidebar Border</strong></td>
+        <td style="padding: 8px;">Right: 1px solid #dfdfe2; Active: 2px solid purple</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Font</strong></td>
+        <td style="padding: 8px;">Default: 14px/400, Active: 600</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Transition</strong></td>
+        <td style="padding: 8px;">150ms ease on color and background</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Index Nav JavaScript for active state management
+  // Tracks scroll position and updates active state based on visible section
+
+  class IndexNav {
+    constructor(nav) {
+      this.nav = nav;
+      this.items = Array.from(nav.querySelectorAll('.elv-index-nav__item'));
+      this.sections = this.items
+        .map(item => {
+          const href = item.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            return document.querySelector(href);
+          }
+          return null;
+        })
+        .filter(section => section !== null);
+
+      this.init();
+    }
+
+    init() {
+      // Click handlers
+      this.items.forEach((item, index) => {
+        item.addEventListener('click', (e) => {
+          // Allow default anchor behavior (smooth scroll)
+          this.setActiveItem(index);
+        });
+      });
+
+      // Scroll tracking (optional enhancement)
+      if (this.sections.length > 0) {
+        this.observeSections();
+      }
+    }
+
+    setActiveItem(index) {
+      this.items.forEach((item, i) => {
+        if (i === index) {
+          item.classList.add('elv-index-nav__item--active');
+          item.setAttribute('aria-current', 'location');
+        } else {
+          item.classList.remove('elv-index-nav__item--active');
+          item.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    observeSections() {
+      // Use Intersection Observer to track which section is visible
+      const options = {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = this.sections.indexOf(entry.target);
+            if (index !== -1) {
+              this.setActiveItem(index);
+            }
+          }
+        });
+      }, options);
+
+      this.sections.forEach(section => observer.observe(section));
+    }
+  }
+
+  // Initialize all index nav components on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.elv-index-nav').forEach(nav => {
+      new IndexNav(nav);
+    });
+  });
+</script>
+
+</body>
+</html>

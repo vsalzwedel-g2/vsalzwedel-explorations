@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../schema/project.schema.json",
+  "title": "Event Closed",
+  "date": "2026-06-09",
+  "description": "Post-event state for the Dreamforce 2026 Asana partnership page. Recap and next-step CTAs.",
+  "icon": "check",
+  "iconBg": "#ECFDF5",
+  "iconFg": "#059669",
+  "build": "vite"
+}

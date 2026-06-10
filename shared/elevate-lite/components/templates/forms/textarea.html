@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textarea Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Textarea Styles — DESIGN.md line 444-458 + textarea specs */
+    .elv-textarea {
+      width: 100%;
+      min-height: 64px; /* md: 64px */
+      padding: 12px;
+      background: var(--bg-neutral-5); /* N5 */
+      border: 0.5px solid var(--border-medium); /* border-medium N40 */
+      border-radius: 8px; /* radius-sm */
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      font-family: var(--font-sans);
+      color: var(--text-default);
+      resize: vertical; /* Only vertical resize */
+      transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1), outline 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Hover state */
+    .elv-textarea:hover:not(:disabled):not(:read-only) {
+      background: var(--bg-neutral-10); /* N10 */
+    }
+
+    /* Size variants */
+    .elv-textarea--sm {
+      min-height: 52px;
+    }
+
+    .elv-textarea--md {
+      min-height: 64px;
+    }
+
+    .elv-textarea--lg {
+      min-height: 64px;
+    }
+
+    .elv-textarea::placeholder {
+      color: var(--text-neutral-70); /* text-nonessential */
+    }
+
+    /* Focus state — CRITICAL for accessibility */
+    .elv-textarea:focus {
+      outline: 3px solid var(--palette-purple-40); /* P40 */
+      outline-offset: 1px;
+    }
+
+    /* Error state */
+    .elv-textarea--error {
+      border: 2px solid #eb2000; /* R120 */
+      padding: 11.5px; /* Adjust for thicker border to maintain same inner dimensions */
+    }
+
+    /* Disabled state */
+    .elv-textarea:disabled {
+      background: var(--bg-neutral-1); /* N1 */
+      color: var(--border-medium); /* N40 */
+      cursor: not-allowed;
+      resize: none;
+    }
+
+    /* Label */
+    .elv-textarea-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      margin-bottom: 4px;
+    }
+
+    /* Required indicator */
+    .elv-required {
+      color: #eb2000; /* R120 */
+    }
+
+    /* Optional indicator */
+    .elv-textarea-optional {
+      color: var(--text-neutral-70); /* text-nonessential */
+      font-weight: 400;
+    }
+
+    /* Helper text */
+    .elv-textarea-helper {
+      font-size: 12px;
+      color: var(--text-neutral-70); /* text-nonessential */
+      margin-top: 4px;
+    }
+
+    /* Error message */
+    .elv-textarea-error {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b21800; /* R140 */
+      margin-top: 4px;
+    }
+
+    /* Character count wrapper */
+    .elv-textarea-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .elv-char-count {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 12px;
+      color: var(--text-neutral-70); /* text-nonessential */
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2px 4px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    /* Form field spacing */
+    .form-field {
+      margin-bottom: 16px;
+    }
+
+    /* Example max-width for form layouts */
+    .example-container {
+      max-width: 600px;
+    }
+
+    /* Focus state demo highlight */
+    .focus-demo {
+      border: 2px solid #5746b2;
+      padding: 11px;
+    }
+
+    /* Resizable demo styling */
+    .resize-demo-wrapper {
+      border: 2px dashed #dfdfe2;
+      padding: 1rem;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .resize-instruction {
+      font-size: 12px;
+      color: #6f6d78;
+      margin-top: 8px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Textarea</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Specs: <a href="../../../design-system/DESIGN.md" class="elv-text-link">DESIGN.md line 444-458</a>
+  </p>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Default</h2>
+    <div class="examples">
+      <div class="example-container">
+        <textarea
+          class="elv-textarea"
+          placeholder="Enter your message..."
+          aria-label="Message"
+        ></textarea>
+      </div>
+    </div>
+    <pre><code>&lt;textarea
+  class="elv-textarea"
+  placeholder="Enter your message..."
+  aria-label="Message"
+&gt;&lt;/textarea&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Label & Helper Text</h2>
+    <div class="examples">
+      <div class="example-container">
+        <div class="form-field">
+          <label class="elv-textarea-label" for="description">
+            Description <span class="elv-required">*</span>
+          </label>
+          <textarea
+            id="description"
+            class="elv-textarea"
+            placeholder="Provide a detailed description..."
+            required
+            aria-required="true"
+          ></textarea>
+          <p class="elv-textarea-helper">
+            Include as much detail as possible to help us understand your needs.
+          </p>
+        </div>
+
+        <div class="form-field">
+          <label class="elv-textarea-label" for="notes">
+            Additional Notes <span class="elv-textarea-optional">(optional)</span>
+          </label>
+          <textarea
+            id="notes"
+            class="elv-textarea"
+            placeholder="Any additional information..."
+          ></textarea>
+          <p class="elv-textarea-helper">
+            Optional: Add any extra context that might be helpful.
+          </p>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;label class="elv-textarea-label" for="description"&gt;
+  Description &lt;span class="elv-required"&gt;*&lt;/span&gt;
+&lt;/label&gt;
+&lt;textarea
+  id="description"
+  class="elv-textarea"
+  placeholder="Provide a detailed description..."
+  required
+  aria-required="true"
+&gt;&lt;/textarea&gt;
+&lt;p class="elv-textarea-helper"&gt;
+  Helper text goes here
+&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">With Character Count</h2>
+    <div class="examples">
+      <div class="example-container">
+        <label class="elv-textarea-label" for="feedback">
+          Feedback
+        </label>
+        <div class="elv-textarea-wrapper">
+          <textarea
+            id="feedback"
+            class="elv-textarea"
+            placeholder="Share your thoughts..."
+            maxlength="500"
+            oninput="updateCount(this)"
+          ></textarea>
+          <span class="elv-char-count">0 / 500</span>
+        </div>
+        <p class="elv-textarea-helper">
+          Maximum 500 characters
+        </p>
+      </div>
+
+      <div class="example-container">
+        <label class="elv-textarea-label" for="review">
+          Product Review
+        </label>
+        <div class="elv-textarea-wrapper">
+          <textarea
+            id="review"
+            class="elv-textarea"
+            placeholder="Write your review..."
+            maxlength="1000"
+            oninput="updateCount(this)"
+            style="min-height: 120px;"
+          ></textarea>
+          <span class="elv-char-count">0 / 1000</span>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;div class="elv-textarea-wrapper"&gt;
+  &lt;textarea
+    maxlength="500"
+    oninput="updateCount(this)"
+  &gt;&lt;/textarea&gt;
+  &lt;span class="elv-char-count"&gt;0 / 500&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+function updateCount(textarea) {
+  const count = textarea.value.length;
+  const max = textarea.maxLength;
+  const counter = textarea.nextElementSibling;
+  counter.textContent = `${count} / ${max}`;
+}
+&lt;/script&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Focus State</h2>
+    <div class="examples">
+      <div class="example-container">
+        <textarea
+          class="elv-textarea"
+          placeholder="Click to see focus state (2px purple border)"
+          aria-label="Focus example"
+        ></textarea>
+        <p class="elv-text-xs elv-text-nonessential" style="margin-top: 8px;">
+          Focus state: 3px light purple outline (#c3bde5) — CRITICAL for accessibility
+        </p>
+      </div>
+
+      <div class="example-container">
+        <p class="elv-text-sm elv-text-subtle" style="margin-bottom: 8px;">
+          Simulated focus state (for reference):
+        </p>
+        <textarea
+          class="elv-textarea focus-demo"
+          value="This demonstrates the focus border style"
+          aria-label="Focus demo"
+        ></textarea>
+      </div>
+    </div>
+    <pre><code>.elv-textarea:focus {
+  outline: 3px solid #c3bde5; /* P40 */
+  outline-offset: 1px;
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Error State</h2>
+    <div class="examples">
+      <div class="example-container">
+        <label class="elv-textarea-label" for="error-example">
+          Message <span class="elv-required">*</span>
+        </label>
+        <textarea
+          id="error-example"
+          class="elv-textarea elv-textarea--error"
+          placeholder="This field has an error..."
+          aria-invalid="true"
+          aria-describedby="error-message-1"
+        ></textarea>
+        <p id="error-message-1" class="elv-textarea-error" role="alert">
+          This field is required and must be at least 10 characters long.
+        </p>
+      </div>
+
+      <div class="example-container">
+        <label class="elv-textarea-label" for="error-example-2">
+          Description
+        </label>
+        <textarea
+          id="error-example-2"
+          class="elv-textarea elv-textarea--error"
+          value="Too short"
+          aria-invalid="true"
+          aria-describedby="error-message-2"
+        ></textarea>
+        <p id="error-message-2" class="elv-textarea-error" role="alert">
+          Description must be at least 50 characters.
+        </p>
+      </div>
+    </div>
+    <pre><code>&lt;textarea
+  class="elv-textarea elv-textarea--error"
+  aria-invalid="true"
+  aria-describedby="error-message"
+&gt;&lt;/textarea&gt;
+&lt;p id="error-message" class="elv-textarea-error" role="alert"&gt;
+  Error message text
+&lt;/p&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Disabled State</h2>
+    <div class="examples">
+      <div class="example-container">
+        <label class="elv-textarea-label" for="disabled-example">
+          Comments
+        </label>
+        <textarea
+          id="disabled-example"
+          class="elv-textarea"
+          placeholder="Comments are currently disabled..."
+          disabled
+        ></textarea>
+        <p class="elv-textarea-helper">
+          This field is not currently editable.
+        </p>
+      </div>
+
+      <div class="example-container">
+        <label class="elv-textarea-label" for="disabled-example-2">
+          System Message
+        </label>
+        <textarea
+          id="disabled-example-2"
+          class="elv-textarea"
+          disabled
+        >This is read-only content that cannot be edited. The disabled state uses a lighter background and text color to indicate it's not interactive.</textarea>
+      </div>
+    </div>
+    <pre><code>&lt;textarea class="elv-textarea" disabled&gt;&lt;/textarea&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Resizable Demo</h2>
+    <div class="examples">
+      <div class="example-container">
+        <div class="resize-demo-wrapper">
+          <label class="elv-textarea-label" for="resizable">
+            Resizable Textarea
+          </label>
+          <textarea
+            id="resizable"
+            class="elv-textarea"
+            placeholder="Grab the bottom-right corner and drag to resize vertically..."
+            style="min-height: 100px;"
+          ></textarea>
+          <p class="resize-instruction">
+            ↕️ Drag the bottom-right corner to resize vertically (horizontal resize is disabled)
+          </p>
+        </div>
+      </div>
+
+      <div class="example-container">
+        <label class="elv-textarea-label" for="tall-textarea">
+          Taller Textarea (min-height: 200px)
+        </label>
+        <textarea
+          id="tall-textarea"
+          class="elv-textarea"
+          placeholder="This textarea has a larger minimum height..."
+          style="min-height: 200px;"
+        ></textarea>
+        <p class="elv-textarea-helper">
+          Custom min-height can be set via inline styles or custom classes.
+        </p>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Default (min-height: 80px) --&gt;
+&lt;textarea class="elv-textarea"&gt;&lt;/textarea&gt;
+
+&lt;!-- Custom height --&gt;
+&lt;textarea class="elv-textarea" style="min-height: 200px;"&gt;&lt;/textarea&gt;
+
+/* CSS */
+.elv-textarea {
+  resize: vertical; /* Only vertical resize */
+  min-height: 80px; /* Default minimum */
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Complete Form Example</h2>
+    <div class="examples">
+      <div class="example-container">
+        <form>
+          <div class="form-field">
+            <label class="elv-textarea-label" for="support-subject">
+              Subject <span class="elv-required">*</span>
+            </label>
+            <input
+              type="text"
+              id="support-subject"
+              placeholder="Brief description of your issue"
+              required
+              style="width: 100%; height: 40px; padding: 0 12px; background: #f2f2f3; border: 1px solid #dfdfe2; border-radius: 8px; font-size: 16px; font-family: var(--font-sans); color: #201f23;"
+            />
+          </div>
+
+          <div class="form-field">
+            <label class="elv-textarea-label" for="support-message">
+              Message <span class="elv-required">*</span>
+            </label>
+            <div class="elv-textarea-wrapper">
+              <textarea
+                id="support-message"
+                class="elv-textarea"
+                placeholder="Describe your issue in detail..."
+                required
+                aria-required="true"
+                maxlength="2000"
+                oninput="updateCount(this)"
+                style="min-height: 150px;"
+              ></textarea>
+              <span class="elv-char-count">0 / 2000</span>
+            </div>
+            <p class="elv-textarea-helper">
+              Please provide as much detail as possible. Maximum 2000 characters.
+            </p>
+          </div>
+
+          <div class="form-field">
+            <label class="elv-textarea-label" for="support-notes">
+              Additional Information <span class="elv-textarea-optional">(optional)</span>
+            </label>
+            <textarea
+              id="support-notes"
+              class="elv-textarea"
+              placeholder="Any other details that might help..."
+            ></textarea>
+          </div>
+
+          <button type="submit" style="background: #5746b2; color: white; padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+            Submit Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Code Snippets</h2>
+
+    <h3 style="font-size: 14px; font-weight: 600; margin-top: 1rem;">Basic Textarea</h3>
+    <pre><code>&lt;textarea
+  class="elv-textarea"
+  placeholder="Enter text..."
+  aria-label="Description"
+&gt;&lt;/textarea&gt;</code></pre>
+
+    <h3 style="font-size: 14px; font-weight: 600; margin-top: 1rem;">With Label (Required)</h3>
+    <pre><code>&lt;label class="elv-textarea-label" for="message"&gt;
+  Message &lt;span class="elv-required"&gt;*&lt;/span&gt;
+&lt;/label&gt;
+&lt;textarea
+  id="message"
+  class="elv-textarea"
+  required
+  aria-required="true"
+&gt;&lt;/textarea&gt;</code></pre>
+
+    <h3 style="font-size: 14px; font-weight: 600; margin-top: 1rem;">With Character Count</h3>
+    <pre><code>&lt;div class="elv-textarea-wrapper"&gt;
+  &lt;textarea
+    class="elv-textarea"
+    maxlength="500"
+    oninput="updateCount(this)"
+  &gt;&lt;/textarea&gt;
+  &lt;span class="elv-char-count"&gt;0 / 500&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3 style="font-size: 14px; font-weight: 600; margin-top: 1rem;">Error State</h3>
+    <pre><code>&lt;textarea
+  class="elv-textarea elv-textarea--error"
+  aria-invalid="true"
+  aria-describedby="error-id"
+&gt;&lt;/textarea&gt;
+&lt;p id="error-id" class="elv-textarea-error" role="alert"&gt;
+  Error message
+&lt;/p&gt;</code></pre>
+
+    <h3 style="font-size: 14px; font-weight: 600; margin-top: 1rem;">Custom Height</h3>
+    <pre><code>&lt;textarea
+  class="elv-textarea"
+  style="min-height: 200px;"
+&gt;&lt;/textarea&gt;</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Labels:</strong> Always pair with a visible label using <code>&lt;label for="id"&gt;</code></li>
+      <li class="elv-mb-2"><strong>ARIA Labels:</strong> Include <code>aria-label</code> when no visible label exists</li>
+      <li class="elv-mb-2"><strong>Required Fields:</strong> Use <code>required</code> attribute and <code>aria-required="true"</code></li>
+      <li class="elv-mb-2"><strong>Error States:</strong> Use <code>aria-invalid="true"</code> and <code>aria-describedby</code> to link error messages</li>
+      <li class="elv-mb-2"><strong>Error Messages:</strong> Include <code>role="alert"</code> on error text for screen readers</li>
+      <li class="elv-mb-2"><strong>Focus State:</strong> 3px light purple outline (#c3bde5) with 1px offset — CRITICAL for accessibility</li>
+      <li class="elv-mb-2"><strong>Keyboard:</strong> Tab to navigate, Shift+Tab to go back</li>
+      <li class="elv-mb-2"><strong>Resize:</strong> Vertical only (accessible to keyboard users via browser controls)</li>
+      <li class="elv-mb-2"><strong>Character Count:</strong> Use <code>maxlength</code> to enforce limits, counter is visual only</li>
+      <li class="elv-mb-2"><strong>Placeholder:</strong> Never use placeholder as the only label (accessibility issue)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs (DESIGN.md)</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Background</strong></td>
+        <td style="padding: 8px;">#fafafa (N5)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">0.5px solid #b0afb6 (border-medium N40)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">8px (radius-sm)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Min Height</strong></td>
+        <td style="padding: 8px;">sm: 52px, md: 64px, lg: 64px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Padding</strong></td>
+        <td style="padding: 8px;">12px (all sides)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Font</strong></td>
+        <td style="padding: 8px;">16px / 400 / 24px line-height (Body)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Font Family</strong></td>
+        <td style="padding: 8px;">Figtree (var(--font-sans))</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Placeholder</strong></td>
+        <td style="padding: 8px;">#6f6d78 (text-nonessential)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Resize</strong></td>
+        <td style="padding: 8px;">vertical only (no horizontal)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Focus State</strong></td>
+        <td style="padding: 8px;">3px solid #c3bde5 outline (P40), 1px offset</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Error State</strong></td>
+        <td style="padding: 8px;">2px border #eb2000 (R120), padding 11px</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Error Message</strong></td>
+        <td style="padding: 8px;">12px / 600, #b21800 (R140)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Disabled</strong></td>
+        <td style="padding: 8px;">Background #fcfcfd (N1), text #b0afb6 (N40), no resize</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Label</strong></td>
+        <td style="padding: 8px;">14px / 600, #201f23 (text-default)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Helper Text</strong></td>
+        <td style="padding: 8px;">12px / 400, #6f6d78 (text-nonessential)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Character Count</strong></td>
+        <td style="padding: 8px;">12px, #6f6d78, positioned bottom-right</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>When to Use:</strong> For multi-line text input such as comments, descriptions, messages, or feedback</li>
+      <li class="elv-mb-2"><strong>Labels:</strong> Always include a visible label above the textarea</li>
+      <li class="elv-mb-2"><strong>Helper Text:</strong> Provide guidance on what to enter or format requirements</li>
+      <li class="elv-mb-2"><strong>Character Limits:</strong> Use character count for fields with length limits (e.g., reviews, bios)</li>
+      <li class="elv-mb-2"><strong>Height:</strong> Default min-height (80px) works for most cases; increase for longer content</li>
+      <li class="elv-mb-2"><strong>Resize:</strong> Vertical resize allows users to adjust height as needed</li>
+      <li class="elv-mb-2"><strong>Required Fields:</strong> Mark with red asterisk (*) and include in label</li>
+      <li class="elv-mb-2"><strong>Error Validation:</strong> Show errors below the field with specific, actionable messages</li>
+      <li class="elv-mb-2"><strong>Disabled State:</strong> Use sparingly, only when field truly cannot be edited</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+  // Character count update function
+  function updateCount(textarea) {
+    const count = textarea.value.length;
+    const max = textarea.maxLength;
+    const counter = textarea.nextElementSibling;
+    if (counter && counter.classList.contains('elv-char-count')) {
+      counter.textContent = `${count} / ${max}`;
+    }
+  }
+
+  // Initialize all textareas with character count
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.elv-textarea-wrapper textarea[maxlength]').forEach(textarea => {
+      updateCount(textarea);
+    });
+  });
+</script>
+
+</body>
+</html>

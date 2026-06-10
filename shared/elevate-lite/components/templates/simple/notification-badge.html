@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Badge Component</title>
+  <link rel="stylesheet" href="../../../tokens/elevate.css">
+  <link rel="stylesheet" href="../../elevate.css">
+  <style>
+    body {
+      font-family: var(--font-sans);
+      padding: 2rem;
+      background: var(--bg-neutral-5);
+    }
+    .section {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    h1 { margin: 0 0 0.5rem 0; }
+    h2 { margin: 1.5rem 0 0.75rem 0; font-size: var(--text-lg); }
+    .examples { display: flex; flex-direction: column; gap: 1.5rem; margin: 1rem 0; }
+    .example-row { display: flex; align-items: center; gap: 1rem; }
+    pre {
+      background: var(--bg-neutral-10);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    /* Notification Badge Styles — from notification_badge/component.rb */
+    .elv-notification-badge {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px;
+      border-radius: 16px;
+      border: 1px solid var(--border-inverted);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    /* Priority variants */
+    .elv-notification-badge--top {
+      background: var(--bg-brand); /* bg-brand */
+      color: var(--bg-neutral-0); /* text-inverted */
+    }
+
+    .elv-notification-badge--mid {
+      background: var(--text-primary); /* bg-primary */
+      color: var(--bg-neutral-0); /* text-inverted */
+    }
+
+    .elv-notification-badge--low {
+      color: var(--text-subtle); /* text-subtle */
+    }
+
+    /* Display modes: with/without number */
+    .elv-notification-badge--with-count {
+      min-width: 16px;
+      height: 16px;
+      width: fit-content;
+      padding: 4px;
+    }
+
+    .elv-notification-badge--dot {
+      width: 4px;
+      height: 4px;
+      padding: 0;
+    }
+
+    /* Low priority with count has special background */
+    .elv-notification-badge--low.elv-notification-badge--with-count {
+      background: rgba(87, 70, 178, 0.2); /* bg-primary-20 */
+      border: 1px solid rgba(87, 70, 178, 0.6); /* border-primary-60 */
+    }
+
+    /* Low priority dot has different background */
+    .elv-notification-badge--low.elv-notification-badge--dot {
+      background: rgba(87, 70, 178, 0.6); /* bg-primary-60 */
+    }
+
+    /* Context examples styles */
+    .nav-icon {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      background: var(--bg-neutral-0);
+      cursor: pointer;
+    }
+
+    .nav-icon:hover {
+      background: var(--bg-neutral-5);
+    }
+
+    .nav-icon .elv-notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      background: var(--bg-neutral-0);
+    }
+
+    .list-item-content {
+      flex: 1;
+    }
+
+    .list-item-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-default);
+    }
+
+    .list-item-desc {
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<div elv>
+  <h1 class="elv-text-3xl elv-font-bold elv-text-default">Notification Badge</h1>
+  <p class="elv-text-sm elv-text-subtle">
+    Reference: <a href="https://www.g2.test/elevate/lookbook/inspect/elevate/notification_badge/default" class="elv-text-link">Elevate Lookbook</a> |
+    Component: notification_badge/component.rb
+  </p>
+
+  <!-- Priority Levels -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Priority Levels</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      3 priority levels: top (brand red), mid (primary purple), low (subtle)
+    </p>
+    <div class="examples">
+      <div class="example-row">
+        <span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count">3</span>
+        <span class="elv-text-sm elv-text-default">Top Priority (Brand Red) — urgent notifications</span>
+      </div>
+      <div class="example-row">
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">5</span>
+        <span class="elv-text-sm elv-text-default">Mid Priority (Primary Purple) — important updates</span>
+      </div>
+      <div class="example-row">
+        <span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--with-count">12</span>
+        <span class="elv-text-sm elv-text-default">Low Priority (Subtle) — informational counts</span>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Top priority --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count"&gt;3&lt;/span&gt;
+
+&lt;!-- Mid priority --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count"&gt;5&lt;/span&gt;
+
+&lt;!-- Low priority --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--with-count"&gt;12&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- Display Modes -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Display Modes</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      2 display modes: with count (number badge) or dot indicator (presence only)
+    </p>
+    <div class="examples">
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-3">With Count</p>
+        <div class="example-row">
+          <span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count">8</span>
+          <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">23</span>
+          <span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--with-count">99+</span>
+        </div>
+      </div>
+      <div>
+        <p class="elv-text-xs elv-text-subtle elv-mb-3">Dot Indicator (No Count)</p>
+        <div class="example-row">
+          <span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--dot"></span>
+          <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--dot"></span>
+          <span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--dot"></span>
+        </div>
+      </div>
+    </div>
+    <pre><code>&lt;!-- With count --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count"&gt;8&lt;/span&gt;
+
+&lt;!-- Dot indicator --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--dot"&gt;&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- Number Handling -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Number Handling</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Common patterns for displaying notification counts
+    </p>
+    <div class="examples">
+      <div class="example-row">
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">1</span>
+        <span class="elv-text-sm elv-text-default">Single digit</span>
+      </div>
+      <div class="example-row">
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">42</span>
+        <span class="elv-text-sm elv-text-default">Double digit</span>
+      </div>
+      <div class="example-row">
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">99+</span>
+        <span class="elv-text-sm elv-text-default">Capped at 99+ for large counts</span>
+      </div>
+    </div>
+    <pre><code>&lt;!-- Show exact count under 100 --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count"&gt;42&lt;/span&gt;
+
+&lt;!-- Cap at 99+ for large numbers --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count"&gt;99+&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- In Context: Navigation -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: Navigation Icons</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Notification badges on navigation elements
+    </p>
+    <div class="example-row elv-mb-4">
+      <div class="nav-icon">
+        <span class="elv-text-xl">🔔</span>
+        <span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count">3</span>
+      </div>
+      <div class="nav-icon">
+        <span class="elv-text-xl">💬</span>
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">12</span>
+      </div>
+      <div class="nav-icon">
+        <span class="elv-text-xl">📧</span>
+        <span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--dot"></span>
+      </div>
+      <div class="nav-icon">
+        <span class="elv-text-xl">🛒</span>
+        <span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--with-count">2</span>
+      </div>
+    </div>
+    <pre><code>&lt;div class="nav-icon"&gt;
+  &lt;span&gt;🔔&lt;/span&gt;
+  &lt;span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count"&gt;3&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+  <!-- In Context: List Items -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: List Items</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Badges indicating unread or new items
+    </p>
+    <div class="examples">
+      <div class="list-item">
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--dot"></span>
+        <div class="list-item-content">
+          <div class="list-item-title">New message from Sarah Chen</div>
+          <div class="list-item-desc">2 minutes ago</div>
+        </div>
+      </div>
+      <div class="list-item">
+        <span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--with-count">4</span>
+        <div class="list-item-content">
+          <div class="list-item-title">Product Team Discussion</div>
+          <div class="list-item-desc">4 unread messages</div>
+        </div>
+      </div>
+      <div class="list-item">
+        <span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--dot"></span>
+        <div class="list-item-content">
+          <div class="list-item-title">Action Required: Review approval needed</div>
+          <div class="list-item-desc">1 hour ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In Context: Tabs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">In Context: Tabs with Notifications</h2>
+    <p class="elv-text-sm elv-text-subtle elv-mb-4">
+      Badge indicators on tab navigation
+    </p>
+    <div class="elv-flex elv-gap-4 elv-border-b elv-border-light elv-pb-2">
+      <div class="elv-flex elv-items-center elv-gap-2 elv-px-3 elv-py-2 elv-text-sm elv-font-semibold elv-text-default" style="border-bottom: 2px solid #5746b2;">
+        <span>Inbox</span>
+        <span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count">8</span>
+      </div>
+      <div class="elv-flex elv-items-center elv-gap-2 elv-px-3 elv-py-2 elv-text-sm elv-text-subtle">
+        <span>Archive</span>
+      </div>
+      <div class="elv-flex elv-items-center elv-gap-2 elv-px-3 elv-py-2 elv-text-sm elv-text-subtle">
+        <span>Drafts</span>
+        <span class="elv-notification-badge elv-notification-badge--low elv-notification-badge--with-count">3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Guidelines -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Usage Guidelines</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>Priority Selection:</strong> Top (red) for urgent/action-required, mid (purple) for important updates, low for informational counts</li>
+      <li class="elv-mb-2"><strong>Count vs. Dot:</strong> Use counts when specific number matters (messages, items), dots when presence is enough (new/unread indicator)</li>
+      <li class="elv-mb-2"><strong>Number Capping:</strong> Display "99+" for counts over 99 to maintain badge size and readability</li>
+      <li class="elv-mb-2"><strong>Positioning:</strong> Typically positioned in top-right corner of parent element using absolute positioning</li>
+      <li class="elv-mb-2"><strong>Clear on Action:</strong> Remove or update badge when user views/addresses the notification</li>
+      <li class="elv-mb-2"><strong>Don't Overuse:</strong> Too many badges reduces their effectiveness — reserve for genuinely important updates</li>
+    </ul>
+  </div>
+
+  <!-- Accessibility -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Accessibility Notes</h2>
+    <ul class="elv-text-sm elv-text-default">
+      <li class="elv-mb-2"><strong>ARIA Label:</strong> Add <code>aria-label</code> describing the notification (e.g., "3 unread messages")</li>
+      <li class="elv-mb-2"><strong>Live Region:</strong> When count updates, use <code>aria-live="polite"</code> to announce changes to screen readers</li>
+      <li class="elv-mb-2"><strong>Visible Text:</strong> Count numbers are visible and readable, no additional description needed for sighted users</li>
+      <li class="elv-mb-2"><strong>Color Alone:</strong> Don't rely solely on red/purple/subtle colors — ensure context provides meaning (position, accompanying text)</li>
+      <li class="elv-mb-2"><strong>Focus Management:</strong> When badge indicates actionable items, ensure clicking parent element moves focus appropriately</li>
+    </ul>
+    <pre><code>&lt;!-- With ARIA label --&gt;
+&lt;div class="nav-icon" aria-label="Notifications"&gt;
+  &lt;span&gt;🔔&lt;/span&gt;
+  &lt;span class="elv-notification-badge elv-notification-badge--top elv-notification-badge--with-count"
+        aria-label="3 unread notifications"&gt;3&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- With live region for updates --&gt;
+&lt;span class="elv-notification-badge elv-notification-badge--mid elv-notification-badge--with-count"
+      aria-live="polite" aria-atomic="true"&gt;5&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- Design System Specs -->
+  <div class="section">
+    <h2 class="elv-font-semibold elv-text-default">Design System Specs</h2>
+    <table class="elv-text-sm elv-text-default" style="width: 100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Priority Levels</strong></td>
+        <td style="padding: 8px;">Top (brand), Mid (primary), Low (subtle)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Top Priority</strong></td>
+        <td style="padding: 8px;">#ff492c background, white text</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Mid Priority</strong></td>
+        <td style="padding: 8px;">#5746b2 background, white text</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Low Priority (Count)</strong></td>
+        <td style="padding: 8px;">rgba(87,70,178,0.2) bg, rgba(87,70,178,0.6) border, subtle text</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Low Priority (Dot)</strong></td>
+        <td style="padding: 8px;">rgba(87,70,178,0.6) background</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>With Count Size</strong></td>
+        <td style="padding: 8px;">Min 16px × 16px, width fits content, 4px padding</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Dot Size</strong></td>
+        <td style="padding: 8px;">4px × 4px, no padding</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Border Radius</strong></td>
+        <td style="padding: 8px;">16px (rounded-2xl)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-light);">
+        <td style="padding: 8px;"><strong>Typography</strong></td>
+        <td style="padding: 8px;">12px, 600 weight, 1.0 line-height</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px;"><strong>Border</strong></td>
+        <td style="padding: 8px;">1px border-inverted (provides contrast on all backgrounds)</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>
