@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../schema/project.schema.json",
+  "title": "MyG2 Experience",
+  "date": "2026-06-11",
+  "description": "Self-serve event review campaign builder for myG2. Campaign list, multi-step builder (products, login, incentive, branding, review & publish), and detail view with status-aware actions.",
+  "icon": "sparkle",
+  "iconBg": "#EDE9FE",
+  "iconFg": "#5746B2",
+  "build": "vite"
+}

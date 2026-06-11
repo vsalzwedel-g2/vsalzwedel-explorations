@@ -1,0 +1,353 @@
+/* ============================================================
+   Elevate (G2) design tokens, mapped onto shadcn's semantic var
+   names so the existing component library auto-restyles.
+
+   Source of truth: https://github.com/vsalzwedel-g2/elevate-lite
+   - tokens/elevate.css  (raw palette, type scale, spacing, radius)
+   - design-system/DESIGN.md  (semantic rules)
+
+   Mapping strategy:
+     shadcn --primary           -> Elevate Purple P100 #5746b2 (default brand CTA)
+     shadcn --destructive       -> Elevate Rorange R120 #eb2000 (destructive only)
+     shadcn --secondary/muted   -> Elevate Neutral scale
+     shadcn --border            -> Elevate border-light #dfdfe2
+     shadcn --accent            -> Elevate Purple P10 #f2f0f9 (hover surfaces)
+
+   Elevate's brand-forward orange (Rorange #ff492c) is exposed as a
+   custom token --brand so App-level CTAs can opt in explicitly.
+   ============================================================ */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+
+  /* ----------------------------------------------------------
+     RAW PALETTE (Elevate)
+     ---------------------------------------------------------- */
+
+  /* Purple (primary) */
+  --palette-purple-5:   #f5f4fb;
+  --palette-purple-10:  #f2f0f9;
+  --palette-purple-20:  #ebe9f6;
+  --palette-purple-30:  #dedaf1;
+  --palette-purple-40:  #c3bde5;
+  --palette-purple-60:  #988ed2;
+  --palette-purple-80:  #7769c4;
+  --palette-purple-100: #5746b2;
+  --palette-purple-120: #45388f;
+  --palette-purple-140: #342a6a;
+  --palette-purple-160: #211b46;
+  --palette-purple-180: #15112c;
+
+  /* Rorange (brand) */
+  --palette-rorange-20:  #fff6f5;
+  --palette-rorange-40:  #ffd7d1;
+  --palette-rorange-60:  #ffa394;
+  --palette-rorange-80:  #ff7761;
+  --palette-rorange-100: #ff492c;
+  --palette-rorange-120: #eb2000;
+  --palette-rorange-140: #b21800;
+  --palette-rorange-160: #610d00;
+
+  /* Neutral */
+  --palette-neutral-0:   #ffffff;
+  --palette-neutral-1:   #fcfcfd;
+  --palette-neutral-5:   #fafafa;
+  --palette-neutral-10:  #f2f2f3;
+  --palette-neutral-20:  #dfdfe2;
+  --palette-neutral-30:  #cacace;
+  --palette-neutral-40:  #b0afb6;
+  --palette-neutral-70:  #6f6d78;
+  --palette-neutral-80:  #4c4b53;
+  --palette-neutral-100: #201f23;
+
+  /* Blue (info) */
+  --palette-blue-20:  #dbecff;
+  --palette-blue-100: #0073f5;
+  --palette-blue-120: #005bc2;
+  --palette-blue-160: #002b5c;
+
+  /* Green (success) */
+  --palette-green-20:  #d0f6f1;
+  --palette-green-100: #27d3bc;
+  --palette-green-120: #1fa896;
+  --palette-green-160: #0f5249;
+
+  /* Yellow (warning) */
+  --palette-yellow-20:  #fff9e5;
+  --palette-yellow-100: #ffc800;
+  --palette-yellow-160: #665000;
+
+  /* ----------------------------------------------------------
+     SHADCN SEMANTIC VARS -> ELEVATE VALUES
+     These names cannot change (47 ui/* components depend on them).
+     ---------------------------------------------------------- */
+
+  --background:            var(--palette-neutral-1);   /* page bg #fcfcfd */
+  --foreground:            var(--palette-neutral-100); /* body text #201f23 */
+
+  --card:                  var(--palette-neutral-0);
+  --card-foreground:       var(--palette-neutral-100);
+
+  --popover:               var(--palette-neutral-0);
+  --popover-foreground:    var(--palette-neutral-100);
+
+  /* PRIMARY = Elevate Purple (default CTA per DESIGN.md) */
+  --primary:               var(--palette-purple-100);
+  --primary-foreground:    var(--palette-neutral-0);
+
+  --secondary:             var(--palette-neutral-10);
+  --secondary-foreground:  var(--palette-neutral-100);
+
+  --muted:                 var(--palette-neutral-10);
+  --muted-foreground:      var(--palette-neutral-70);
+
+  --accent:                var(--palette-purple-10);
+  --accent-foreground:     var(--palette-purple-100);
+
+  /* DESTRUCTIVE = Elevate Rorange 120 (per DESIGN.md rule) */
+  --destructive:           var(--palette-rorange-120);
+  --destructive-foreground: var(--palette-neutral-0);
+
+  --border:                var(--palette-neutral-20);   /* border-light */
+  --input:                 transparent;
+  --input-background:      var(--palette-neutral-10);
+  --switch-background:     var(--palette-neutral-30);
+
+  --font-weight-medium:    500;
+  --font-weight-normal:    400;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+
+  --ring:                  var(--palette-purple-40); /* focus ring */
+
+  /* Data viz tokens (Elevate data-* palette) */
+  --chart-1: var(--palette-purple-100);
+  --chart-2: var(--palette-green-120);
+  --chart-3: var(--palette-blue-100);
+  --chart-4: var(--palette-rorange-100);
+  --chart-5: var(--palette-yellow-100);
+
+  /* radius-md per DESIGN.md (0.75rem = 12px) */
+  --radius: 0.75rem;
+
+  /* Sidebar (used by sidebar.tsx) */
+  --sidebar:                       var(--palette-neutral-0);
+  --sidebar-foreground:            var(--palette-neutral-100);
+  --sidebar-primary:               var(--palette-purple-100);
+  --sidebar-primary-foreground:    var(--palette-neutral-0);
+  --sidebar-accent:                var(--palette-purple-10);
+  --sidebar-accent-foreground:     var(--palette-purple-100);
+  --sidebar-border:                var(--palette-neutral-20);
+  --sidebar-ring:                  var(--palette-purple-40);
+
+  /* ----------------------------------------------------------
+     ELEVATE-SPECIFIC TOKENS
+     Exposed for App-level use of brand-forward Rorange,
+     surface hierarchy, and trust-layer signals.
+     ---------------------------------------------------------- */
+
+  --brand:                 var(--palette-rorange-100);
+  --brand-hover:           var(--palette-rorange-120);
+  --brand-foreground:      var(--palette-neutral-0);
+
+  --bg-hero:               #fcf6f4;
+  --bg-neutral-0:          var(--palette-neutral-0);
+  --bg-neutral-1:          var(--palette-neutral-1);
+  --bg-neutral-5:          var(--palette-neutral-5);
+  --bg-neutral-10:         var(--palette-neutral-10);
+
+  --text-default:          var(--palette-neutral-100);
+  --text-subtle:           var(--palette-neutral-80);
+  --text-nonessential:     var(--palette-neutral-70);
+  --text-brand:            var(--palette-rorange-100);
+  --text-primary:          var(--palette-purple-100);
+  --text-link:             var(--palette-blue-100);
+
+  --border-light:          var(--palette-neutral-20);
+  --border-medium:         var(--palette-neutral-40);
+
+  /* Surface shadows (DESIGN.md: never >12% opacity) */
+  --shadow-floating: 0 4px 16px 0 rgba(32, 31, 35, 0.10);
+  --shadow-modal:    0 8px 32px 0 rgba(32, 31, 35, 0.12);
+}
+
+.dark {
+  /* Dark mode kept minimal — prototype is light-only per Elevate guidance,
+     but keep tokens defined so shadcn components don't break if .dark is set. */
+  --background:            var(--palette-neutral-100);
+  --foreground:            var(--palette-neutral-0);
+  --card:                  var(--palette-neutral-100);
+  --card-foreground:       var(--palette-neutral-0);
+  --popover:               var(--palette-neutral-100);
+  --popover-foreground:    var(--palette-neutral-0);
+  --primary:               var(--palette-purple-60);
+  --primary-foreground:    var(--palette-neutral-0);
+  --secondary:             var(--palette-neutral-80);
+  --secondary-foreground:  var(--palette-neutral-0);
+  --muted:                 var(--palette-neutral-80);
+  --muted-foreground:      var(--palette-neutral-30);
+  --accent:                var(--palette-purple-160);
+  --accent-foreground:     var(--palette-purple-40);
+  --destructive:           var(--palette-rorange-100);
+  --destructive-foreground: var(--palette-neutral-0);
+  --border:                var(--palette-neutral-80);
+  --input:                 var(--palette-neutral-80);
+  --ring:                  var(--palette-purple-60);
+}
+
+@theme inline {
+  /* Map Tailwind v4 color tokens to our CSS vars so bg-primary etc. resolve. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Elevate-named utility colors (lets us write text-brand, bg-brand etc.) */
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-foreground: var(--brand-foreground);
+
+  /* Elevate neutral surface ramp */
+  --color-bg-hero: var(--bg-hero);
+  --color-neutral-0: var(--palette-neutral-0);
+  --color-neutral-1: var(--palette-neutral-1);
+  --color-neutral-5: var(--palette-neutral-5);
+  --color-neutral-10: var(--palette-neutral-10);
+  --color-neutral-20: var(--palette-neutral-20);
+  --color-neutral-40: var(--palette-neutral-40);
+  --color-neutral-70: var(--palette-neutral-70);
+  --color-neutral-80: var(--palette-neutral-80);
+  --color-neutral-100: var(--palette-neutral-100);
+
+  /* Elevate semantic text colors */
+  --color-text-default: var(--text-default);
+  --color-text-subtle: var(--text-subtle);
+  --color-text-nonessential: var(--text-nonessential);
+  --color-text-brand: var(--text-brand);
+  --color-text-primary: var(--text-primary);
+  --color-text-link: var(--text-link);
+
+  /* Elevate trust-color tints for chips/badges */
+  --color-success-20: var(--palette-green-20);
+  --color-success-120: var(--palette-green-120);
+  --color-success-160: var(--palette-green-160);
+  --color-warning-20: var(--palette-yellow-20);
+  --color-warning-160: var(--palette-yellow-160);
+  --color-info-20: var(--palette-blue-20);
+  --color-info-160: var(--palette-blue-160);
+  --color-purple-10: var(--palette-purple-10);
+  --color-purple-20: var(--palette-purple-20);
+  --color-purple-100: var(--palette-purple-100);
+  --color-purple-120: var(--palette-purple-120);
+
+  /* Elevate sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius (Elevate scale per DESIGN.md) */
+  --radius-2xs: 0.125rem;  /* 2px */
+  --radius-xs:  0.25rem;   /* 4px */
+  --radius-sm:  0.5rem;    /* 8px */
+  --radius-md:  0.75rem;   /* 12px */
+  --radius-lg:  1rem;      /* 16px */
+  --radius-xl:  1.25rem;   /* 20px */
+
+  /* Elevate pill radii — most Elevate buttons use radius-pill-md = 24px */
+  --radius-pill-3xs: 0.5rem;
+  --radius-pill-2xs: 0.75rem;
+  --radius-pill-xs:  1rem;
+  --radius-pill-sm:  1.25rem;
+  --radius-pill-md:  1.5rem;
+  --radius-pill-lg:  3rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Figtree', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html {
+    font-size: var(--font-size);
+    scroll-behavior: smooth; /* DESIGN.md navigation rule */
+  }
+
+  /* Elevate type scale (DESIGN.md):
+     2xl = 38px / 48px / 700 — section headings
+     xl  = 28px / 36px / 700 — sub-section
+     lg  = 21px / 28px / 700 — card titles
+     base = 16px / 24px / 400 — body
+     sm  = 14px / 20px / 600 — labels, buttons
+     xs  = 12px / 16px / 600 — badges, chips */
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.26;
+    letter-spacing: 0;
+  }
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.28;
+  }
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.33;
+  }
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.5;
+  }
+  label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.43;
+  }
+  button {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.43;
+  }
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
