@@ -87,6 +87,8 @@ function controlsAndGrid({ tags, label, items, emptyMessage }) {
     .map(
       (item) => `
       <a href="${esc(item.href)}"
+         target="_blank"
+         rel="noopener noreferrer"
          class="card-link epic-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium hover:elv--translate-y-0-5 elv-relative"
          data-tags="${esc(item.tag ?? "")}"
          data-date="${esc(item.date ?? "")}"
