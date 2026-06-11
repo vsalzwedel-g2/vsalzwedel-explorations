@@ -1,0 +1,24 @@
+epics/self-serve-events/myg2-experience/index.html
+  s_8d63117cb8876f::t_011fbd56ca2658 8-9
+epics/self-serve-events/myg2-experience/project.json
+  s_8d63117cb8876f::t_b9c02a454be8b0 1-5,7-10
+  s_8d63117cb8876f::t_626e3c54c88929 6
+epics/self-serve-events/myg2-experience/vite.config.ts
+  s_8d63117cb8876f::t_3fe12b68fcc2cf 19-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c0b564ca9587223acb998db9db6e38d9aac76658",
+  "prompts": {},
+  "sessions": {
+    "s_8d63117cb8876f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ses_14c36d5f0ffe0Zaal7eSwt0pkr",
+        "model": "unknown"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
