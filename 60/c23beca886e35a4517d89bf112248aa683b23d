@@ -1,0 +1,19 @@
+scripts/lib/render.mjs
+  s_320cbc3de2cc3c::t_23a897adf6d3f3 90-91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "60c23beca886e35a4517d89bf112248aa683b23d",
+  "prompts": {},
+  "sessions": {
+    "s_320cbc3de2cc3c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ses_1480de467ffeK7T30A7cmGhpjl",
+        "model": "unknown"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
