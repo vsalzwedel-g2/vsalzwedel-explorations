@@ -5,7 +5,7 @@ import { esc, iconSvg, formatDate } from "./discover.mjs";
 // `sharedHref` is the relative href prefix to reach /shared/ from the page being rendered.
 // Root index lives at /,            so sharedHref = "./shared/"
 // Epic page  lives at /epics/<slug>/, so sharedHref = "../../shared/"
-function chrome({ title, description, sharedHref, eyebrow, heading, tagline, body, footerLinks }) {
+function chrome({ title, description, sharedHref, eyebrow, heading, tagline, body, footerLinks, backLink, headerCta }) {
   const cacheBust = process.env.GITHUB_SHA?.slice(0, 7) || String(Date.now());
   return `<!DOCTYPE html>
 <html lang="en">
@@ -38,6 +38,21 @@ function chrome({ title, description, sharedHref, eyebrow, heading, tagline, bod
       transform: translateX(3px);
     }
 
+    .back-chip { transition: all 0.15s ease; }
+    .back-chip:hover {
+      background: var(--bg-primary-10);
+      border-color: var(--border-primary);
+      color: var(--text-primary);
+      transform: translateX(-2px);
+    }
+
+    .header-cta { transition: all 0.15s ease; }
+    .header-cta:hover {
+      background: var(--bg-primary-10);
+      border-color: var(--border-primary);
+      color: var(--text-primary);
+    }
+
     @media (min-width: 750px)  { #cardGrid { grid-template-columns: repeat(2, 1fr) !important; } }
     @media (min-width: 1000px) { #cardGrid { grid-template-columns: repeat(3, 1fr) !important; } }
   </style>
@@ -47,6 +62,13 @@ function chrome({ title, description, sharedHref, eyebrow, heading, tagline, bod
     <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
       <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8">
         ${
+          backLink
+            ? `<a href="${esc(backLink.href)}" class="back-chip elv-inline-flex elv-items-center elv-gap-1.5 elv-px-3 elv-py-1.5 elv-rounded-full elv-mb-4 elv-text-xs elv-font-semibold elv-no-underline elv-border elv-border-medium elv-text-default elv-bg-neutral-0" style="transition: all 0.15s ease;">
+              <span aria-hidden="true">&larr;</span> ${esc(backLink.label)}
+            </a>`
+            : ""
+        }
+        ${
           eyebrow
             ? `<div class="elv-inline-flex elv-items-center elv-gap-2 elv-px-3 elv-py-1 elv-rounded-full elv-mb-3" style="background: #EEF2FF;">
               <span class="elv-text-xs elv-font-bold elv-uppercase elv-tracking-wide" style="color: #4F46E5;">${esc(eyebrow)}</span>
@@ -54,7 +76,15 @@ function chrome({ title, description, sharedHref, eyebrow, heading, tagline, bod
             : ""
         }
         <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">${esc(heading)}</h1>
-        <p class="elv-text-base elv-text-subtle elv-max-w-xl elv-leading-relaxed">${esc(tagline)}</p>
+        <p class="elv-text-base elv-text-subtle elv-max-w-xl elv-leading-relaxed elv-mb-5">${esc(tagline)}</p>
+        ${
+          headerCta
+            ? `<a href="${esc(headerCta.href)}" target="_blank" rel="noopener noreferrer" class="header-cta elv-inline-flex elv-items-center elv-gap-2 elv-px-4 elv-py-2 elv-rounded-md elv-text-sm elv-font-semibold elv-no-underline elv-border elv-border-medium elv-text-default elv-bg-neutral-0">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              ${esc(headerCta.label)}
+            </a>`
+            : ""
+        }
       </div>
     </header>
 
@@ -87,8 +117,7 @@ function controlsAndGrid({ tags, label, items, emptyMessage }) {
     .map(
       (item) => `
       <a href="${esc(item.href)}"
-         target="_blank"
-         rel="noopener noreferrer"
+         ${item.newTab ? 'target="_blank" rel="noopener noreferrer"' : ""}
          class="card-link epic-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium hover:elv--translate-y-0-5 elv-relative"
          data-tags="${esc(item.tag ?? "")}"
          data-date="${esc(item.date ?? "")}"
@@ -229,13 +258,16 @@ export function renderRoot({ repoName, eyebrow, tagline, epics, tags }) {
     eyebrow,
     heading: "Explorations",
     tagline,
+    headerCta: {
+      href: `https://github.com/vsalzwedel-g2/${repoName}`,
+      label: "View on GitHub",
+    },
     body: controlsAndGrid({
       tags,
       label: "Epics",
       items,
       emptyMessage: "No epics match your search or filters.",
     }),
-    footerLinks: `<a href="https://github.com/vsalzwedel-g2/${esc(repoName)}" class="elv-text-nonessential hover:elv-text-primary">repository</a>`,
   });
 }
 
@@ -248,6 +280,7 @@ export function renderEpic({ repoName, repoBaseHref, epic }) {
     icon: p.icon,
     iconBg: p.iconBg,
     iconFg: p.iconFg,
+    newTab: true,
   }));
   // Per-epic page has only one implicit tag (the epic's tag), so the chip row
   // collapses to just "All". Keeping the same controls keeps the UX consistent.
@@ -258,12 +291,16 @@ export function renderEpic({ repoName, repoBaseHref, epic }) {
     eyebrow: epic.tagLabel,
     heading: epic.title,
     tagline: epic.description,
+    backLink: { href: repoBaseHref, label: "All explorations" },
+    headerCta: {
+      href: `https://github.com/vsalzwedel-g2/${repoName}/tree/main/epics/${epic.slug}`,
+      label: "View on GitHub",
+    },
     body: controlsAndGrid({
       tags: [],
       label: "Projects",
       items,
       emptyMessage: "No projects in this epic yet.",
     }),
-    footerLinks: `<a href="${esc(repoBaseHref)}" class="elv-text-nonessential hover:elv-text-primary">&larr; All explorations</a>`,
   });
 }
