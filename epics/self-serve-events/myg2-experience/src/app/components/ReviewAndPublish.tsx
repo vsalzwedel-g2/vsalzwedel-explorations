@@ -324,16 +324,6 @@ export function ReviewAndPublish({
           </div>
         </div>
 
-        {/* View Campaign Details Link */}
-        {!isEditMode && onViewDetails && (
-          <button
-            onClick={onViewDetails}
-            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--palette-purple-100)] hover:opacity-80 transition-opacity mt-6"
-          >
-            View campaign details
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        )}
       </div>
     );
   }

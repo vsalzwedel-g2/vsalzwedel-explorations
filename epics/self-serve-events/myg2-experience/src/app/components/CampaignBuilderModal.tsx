@@ -455,18 +455,22 @@ export function CampaignBuilderModal({ isOpen, onClose, onViewDetails, isEditMod
 
         {/* Modal Footer */}
         <div className="border-t border-[var(--palette-neutral-20)] px-8 py-4 flex items-center justify-between flex-shrink-0 bg-[var(--palette-neutral-5)]">
-          <button
-            onClick={handlePrevious}
-            disabled={isFirstStep || isPublished}
-            className={`flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
-              isFirstStep || isPublished
-                ? "text-[var(--palette-neutral-20)] cursor-not-allowed"
-                : "text-[var(--palette-neutral-100)] hover:bg-[var(--palette-neutral-20)]"
-            }`}
-          >
-            <ChevronLeft className="w-4 h-4" />
-            Previous
-          </button>
+          {isPublished ? (
+            <div />
+          ) : (
+            <button
+              onClick={handlePrevious}
+              disabled={isFirstStep}
+              className={`flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
+                isFirstStep
+                  ? "text-[var(--palette-neutral-20)] cursor-not-allowed"
+                  : "text-[var(--palette-neutral-100)] hover:bg-[var(--palette-neutral-20)]"
+              }`}
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </button>
+          )}
 
           <div className="flex gap-3">
             {!isPublished && !isEditMode && (
@@ -479,15 +483,16 @@ export function CampaignBuilderModal({ isOpen, onClose, onViewDetails, isEditMod
             )}
             {isPublished ? (
               <button
-                onClick={onClose}
-                className="px-6 py-2.5 text-sm font-semibold text-white bg-[var(--palette-blue-100)] rounded-lg hover:bg-[var(--palette-blue-120)] transition-colors"
+                onClick={onViewDetails ?? onClose}
+                className="flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-[var(--palette-purple-100)] rounded-lg hover:bg-[var(--palette-purple-120)] transition-colors"
               >
-                Done
+                View campaign details
+                <ChevronRight className="w-4 h-4" />
               </button>
             ) : isLastStep ? (
               <button
                 onClick={handlePublish}
-                className="px-6 py-2.5 text-sm font-semibold text-white bg-[var(--palette-blue-100)] rounded-lg hover:bg-[var(--palette-blue-120)] transition-colors"
+                className="px-6 py-2.5 text-sm font-semibold text-white bg-[var(--palette-purple-100)] rounded-lg hover:bg-[var(--palette-purple-120)] transition-colors"
               >
                 {isEditMode ? "Save Changes" : "Schedule Campaign"}
               </button>
