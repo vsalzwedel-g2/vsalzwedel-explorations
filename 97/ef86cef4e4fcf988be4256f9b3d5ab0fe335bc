@@ -1,0 +1,19 @@
+epics/self-serve-events/myg2-experience/src/app/components/CampaignBuilderModal.tsx
+  s_ca4d98699e79e7::t_156bd52ea5426d 458-473,486-487,489-490,495
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "97ef86cef4e4fcf988be4256f9b3d5ab0fe335bc",
+  "prompts": {},
+  "sessions": {
+    "s_ca4d98699e79e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ses_12e5ed421ffezxYjlIuhKqkbEN",
+        "model": "unknown"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
