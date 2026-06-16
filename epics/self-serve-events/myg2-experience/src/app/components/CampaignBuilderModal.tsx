@@ -368,13 +368,8 @@ export function CampaignBuilderModal({ isOpen, onClose, onViewDetails, isEditMod
         <div className="border-b border-[var(--palette-neutral-20)] px-8 py-6 flex items-center justify-between flex-shrink-0">
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-[var(--palette-neutral-100)]">
-              {isEditMode ? "Edit Campaign" : "Event Review Campaign Builder"}
+              {isEditMode ? "Edit Campaign" : "Self-Serve Event Campaign Builder"}
             </h2>
-            {!isPublished && (
-              <p className="text-sm text-[var(--palette-neutral-70)] mt-1">
-                Step {currentStep + 1} of {steps.length}
-              </p>
-            )}
           </div>
           <button
             onClick={handleClose}

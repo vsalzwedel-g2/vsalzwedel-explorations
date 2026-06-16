@@ -232,9 +232,15 @@ export function Branding({
 
       {/* Hero Image */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-          Hero image <span className="text-[var(--palette-neutral-40)] font-normal">(optional)</span>
+        <label className="block text-sm font-medium text-[var(--palette-neutral-80)]">
+          Hero image
         </label>
+        {!uploadedImage && (
+          <p className="text-xs text-[var(--palette-neutral-70)] mt-0.5 mb-1.5">
+            A default image is shown below — replace it with your own if you'd like.
+          </p>
+        )}
+        {uploadedImage && <div className="mb-1.5" />}
 
         {uploadedImage ? (
           /* Image Preview */
@@ -258,28 +264,39 @@ export function Branding({
             </div>
           </div>
         ) : (
-          /* Upload Button */
-          <label
-            aria-disabled={locked}
-            className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[var(--palette-neutral-20)] rounded-lg transition-all ${
-              locked
-                ? "cursor-not-allowed opacity-50 bg-[var(--palette-neutral-5)]"
-                : "cursor-pointer hover:border-[var(--palette-purple-100)] hover:bg-[var(--palette-purple-10)]"
-            }`}
-          >
-            <div className="flex flex-col items-center justify-center">
-              <Upload className="w-8 h-8 text-[var(--palette-neutral-40)] mb-2" />
-              <p className="text-sm font-medium text-[var(--palette-neutral-80)]">Click to upload image</p>
-              <p className="text-xs text-[var(--palette-neutral-70)] mt-1">PNG, JPG, or GIF (max 5MB)</p>
-            </div>
-            <input
-              type="file"
-              className="hidden"
-              accept="image/*"
-              disabled={locked}
-              onChange={handleImageUpload}
+          /* Default Image Preview */
+          <div className="relative border border-[var(--palette-neutral-20)] rounded-lg overflow-hidden">
+            <img
+              src={
+                incentiveType === "gift-card"
+                  ? defaultGiftCardImage
+                  : incentiveType === "g2-gives"
+                  ? defaultG2GivesImage
+                  : defaultSwagImage
+              }
+              alt="Default hero"
+              className="w-full h-48 object-contain bg-white"
             />
-          </label>
+
+            <label
+              aria-disabled={locked}
+              className={`absolute top-2 right-2 flex items-center gap-1.5 px-3 py-1.5 bg-[var(--palette-purple-100)] rounded-md shadow-sm text-xs font-semibold text-white transition-colors ${
+                locked
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer hover:bg-[var(--palette-purple-120)]"
+              }`}
+            >
+              <Upload className="w-3.5 h-3.5" />
+              Replace image
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                disabled={locked}
+                onChange={handleImageUpload}
+              />
+            </label>
+          </div>
         )}
       </div>
 

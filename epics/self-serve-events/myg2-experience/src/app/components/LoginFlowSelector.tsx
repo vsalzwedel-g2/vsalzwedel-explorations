@@ -85,11 +85,8 @@ export function LoginFlowSelector({ value, onChange, locked = false }: LoginFlow
       {/* Section Header */}
       <div className="mb-4">
         <h3 className="text-base font-semibold text-[var(--palette-neutral-100)]">
-          How should reviewers log in?
+          When should reviewers verify their identity?
         </h3>
-        <p className="text-sm text-[var(--palette-neutral-70)] mt-1">
-          Choose when reviewers verify their identity
-        </p>
       </div>
 
       {/* Radio Cards */}
