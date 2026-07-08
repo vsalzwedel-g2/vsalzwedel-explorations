@@ -96,7 +96,7 @@ export function LoginFlowSelector({ value, onChange, locked = false }: LoginFlow
           selected={selectedFlow === "regular"}
           onSelect={() => handleSelectFlow("regular")}
           title="Regular login"
-          description="Reviewers verify their G2 account before writing their review. Best for campaigns where you want verification completed upfront and all incentive types available."
+          description="Reviewers create or log in to their G2 account before leaving their review. Best for campaigns where you want verification completed upfront and all incentive types available."
           icon={<UserCheck className="w-8 h-8" />}
           disabled={locked}
         />
