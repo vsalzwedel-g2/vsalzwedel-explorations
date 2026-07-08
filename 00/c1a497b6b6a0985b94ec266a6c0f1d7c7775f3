@@ -1,0 +1,19 @@
+epics/self-serve-events/myg2-experience/src/app/components/LoginFlowSelector.tsx
+  s_f10ed9030ffc52::t_cc7ebf26173def 99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "00c1a497b6b6a0985b94ec266a6c0f1d7c7775f3",
+  "prompts": {},
+  "sessions": {
+    "s_f10ed9030ffc52": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69b9fec2-943a-4cb6-8237-2ab365dc9f1b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
