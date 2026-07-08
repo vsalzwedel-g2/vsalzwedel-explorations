@@ -126,8 +126,6 @@ interface IncentiveTypeSelectorProps {
   onBudgetCurrencyChange?: (currency: string) => void;
   budgetAmount?: string;
   onBudgetAmountChange?: (amount: string) => void;
-  targetReviewCount?: number;
-  availableCredit?: number;
 }
 
 export function IncentiveTypeSelector({
@@ -146,8 +144,6 @@ export function IncentiveTypeSelector({
   onBudgetCurrencyChange,
   budgetAmount,
   onBudgetAmountChange,
-  targetReviewCount,
-  availableCredit = 10000,
 }: IncentiveTypeSelectorProps) {
   const [internalSelectedIncentive, setInternalSelectedIncentive] = useState<IncentiveType>(null);
   const [internalGiftCardAmount, setInternalGiftCardAmount] = useState("25");
@@ -231,11 +227,6 @@ export function IncentiveTypeSelector({
       setSwagCheckboxChecked(false);
     }
   };
-
-  const amount = parseFloat(currentGiftCardAmount);
-  const hasReviewCount = typeof targetReviewCount === "number" && targetReviewCount > 0;
-  const hasAmount = !Number.isNaN(amount) && amount > 0;
-  const estimatedSubtotal = hasReviewCount && hasAmount ? targetReviewCount! * amount : null;
 
   return (
     <div>
@@ -409,7 +400,7 @@ export function IncentiveTypeSelector({
                 />
               </div>
               <p className="text-xs text-[var(--palette-neutral-70)] mt-1.5">
-                Sent to reviewer after their submission is verified.
+                Sent to reviewer after their submission is verified and approved.
               </p>
             </div>
 
@@ -438,35 +429,14 @@ export function IncentiveTypeSelector({
                 />
               </div>
               <p className="text-xs text-[var(--palette-neutral-70)] mt-1.5">
-                Leave blank for unlimited. A cap can halt redemptions mid-event.
+                {loginFlow === "delayed" ? (
+                  <>
+                    <span className="font-semibold">Unlimited (recommended).</span> Budget is only used for verified, approved reviews. If you set a cap, set it higher to account for reviewers who may submit a review but complete verification later.
+                  </>
+                ) : (
+                  "Leave blank for unlimited. A cap can halt redemptions mid-event."
+                )}
               </p>
-            </div>
-          </div>
-
-          {/* Campaign Price Estimation */}
-          <div className="mt-5 pt-5 border-t border-[var(--palette-neutral-20)]">
-            <div className="text-xs font-semibold text-[var(--palette-neutral-40)] uppercase tracking-wide mb-2">
-              Estimated campaign cost
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-[var(--palette-neutral-100)]">
-                {estimatedSubtotal !== null ? `$${estimatedSubtotal.toLocaleString()}` : "—"}
-              </span>
-              {estimatedSubtotal !== null && (
-                <span className="text-base font-semibold text-[var(--palette-neutral-70)]">USD</span>
-              )}
-            </div>
-            <p className="text-xs text-[var(--palette-neutral-70)] mt-1">
-              {hasReviewCount && hasAmount
-                ? `Based on ${targetReviewCount!.toLocaleString()} reviews × $${amount.toLocaleString()} per review.`
-                : "Set a review target in Step 1 and per-review amount above to see your estimate."}
-            </p>
-            <div className="mt-3 pt-3 border-t border-[var(--palette-neutral-20)] flex items-center justify-between text-sm">
-              <span className="text-[var(--palette-neutral-70)]">Available credit</span>
-              <span className="font-semibold text-[var(--palette-neutral-100)]">
-                ${availableCredit.toLocaleString()}{" "}
-                <span className="text-xs font-medium text-[var(--palette-neutral-70)]">USD</span>
-              </span>
             </div>
           </div>
 

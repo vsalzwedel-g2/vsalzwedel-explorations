@@ -160,7 +160,6 @@ export function CampaignBuilderModal({ isOpen, onClose, onViewDetails, isEditMod
             onBudgetCurrencyChange={setBudgetCurrency}
             budgetAmount={budgetAmount}
             onBudgetAmountChange={setBudgetAmount}
-            targetReviewCount={targetReviewCount}
           />
         </div>
       ),

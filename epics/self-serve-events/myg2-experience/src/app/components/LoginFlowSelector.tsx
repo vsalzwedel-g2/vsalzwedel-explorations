@@ -96,7 +96,7 @@ export function LoginFlowSelector({ value, onChange, locked = false }: LoginFlow
           selected={selectedFlow === "regular"}
           onSelect={() => handleSelectFlow("regular")}
           title="Regular login"
-          description="Reviewer logs into G2 before writing. All incentive types available."
+          description="Reviewers verify their G2 account before writing their review. Best for campaigns where you want verification completed upfront and all incentive types available."
           icon={<UserCheck className="w-8 h-8" />}
           disabled={locked}
         />
@@ -106,7 +106,7 @@ export function LoginFlowSelector({ value, onChange, locked = false }: LoginFlow
           selected={selectedFlow === "delayed"}
           onSelect={() => handleSelectFlow("delayed")}
           title="Delayed login"
-          description="Reviewers write their review first, then verify with G2 later. Higher completion rates -- no login friction at the moment of review"
+          description="Best for maximizing initial review submissions with less event-day friction. Reviewers verify their G2 account later via email, and only verified, approved reviews count toward your incentive budget."
           icon={<Clock className="w-8 h-8" />}
           disabled={locked}
         />

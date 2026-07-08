@@ -152,7 +152,7 @@ export function CampaignDetails({
             className={`${inputClass} w-40`}
           />
           <p className="text-xs text-[var(--palette-neutral-70)] mt-1.5">
-            Once this number has been reached, new reviews will be directed to a non-incentivized landing page.
+            Your goal for tracking progress on the landing page. It doesn't affect cost — use the budget cap to control spend.
           </p>
         </div>
 
