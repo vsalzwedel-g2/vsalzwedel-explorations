@@ -26,11 +26,12 @@ interface SelectedProductConfig {
 
 interface ProductSelectionProps {
   locked?: boolean;
+  mode?: "single" | "multi";
   initialSelectedProductIds?: string[];
   onSelectedProductsChange?: (productNames: string[], productIds: string[]) => void;
 }
 
-export function ProductSelection({ locked = false, initialSelectedProductIds, onSelectedProductsChange }: ProductSelectionProps = {}) {
+export function ProductSelection({ locked = false, mode = "multi", initialSelectedProductIds, onSelectedProductsChange }: ProductSelectionProps = {}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<SelectedProductConfig[]>(
@@ -49,7 +50,11 @@ export function ProductSelection({ locked = false, initialSelectedProductIds, on
     selectedProducts.some(p => p.id === productId);
 
   const handleToggleProduct = (product: Product) => {
-    if (isProductSelected(product.id)) {
+    if (mode === "single") {
+      // Single-select: clicking the selected product clears it, otherwise replace.
+      setSelectedProducts(prev => (prev.some(p => p.id === product.id) ? [] : [{ id: product.id }]));
+      setIsDropdownOpen(false);
+    } else if (isProductSelected(product.id)) {
       setSelectedProducts(prev => prev.filter(p => p.id !== product.id));
     } else {
       setSelectedProducts(prev => [...prev, { id: product.id }]);
@@ -68,6 +73,12 @@ export function ProductSelection({ locked = false, initialSelectedProductIds, on
   };
 
   const getProductById = (id: string) => MOCK_PRODUCTS.find(p => p.id === id);
+
+  useEffect(() => {
+    if (mode === "single") {
+      setSelectedProducts(prev => (prev.length > 1 ? [prev[0]] : prev));
+    }
+  }, [mode]);
 
   useEffect(() => {
     if (!onSelectedProductsChange) return;

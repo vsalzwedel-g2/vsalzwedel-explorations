@@ -28,10 +28,14 @@ const SAMPLE_CATEGORIES: string[] = [
 const MAX_CATEGORIES = 3;
 const TITLE_MAX = 80;
 
+type CampaignType = "single" | "multi";
+
 interface CampaignDetailsProps {
   locked?: boolean;
   campaignTitle: string;
   onCampaignTitleChange: (value: string) => void;
+  campaignType: CampaignType;
+  onCampaignTypeChange: (type: CampaignType) => void;
   selectedProductIds: string[];
   onSelectedProductsChange: (names: string[], ids: string[]) => void;
   targetReviewCount: number | undefined;
@@ -44,6 +48,8 @@ export function CampaignDetails({
   locked = false,
   campaignTitle,
   onCampaignTitleChange,
+  campaignType,
+  onCampaignTypeChange,
   selectedProductIds,
   onSelectedProductsChange,
   targetReviewCount,
@@ -127,10 +133,48 @@ export function CampaignDetails({
 
         <div>
           <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-            Products <span className="text-[var(--palette-rorange-120)]">*</span>
+            Number of products <span className="text-[var(--palette-rorange-120)]">*</span>
+          </label>
+          <div
+            role="radiogroup"
+            aria-label="Campaign type"
+            className="inline-flex p-1 bg-white border border-[var(--palette-neutral-20)] rounded-lg"
+          >
+            {(
+              [
+                { id: "single", label: "Single" },
+                { id: "multi", label: "Multiple" },
+              ] as { id: CampaignType; label: string }[]
+            ).map((opt) => {
+              const active = campaignType === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  disabled={locked}
+                  onClick={() => onCampaignTypeChange(opt.id)}
+                  className={`px-4 h-8 text-sm font-medium rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                    active
+                      ? "bg-[var(--palette-purple-100)] text-white shadow-sm"
+                      : "text-[var(--palette-neutral-80)] hover:text-[var(--palette-neutral-100)]"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
+            {campaignType === "single" ? "Product" : "Products"} <span className="text-[var(--palette-rorange-120)]">*</span>
           </label>
           <ProductSelection
             locked={locked}
+            mode={campaignType}
             initialSelectedProductIds={selectedProductIds}
             onSelectedProductsChange={onSelectedProductsChange}
           />

@@ -53,6 +53,7 @@ export function CampaignBuilderModal({ isOpen, onClose, onViewDetails, isEditMod
   // Product state
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const [campaignType, setCampaignType] = useState<"single" | "multi">("multi");
   const handleSelectedProductsChange = (names: string[], ids: string[]) => {
     setSelectedProducts(names);
     setSelectedProductIds(ids);
@@ -113,6 +114,8 @@ export function CampaignBuilderModal({ isOpen, onClose, onViewDetails, isEditMod
             locked={isLive}
             campaignTitle={campaignTitle}
             onCampaignTitleChange={setCampaignTitle}
+            campaignType={campaignType}
+            onCampaignTypeChange={setCampaignType}
             selectedProductIds={selectedProductIds}
             onSelectedProductsChange={handleSelectedProductsChange}
             targetReviewCount={targetReviewCount}
