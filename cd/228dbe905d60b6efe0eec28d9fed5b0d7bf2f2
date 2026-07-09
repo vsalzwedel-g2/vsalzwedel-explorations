@@ -1,0 +1,31 @@
+epics/self-serve-events/myg2-experience/src/app/components/ProductSelection.tsx
+  s_f10ed9030ffc52::t_5037bdb6818743 53-57
+  s_f10ed9030ffc52::t_d83b8f44296b65 78-82
+  s_f10ed9030ffc52::t_6471767121ce3e 29,34
+epics/self-serve-events/myg2-experience/src/app/components/CampaignBuilderModal.tsx
+  s_f10ed9030ffc52::t_15337773947529 117-118
+  s_f10ed9030ffc52::t_c3c5bea365713f 56
+epics/self-serve-events/myg2-experience/src/app/components/CampaignDetails.tsx
+  s_f10ed9030ffc52::t_cff917358e27c6 136
+  s_f10ed9030ffc52::t_ab1f0373eeed20 51-52
+  s_f10ed9030ffc52::t_3e9633afd0a3e6 145-146
+  s_f10ed9030ffc52::t_9512936860af7b 138-144,147-167
+  s_f10ed9030ffc52::t_163777d4d216bf 31-32,37-38
+  s_f10ed9030ffc52::t_3c5c06815c1f8a 168-173,177
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "cd228dbe905d60b6efe0eec28d9fed5b0d7bf2f2",
+  "prompts": {},
+  "sessions": {
+    "s_f10ed9030ffc52": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69b9fec2-943a-4cb6-8237-2ab365dc9f1b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
