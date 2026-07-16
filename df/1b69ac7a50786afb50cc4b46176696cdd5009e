@@ -1,0 +1,23 @@
+epics/self-serve-events/myg2-experience/src/app/components/ReviewAndPublish.tsx
+  s_f10ed9030ffc52::t_f59302eebf1258 496-499,501,503
+  s_f10ed9030ffc52::t_b3bfe3c510f205 485
+  s_f10ed9030ffc52::t_b97e4560ec936b 2
+epics/self-serve-events/myg2-experience/src/app/components/Branding.tsx
+  s_f10ed9030ffc52::t_7830aad62b9804 309
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "df1b69ac7a50786afb50cc4b46176696cdd5009e",
+  "prompts": {},
+  "sessions": {
+    "s_f10ed9030ffc52": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "69b9fec2-943a-4cb6-8237-2ab365dc9f1b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Tori Salzwedel <vsalzwedel@g2.com>"
+    }
+  }
+}
