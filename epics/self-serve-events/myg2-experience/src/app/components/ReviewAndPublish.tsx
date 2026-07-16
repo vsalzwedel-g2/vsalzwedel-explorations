@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Monitor, ExternalLink, QrCode, Download, Copy, AlertCircle, CheckCircle2, ArrowRight, X, Clock, CreditCard, FileText, Lock } from "lucide-react";
+import { Monitor, ExternalLink, QrCode, Download, Copy, AlertCircle, CheckCircle2, ArrowRight, X, Clock, Lock } from "lucide-react";
 
 type IncentiveType = "gift-card" | "g2-gives" | "swag" | "non-incentivized" | null;
 type GiftCardDistribution = "per-review" | "per-reviewer";
@@ -335,59 +335,6 @@ export function ReviewAndPublish({
     }
   };
 
-  const perReviewAmount = parseFloat(giftCardAmount);
-  const hasReviewCount = typeof targetReviewCount === "number" && targetReviewCount > 0;
-  const hasPerReviewAmount = !Number.isNaN(perReviewAmount) && perReviewAmount > 0;
-  const estimatedTotal =
-    hasReviewCount && hasPerReviewAmount ? targetReviewCount! * perReviewAmount : null;
-
-  const paymentSummaryLabel =
-    incentiveType === "g2-gives"
-      ? "Estimated donation total"
-      : incentiveType === "gift-card"
-      ? "Estimated campaign cost"
-      : "Estimated campaign total";
-
-  const PaymentMethodCard = ({ method, title, description, icon }: { method: PaymentMethod; title: string; description: string; icon: React.ReactNode }) => {
-    const active = paymentMethod === method;
-    return (
-      <button
-        type="button"
-        onClick={() => handlePaymentMethodSelect(method)}
-        disabled={locked}
-        aria-pressed={active}
-        className={`flex-1 text-left border rounded-[10px] p-4 transition-all ${
-          locked ? "cursor-not-allowed opacity-60" : "cursor-pointer"
-        } ${
-          active
-            ? "border-[2px] border-[var(--palette-purple-100)] bg-[var(--palette-purple-10)]"
-            : "border-[1.5px] border-[var(--palette-neutral-20)] bg-white hover:border-[var(--palette-neutral-40)]"
-        }`}
-      >
-        <div className="flex items-start gap-3">
-          <div
-            className={`w-[18px] h-[18px] rounded-full border-[1.5px] flex items-center justify-center flex-shrink-0 mt-0.5 ${
-              active ? "border-[var(--palette-purple-100)]" : "border-[var(--palette-neutral-20)]"
-            }`}
-          >
-            {active && <div className="w-2.5 h-2.5 rounded-full bg-[var(--palette-purple-100)]" />}
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-[15px] font-semibold text-[var(--palette-neutral-100)]">{title}</span>
-            </div>
-            <p className="text-[13px] font-normal text-[var(--palette-neutral-70)] mt-0.5 leading-relaxed">
-              {description}
-            </p>
-          </div>
-          <div className={`flex-shrink-0 ${active ? "text-[var(--palette-purple-100)]" : "text-[var(--palette-neutral-40)]"}`}>
-            {icon}
-          </div>
-        </div>
-      </button>
-    );
-  };
-
   const inputClass = `w-full h-10 px-3 border border-[var(--palette-neutral-20)] rounded-lg text-sm outline-none transition-all focus:border-[var(--palette-purple-100)] focus:ring-[3px] focus:ring-[rgba(87,70,178,0.15)] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--palette-neutral-5)]`;
 
   // Pre-publish State
@@ -535,55 +482,7 @@ export function ReviewAndPublish({
       {/* Checkout / Payment Method */}
       {mode === "schedule" && incentiveType !== "swag" && incentiveType !== "non-incentivized" && incentiveType !== "g2-gives" && (
         <div className="bg-white border border-[var(--palette-neutral-20)] rounded-xl p-5 mb-5 shadow-sm">
-          <div className="mb-4">
-            <h3 className="text-base font-semibold text-[var(--palette-neutral-100)]">Checkout</h3>
-            <p className="text-[13px] text-[var(--palette-neutral-70)] mt-0.5">
-              Confirm how you'd like to pay for this campaign.
-            </p>
-          </div>
-
-          {/* Campaign Price Estimation - Full Breakdown */}
-          <div className="bg-[var(--palette-neutral-5)] border border-[var(--palette-neutral-20)] rounded-lg p-4 mb-5">
-            <div className="text-xs font-semibold text-[var(--palette-neutral-40)] uppercase tracking-wide mb-3">
-              Campaign price estimation
-            </div>
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-[var(--palette-neutral-70)]">
-                  Review target
-                  <span className="ml-2 text-xs font-normal text-[var(--palette-neutral-40)]">(set in Step 1)</span>
-                </span>
-                <span className="font-semibold text-[var(--palette-neutral-100)]">
-                  {hasReviewCount ? `${targetReviewCount!.toLocaleString()} reviews` : "—"}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-[var(--palette-neutral-70)]">
-                  Per-review amount
-                  <span className="ml-2 text-xs font-normal text-[var(--palette-neutral-40)]">(set in Step 2)</span>
-                </span>
-                <span className="font-semibold text-[var(--palette-neutral-100)]">
-                  {hasPerReviewAmount ? `$${perReviewAmount.toLocaleString()} USD` : "—"}
-                </span>
-              </div>
-              <div className="pt-2.5 border-t border-[var(--palette-neutral-20)] flex items-baseline justify-between">
-                <span className="text-sm font-semibold text-[var(--palette-neutral-100)]">{paymentSummaryLabel}</span>
-                <span className="text-2xl font-bold text-[var(--palette-neutral-100)]">
-                  {estimatedTotal !== null ? `$${estimatedTotal.toLocaleString()}` : "—"}
-                  {estimatedTotal !== null && (
-                    <span className="ml-1 text-sm font-semibold text-[var(--palette-neutral-70)]">USD</span>
-                  )}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-[var(--palette-neutral-70)]">Available credit</span>
-                <span className="font-semibold text-[var(--palette-neutral-100)]">
-                  ${availableCredit.toLocaleString()}{" "}
-                  <span className="text-xs font-medium text-[var(--palette-neutral-70)]">USD</span>
-                </span>
-              </div>
-            </div>
-          </div>
+          <h3 className="text-base font-semibold text-[var(--palette-neutral-100)] mb-4">Checkout</h3>
 
           {locked && (
             <div className="mb-4 bg-[var(--palette-blue-20)] border border-[var(--palette-blue-20)] rounded-lg p-3 flex items-start gap-2.5">
@@ -594,205 +493,19 @@ export function ReviewAndPublish({
             </div>
           )}
 
-          <div className="flex flex-col gap-3 mb-4">
-            <PaymentMethodCard
-              method="invoice"
-              title="Invoice me"
-              description="We'll bill your company after the event. Net 30 payment terms."
-              icon={<FileText className="w-6 h-6" />}
-            />
-            <PaymentMethodCard
-              method="saved-card"
-              title="Visa ending in 0771"
-              description="Expires 07/2027 · Default."
-              icon={<CreditCard className="w-6 h-6" />}
-            />
-            <PaymentMethodCard
-              method="new-card"
-              title="Add a credit card"
-              description="Use a different card for this campaign."
-              icon={<CreditCard className="w-6 h-6" />}
-            />
-          </div>
-
-          <p className="text-xs text-[var(--palette-neutral-70)] mb-5 leading-relaxed">
-            Note: A credit card is required to complete order to cover any potential overages with incoming reviews.
-          </p>
-
-          {paymentMethod === "new-card" && (
-            <div className="grid grid-cols-6 gap-3">
-              <div className="col-span-6">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Cardholder name <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Name on card"
-                  value={cardName}
-                  disabled={locked}
-                  onChange={(e) => onCardNameChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-4">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Card number <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="1234 1234 1234 1234"
-                  value={cardNumber}
-                  disabled={locked}
-                  onChange={(e) => onCardNumberChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-1">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Exp <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="MM/YY"
-                  value={cardExp}
-                  disabled={locked}
-                  onChange={(e) => onCardExpChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-1">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  CVC <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="123"
-                  value={cardCvc}
-                  disabled={locked}
-                  onChange={(e) => onCardCvcChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-            </div>
-          )}
-
-          {paymentMethod === "invoice" && (
-            <div className="grid grid-cols-6 gap-3">
-              <div className="col-span-3">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Billing email <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder="ap@company.com"
-                  value={billingEmail}
-                  disabled={locked}
-                  onChange={(e) => onBillingEmailChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-3">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Company name <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Acme, Inc."
-                  value={billingCompany}
-                  disabled={locked}
-                  onChange={(e) => onBillingCompanyChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-6">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Street address <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="123 Main St, Suite 200"
-                  value={billingStreet}
-                  disabled={locked}
-                  onChange={(e) => onBillingStreetChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-3">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  City <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="San Francisco"
-                  value={billingCity}
-                  disabled={locked}
-                  onChange={(e) => onBillingCityChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-1">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  State <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="CA"
-                  value={billingState}
-                  disabled={locked}
-                  onChange={(e) => onBillingStateChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-2">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  ZIP / Postal code <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="94105"
-                  value={billingZip}
-                  disabled={locked}
-                  onChange={(e) => onBillingZipChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-              <div className="col-span-3">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  Country <span className="text-[var(--palette-rorange-120)]">*</span>
-                </label>
-                <select
-                  value={billingCountry}
-                  disabled={locked}
-                  onChange={(e) => onBillingCountryChange?.(e.target.value)}
-                  className={inputClass}
-                >
-                  <option value="United States">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="Australia">Australia</option>
-                  <option value="Japan">Japan</option>
-                  <option value="Singapore">Singapore</option>
-                </select>
-              </div>
-              <div className="col-span-3">
-                <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-                  PO number <span className="text-[var(--palette-neutral-40)] font-normal">(optional)</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="PO-12345"
-                  value={poNumber}
-                  disabled={locked}
-                  onChange={(e) => onPoNumberChange?.(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-            </div>
-          )}
+          <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
+            Payment method
+          </label>
+          <select
+            value={paymentMethod}
+            disabled={locked}
+            onChange={(e) => handlePaymentMethodSelect(e.target.value as PaymentMethod)}
+            className={inputClass}
+          >
+            <option value="saved-card">Visa ending in 0771</option>
+            <option value="new-card">Add a credit card</option>
+            <option value="invoice">Invoice me</option>
+          </select>
         </div>
       )}
 

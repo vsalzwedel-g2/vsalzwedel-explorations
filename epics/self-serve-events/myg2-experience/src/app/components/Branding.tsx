@@ -306,7 +306,7 @@ export function Branding({
       {/* Description - Combined Required + Optional */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-[var(--palette-neutral-80)] mb-1.5">
-          Description <span className="text-[var(--palette-neutral-40)] font-normal">(auto-generated)</span>
+          Description <span className="text-[var(--palette-neutral-40)] font-normal">(required)</span>
         </label>
 
         {/* Container for both required and optional */}
